@@ -5,13 +5,13 @@ Fonts Used
 */
 
 @font-face{
-	font-family: "Aver Regular";
-	src: url('../fonts/Aver.ttf');
+	font-family: "Futura Bk BT Book";
+	src: url('../fonts/tt0140m_.ttf');
 }
 
 @font-face{
-	font-family: "Party at Gatsby Regular";
-	src: url('../fonts/partyatgatsbys.ttf');
+	font-family: "Humanst521 Lt BT Light";
+	src: url('../fonts/tt0288m_.ttf');
 }
 
 /*
@@ -27,7 +27,8 @@ body{
 }
 
 .login-form-container{
-	width: 550px;
+	margin-right: 10px;
+	width: 570px;
 	float: right;
 }
 
@@ -35,7 +36,7 @@ body{
 	padding: 10px;
 	background-color: #F7F5EB;
 	color: #444444;
-	font-family: "Aver Regular";
+	font-family: "Futura Bk BT Book";
 	font-size: 0.95em;
 	border: 1px solid #CCCCCC;
 	border-radius: 3px;
@@ -43,13 +44,13 @@ body{
 
 .btn{
 	display: inline-block;
-	height: 38px;
-	padding-bottom: 8px;
+	height: 40px;
+	padding-bottom: 6px;
 	padding-left: 20px;
 	padding-right: 20px;
 	background-color: #5DC295;
 	color: #FFFFFF;
-	font-family: 'Open Sans Condensed', sans-serif;
+	font-family: "Humanst521 Lt BT Light";
 	font-size: 1.3em;
 	border: none;
 	border-radius: 3px;
