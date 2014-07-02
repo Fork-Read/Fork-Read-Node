@@ -62,3 +62,51 @@ body{
 .login-button{
 	margin-right: 10px;
 }
+
+/*
+========================================
+Footer CSS 
+========================================
+*/
+
+footer{
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
+}
+
+.footerMenu{
+	margin: auto;
+	width: 680px;
+	padding-bottom: 30px;
+}
+
+.footerMenu li{
+	float: left;
+	padding-left: 18px;
+	padding-right: 20px;
+	font-family: "Futura Bk BT Book";
+	font-size: 1.1em;
+	background: url('../images/dot.png') no-repeat center right;
+}
+
+
+.footerMenu li:first-child{
+	padding-left: 0px;
+}
+
+.footerMenu li:last-child{
+	padding-right: 0px;
+	background: none;
+}
+
+.footerMenu li a{
+	text-decoration: none;
+	color: #F6F6F6;
+}
+
+.footerMenu li a:hover{
+	cursor: pointer;
+	color: #5DC295;
+}
