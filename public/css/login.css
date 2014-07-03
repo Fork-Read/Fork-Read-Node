@@ -15,56 +15,6 @@ Fonts Used
 }
 
 /*
-=========================================
-Login Page CSS
-=========================================
-*/
-
-body{
-	padding-top: 50px;
-	background: url('../images/bg.png');
-	background-size: cover;
-}
-
-.login-form-container{
-	margin-right: 10px;
-	width: 570px;
-	float: right;
-}
-
-.login-form-container input{
-	padding: 10px;
-	background-color: #F7F5EB;
-	color: #444444;
-	font-family: "Futura Bk BT Book";
-	font-size: 0.95em;
-	border: 1px solid #CCCCCC;
-	border-radius: 3px;
-}
-
-.btn{
-	display: inline-block;
-	height: 40px;
-	padding-bottom: 6px;
-	padding-left: 20px;
-	padding-right: 20px;
-	background-color: #5DC295;
-	color: #FFFFFF;
-	font-family: "Humanst521 Lt BT Light";
-	font-size: 1.3em;
-	border: none;
-	border-radius: 3px;
-}
-
-.btn:hover{
-	cursor: pointer;
-}
-
-.login-button{
-	margin-right: 10px;
-}
-
-/*
 ========================================
 Footer CSS 
 ========================================
@@ -110,4 +60,111 @@ footer{
 .footerMenu li a:hover{
 	cursor: pointer;
 	color: #5DC295;
+}
+
+
+/*
+=========================================
+Login Page CSS
+=========================================
+*/
+
+#login{
+	padding-top: 30px;
+	background: url('../images/bg.png');
+	background-size: cover;
+}
+
+.login-form-container{
+	margin-right: 10px;
+	width: 570px;
+	float: right;
+}
+
+.input-box{
+	padding: 10px;
+	background-color: #F7F5EB;
+	color: #444444;
+	font-family: "Futura Bk BT Book";
+	font-size: 0.95em;
+	border: 1px solid #CCCCCC;
+	border-radius: 3px;
+}
+
+.btn{
+	display: inline-block;
+	height: 40px;
+	padding-bottom: 6px;
+	padding-left: 20px;
+	padding-right: 20px;
+	background-color: #56B881;
+	color: #FFFFFF;
+	font-family: "Humanst521 Lt BT Light";
+	font-size: 1.3em;
+	border: none;
+	border-radius: 3px;
+}
+
+.btn:hover{
+	cursor: pointer;
+	background-color: #56B881;
+}
+
+.login-button{
+	margin-right: 10px;
+}
+
+/*
+=======================================
+Signup Page CSS
+=======================================
+*/
+
+#signup{
+	padding-top: 70px;
+	background: url('../images/signup-bg.png');
+}
+
+.back-to-login{
+	position: absolute;
+	top: 20px;
+	left: 20px;
+}
+
+.signup-heading{
+	margin-top: 50px;
+	color: #444444;
+	text-align: center;
+	font-family: "Humanst521 Lt BT Light";
+	font-size: 3.8em;
+}
+
+.signup-caption{
+	margin: auto;
+	margin-top: 20px;
+	width: 425px;
+	color: #444444;
+	text-align: center;
+	font-family: "Futura Bk BT Book";
+	font-size: 1.5em;
+	background-color: #F6F6F6;	
+}
+
+.signup-accounts{
+	margin: auto;
+	margin-top: 40px;
+	width: 460px;
+}
+
+.signup-accounts li{
+	float: left;
+	margin-right: 35px;
+}
+
+.signup-accounts li:last-child{
+	margin-right: 0px;
+}
+
+.signup-accounts li a img{
+	width: 130px;
 }
