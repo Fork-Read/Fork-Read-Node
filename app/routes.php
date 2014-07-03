@@ -25,3 +25,7 @@ Route::get('/signup', function()
 {
 	return View::make('signup');
 });
+
+Route::get('/login/facebook', 'UserController@loginFacebook');
+
+Route::get('/login/google', 'UserController@loginGoogle');

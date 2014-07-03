@@ -14,13 +14,13 @@
 		</p>
 		<ul class="signup-accounts">
 			<li>
-				<a href="#"><img src="images/fb-icon.png" /></a>
+				<a href="/login/facebook"><img src="images/fb-icon.png" /></a>
 			</li>
 			<li>
 				<a href="#"><img src="images/twitter-icon.png" /></a>
 			</li>
 			<li>
-				<a href="#"><img src="images/google-plus-icon.png" /></a>
+				<a href="/login/google"><img src="images/google-plus-icon.png" /></a>
 			</li>
 		</ul>
 	</body>
