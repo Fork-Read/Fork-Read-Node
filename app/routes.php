@@ -13,7 +13,7 @@
 
 Route::get('/', function()
 {
-	return Redirect::to('/login');
+	return View::make('login');
 });
 
 Route::get('/login', function()
@@ -26,6 +26,17 @@ Route::get('/signup', function()
 	return View::make('signup');
 });
 
-Route::get('/login/facebook', 'UserController@loginFacebook');
+Route::get('/login/facebook', 'LoginController@loginFacebook');
 
-Route::get('/login/google', 'UserController@loginGoogle');
+Route::get('/login/google', 'LoginController@loginGoogle');
+
+Route::get('/hello', function(){
+	return View::make('hello');
+});
+
+Route::group(array('prefix' => 'portal/api'), function()
+{
+	Route::get('/user/{email}', 'UserController@getUser');
+
+	Route::post('/user/save', 'UserController@saveUser');
+});
