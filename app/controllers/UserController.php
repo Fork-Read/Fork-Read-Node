@@ -2,7 +2,6 @@
 
 class UserController extends BaseController {
 
-
 	public function saveUser() {
 		$input = Input::all();
 
@@ -14,10 +13,8 @@ class UserController extends BaseController {
 		$user->current_location = $input['current_location'];
 
 		if(User::whereEmail($input['email'])->get()->isEmpty()){
-			
 			$user->save();
 		}
-
 		return $user;
 	}
 
@@ -26,12 +23,12 @@ class UserController extends BaseController {
 	}
 	
 	public function isDuplicate($email) {
-		$isEmpty = User::whereEmail($email)->get()->isEmpty();
-		if($isEmpty){
-			return 'false';   // If collection is empty then return false
+		$record = User::whereEmail($email)->get();
+		if($record->isEmpty()){
+			return '';   // If collection is empty then return false
 		}
 		else {
-			return 'true';   // if collection is not empty then return true
+			return $record;   // if collection is not empty then return true
 		}
 	}
 }
