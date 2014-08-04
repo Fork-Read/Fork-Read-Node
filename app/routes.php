@@ -36,7 +36,9 @@ Route::get('/hello', function(){
 
 Route::group(array('prefix' => 'portal/api'), function()
 {
-	Route::get('/user/{email}', 'UserController@getUser');
+	Route::get('/user/{id}', 'UserController@getUser');
 
 	Route::post('/user/save', 'UserController@saveUser');
+
+	Route::get('/isDuplicate/user/{email}', 'UserController@isDuplicate');
 });
