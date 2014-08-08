@@ -18,8 +18,8 @@ class UserController extends BaseController {
 		return $user;
 	}
 
-	public function getUser($id) {
-		return User::find($id);
+	public function getUser($user_id) {
+		return User::find($user_id);
 	}
 	
 	public function isDuplicate($email) {
