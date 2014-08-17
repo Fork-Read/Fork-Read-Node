@@ -2,7 +2,9 @@
 
 	class Author extends Eloquent{
 
+		public $timestamps = false;
+
 		public function books(){
-			$this->belongsToMany('Book');
+			return $this->belongsToMany('Book');
 		}
 	}

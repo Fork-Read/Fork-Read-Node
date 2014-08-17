@@ -24,7 +24,11 @@ class UserController extends BaseController {
 	
 	public function isDuplicate($email) {
 		$record = User::whereEmail($email)->get();
-		
-		return $record;   // returns blank object if no user found
+		if($record->isEmpty()){
+			return '{}';   // If collection is empty then return false
+		}
+		else {
+			return $record;   // if collection is not empty then return true
+		}
 	}
 }

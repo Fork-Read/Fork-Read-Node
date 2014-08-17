@@ -31,7 +31,8 @@ Route::get('/login/facebook', 'LoginController@loginFacebook');
 Route::get('/login/google', 'LoginController@loginGoogle');
 
 Route::get('/hello', function(){
-	return View::make('hello');
+	return Book::whereIsbn("sdfsd")->get();
+	/*return View::make('hello');*/
 });
 
 Route::group(array('prefix' => 'portal/api'), function()
