@@ -4,6 +4,13 @@
 
 		public function getUserBooks($user_id){
 
+			if(!$user_id){
+				return "false";
+			}
+
+			$user = User::find($user_id);
+
+			return $user->books()->get();
 		}
 
 		public function booksOwned(){
