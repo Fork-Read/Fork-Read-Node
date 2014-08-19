@@ -15,6 +15,7 @@ class CreateBooksAuthorsPivot extends Migration {
 		Schema::create('author_book', function($table){
 			$table->integer('author_id');
 			$table->integer('book_id');
+			$table->unique(array('author_id', 'book_id'));
 		});
 	}
 
