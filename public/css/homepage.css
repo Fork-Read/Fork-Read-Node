@@ -1,0 +1,57 @@
+/*
+========================================
+Fonts Used
+========================================
+*/
+
+@font-face{
+	font-family: "Futura Bk BT Book";
+	src: url('../fonts/tt0140m_.ttf');
+}
+
+/*
+=======================================
+HomePage CSS
+=======================================
+*/
+
+body{
+	padding-top: 50px;
+	background: #ce282a;
+}
+
+.logo{
+	display: block;
+	margin: auto;
+	width: 30%;
+}
+
+.coming_soon{
+	margin: auto;
+	position: absolute;
+	top: 100px; left: 0px; right: 0px; bottom: 0px;
+	width: 350px;
+	height: 200px;
+}
+
+p{
+	margin-top: 10px;
+	text-align: center;
+	color: #FFFFFF;
+	font-family: "Futura Bk BT Book";
+	font-size: 1.1em;
+	font-style: italic;
+}
+
+.coming_soon_button{
+	margin: auto;
+	margin-top: 50px;
+	display: block;
+	padding: 15px;
+	color: #FFFFFF;
+	background: #a82021;
+	border: none;
+	border-radius: 3px;
+	font-family: "Futura Bk BT Book";
+	font-size: 1.3em;
+}
