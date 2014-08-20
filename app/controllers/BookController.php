@@ -68,10 +68,13 @@
 					else {
 						$author = $author->first();
 					}
-					$author->books()->save($book);
+					if(!$author->books->contains($book->id)){
+						$author->books()->save($book);
+					}
 				}
 
-				$book->users()->save($user);    // Save entry to owned book list
+				if(!$book->users->contains($user->id))
+					$book->users()->save($user);    // Save entry to owned book list
 			}
 
 			return "true"; 		

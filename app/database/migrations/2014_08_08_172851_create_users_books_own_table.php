@@ -15,7 +15,7 @@ class CreateUsersBooksOwnTable extends Migration {
 		Schema::create('owned_books', function($table){
 			$table->integer('book_id');
 			$table->integer('user_id');
-			$table->unique('book_id', 'user_id');
+			$table->unique(array('book_id', 'user_id'));
 		});
 	}
 
