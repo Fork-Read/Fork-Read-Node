@@ -13,7 +13,7 @@
 
 Route::get('/', function()
 {
-	return View::make('login');
+	return View::make('homepage');
 });
 
 Route::get('/login', function()
@@ -36,9 +36,13 @@ Route::get('/hello', function(){
 
 Route::group(array('prefix' => 'portal/api'), function()
 {
-	Route::get('/user/{id}', 'UserController@getUser');
+	Route::get('/user/{user_id}', 'UserController@getUser');
 
 	Route::post('/user/save', 'UserController@saveUser');
 
 	Route::get('/isDuplicate/user/{email}', 'UserController@isDuplicate');
+
+	Route::get('/own/books/{user_id}', 'BookController@getUserBooks');
+
+	Route::post('/own/save', 'BookController@booksOwned');
 });
