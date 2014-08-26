@@ -15,6 +15,45 @@
 
 		public function booksOwned(){
 
+			/*
+				POST Object structure
+				{
+					"user" : 1,
+					"books_list" : [
+						{
+							"book" : {
+								"title" : "sdfsdf",
+								"isbn" : "sdsdf",
+								"category" : "sdfsdffg",
+								"publisher" : "fdsdfsdf",
+								"publishedDate" : "dfsdff",
+								"description" : "dfsdfsdf",
+								"thumbnail" : "dsfsdfs"
+							},
+							"authors" : [
+								{"name" : "prateek"},
+								{"name" : "dipesh"}
+							]
+						},
+						{
+							"book" : {
+								"title" : "title",
+								"isbn" : "isbn",
+								"category" : "category",
+								"publisher" : "publisher",
+								"publishedDate" : "publishedDate",
+								"description" : "description",
+								"thumbnail" : "thumbnail"
+							},
+							"authors" : [
+								{"name" : "jiten"},
+								{"name" : "fenil"}
+							]
+						}
+					]
+				}
+			*/
+
 			$input = Input::all();
 
 			$book_array = $input['books_list'];
