@@ -12,7 +12,7 @@
 				<p>
 					The book to read is not the one that thinks for you but the one which makes you think.
 				</p>
-				<p style="text-align: right; position: relative; left: -5px;">
+				<p style="text-align: right; position: relative; left: -5px; top: 5px;">
 					-Harper Lee
 				</p>
 			</div>

@@ -16,6 +16,10 @@ HomePage CSS
 */
 
 body{
+	position: absolute;
+	top: 0px; left: 0px;
+	width: 100%;
+	height: 100%;
 	padding-top: 50px;
 	background: #0099CC;
 }
@@ -30,17 +34,20 @@ body{
 	margin: auto;
 	position: absolute;
 	top: 100px; left: 0px; right: 0px; bottom: 0px;
-	width: 350px;
-	height: 200px;
+	width: 400px;
+	height: 250px;
 }
 
-p{
+.coming_soon > div{
 	margin-top: 10px;
 	text-align: center;
 	color: #FFFFFF;
 	font-family: "Futura Bk BT Book";
 	font-size: 1.1em;
 	font-style: italic;
+	background: #33B5E5;
+	padding: 15px;
+	border-radius: 4px;
 }
 
 .coming_soon_button{
