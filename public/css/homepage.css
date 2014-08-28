@@ -17,13 +17,13 @@ HomePage CSS
 
 body{
 	padding-top: 50px;
-	background: #ce282a;
+	background: #0099CC;
 }
 
 .logo{
 	display: block;
 	margin: auto;
-	width: 30%;
+	width: 28%;
 }
 
 .coming_soon{
@@ -45,13 +45,13 @@ p{
 
 .coming_soon_button{
 	margin: auto;
-	margin-top: 50px;
+	margin-top: 70px;
 	display: block;
 	padding: 15px;
 	color: #FFFFFF;
-	background: #a82021;
+	background: #33B5E5;
 	border: none;
-	border-radius: 3px;
+	border-radius: 4px;
 	font-family: "Futura Bk BT Book";
 	font-size: 1.3em;
 }

@@ -1,7 +1,7 @@
 <!Doctype html>
 <html>
 	<head>
-		<title>Fork-Read</title>
+		<title>Welcome to Fork-Read</title>
 		{{ HTML::style('css/reset.css') }}
 		{{ HTML::style('css/homepage.css')}}
 	</head>
