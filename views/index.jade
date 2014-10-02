@@ -1,5 +1,13 @@
-extends layout
-
-block content
-  h1= title
-  p Welcome to #{title}
+doctype html
+html
+  head
+    title= 'Welcome to Fork-Read'
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    img.logo(src='/images/logo_white.png')
+    div.coming_soon
+      div
+        p The book to read is not the one that thinks for you but the one which makes you think.
+        p(style='text-align: right; position: relative; left: -5px; top: 5px;') -Harper Lee
+      button.coming_soon_button COMING SOON
+    
