@@ -2,11 +2,6 @@ var express = require('express');
 var router = express.Router();
 var UserModel = require('../models/UserModel');
 
-/* GET users listing. */
-router.get('/', function(req, res) {
-  res.send('respond with a resource');
-});
-
 router.get('/:email', function(req, res) {
 	var email = req.param('email');
 
@@ -21,6 +16,7 @@ router.get('/:email', function(req, res) {
 
 router.post('/save', function(req, res) {
 
+	console.log(req.body);
 	var email = req.body.email;
 
 	if(email) {
@@ -36,11 +32,12 @@ router.post('/save', function(req, res) {
 			}
 			else {
 				var newUser = new UserModel({
-					name: req.body.name || '',
+					name: req.body.name,
 					email: req.body.email,
 					contactNo: req.body.contactNo,
 					gender: req.body.gender,
-					currentLocation: req.body.currentLocation
+					currentLocation: req.body.currentLocation,
+					books: []   // No Books will be added to owned list when user entry is created
 				});
 
 				console.log('new user');
