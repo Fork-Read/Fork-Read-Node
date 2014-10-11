@@ -55,17 +55,17 @@ router.post('/save', function(req, res) {
 });
 
 router.post('/addSearchLocation', function(req, res) {
-	var user = req.body.user;
+	var userId = req.body.user;
 	var latitude = req.body.latitude;
 	var longitude = req.body.longitude;
 
-	if(user && latitude && longitude) {
+	if(userId && latitude && longitude) {
 		var newLocation = {
 			longitude: req.body.longitude,
 			latitude : req.body.latitude
 		}
 
-		UserModel.findOne({"_id": user}, function(err, user) {
+		UserModel.findOne({"_id": userId}, function(err, user) {
 			if(err) {
 				return console.error(err);
 			}
@@ -82,7 +82,7 @@ router.post('/addSearchLocation', function(req, res) {
 				finalLocations.push(newLocation);
 			}
 
-			user.update({searchedLocations: finalLocations}, function(err, rowsAffected) {
+			UserModel.findOneAndUpdate({"_id": userId}, {searchedLocations: finalLocations}, function(err, user) {
 				if(err) {
 					return console.error(err)
 				}
@@ -92,6 +92,22 @@ router.post('/addSearchLocation', function(req, res) {
 			});
 		});
 
+	}
+});
+
+router.post('/update', function(req, res) {
+	var email = req.body.email;
+
+	if(email) {
+		UserModel.findOneAndUpdate({email: email}, {currentLocation: req.body.currentLocation}, function(err, user) {
+			if(err) {
+				return console.error(err);
+			}
+
+				res.set('Content-Type', 'application/json');
+				res.send(JSON.stringify(user));
+			
+		});
 	}
 });
 
