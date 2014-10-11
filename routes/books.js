@@ -103,4 +103,20 @@ router.post('/save', function(req, res) {
 	}
 });
 
+router.post('/search', function(req, res) {
+	var searchLocation = req.body;
+
+	if(searchLocation.latitude && searchLocation.longitude) {
+		UserModel.find(function(err, users) {
+			if(err) {
+				return console.error(err);
+			}
+
+			console.log(users);
+			res.set('Content-Type', 'application/json');
+			res.send(JSON.stringify(null));
+		});
+	}
+});
+
 module.exports = router;

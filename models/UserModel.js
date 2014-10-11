@@ -5,7 +5,10 @@ var userSchema = mongoose.Schema({
 	email: String,
 	contactNo: String,
 	gender: String,
-	currentLocation: String,
+	currentLocation: {
+		latitude: String,
+		longitude: String
+	},
 	books: Array,
 	searchedLocations: Array,
 });
