@@ -107,6 +107,7 @@ router.post('/search', function(req, res) {
 	var searchLocation = req.body;
 	var distance;
 	var returnList = [];
+	var returnObj = {};
 
 	if(searchLocation.latitude && searchLocation.longitude) {
 		UserModel.find(function(err, users) {
@@ -119,11 +120,27 @@ router.post('/search', function(req, res) {
 									parseFloat(user.currentLocation.latitude), parseFloat(user.currentLocation.longitude));
 
 				if(distance < 50) {
-					returnList.push(user);
+					for(var i=0; i<user.books.length; i++) {
+						returnObj = {};
+						BookModel.findOne({'_id': user.books[i]}, function(err, book) {
+							if(err){
+								book = null;
+							}
+
+							if(book) {
+								returnObj.userDetails = user;
+								returnObj.bookDetails = book;
+								returnList.push(returnObj);
+							}
+
+						});
+					}
 				}
 			});
-			res.set('Content-Type', 'application/json');
-			res.send(JSON.stringify(returnList));
+			setTimeout(function(){
+				res.set('Content-Type', 'application/json');
+				res.send(JSON.stringify(returnList));
+			}, 0);
 		});
 	}
 });
