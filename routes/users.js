@@ -58,7 +58,7 @@ router.post('/addSearchLocation', function(req, res) {
 	var user = req.body.user;
 	var latitude = req.body.latitude;
 	var longitude = req.body.longitude;
-	console.log('route reacehd');
+
 	if(user && latitude && longitude) {
 		var newLocation = {
 			longitude: req.body.longitude,
@@ -70,10 +70,17 @@ router.post('/addSearchLocation', function(req, res) {
 				return console.error(err);
 			}
 
-			console.log("user found");
-
 			var finalLocations = user.searchedLocations;
-			finalLocations.push(newLocation);
+			var isNewLocation = true;
+			finalLocations.forEach(function(item) {
+				if(item.latitude == newLocation.latitude && item.longitude == newLocation.longitude) {
+					isNewLocation = false;
+				}
+			});
+			
+			if(isNewLocation) {
+				finalLocations.push(newLocation);
+			}
 
 			user.update({searchedLocations: finalLocations}, function(err, rowsAffected) {
 				if(err) {

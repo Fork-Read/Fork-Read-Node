@@ -8,7 +8,7 @@ router.get('/:user', function(req, res) {
 
 	var returnObj = [];
 
-	UserModel.findOne({_id: user}, function(err, user) {
+	UserModel.findOne({'_id': user}, function(err, user) {
 		if(err) {
 			return console.error(err);
 		}
