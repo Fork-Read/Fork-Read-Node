@@ -46,7 +46,7 @@ router.post('/save', function(req, res) {
 	var user = req.body.user;
 
 	if(isbn && user) {
-		UserModel.findOne({_id: user}, function(err, user) {
+		UserModel.findOne({'_id': user}, function(err, user) {
 			if(err) {
 				return console.error(err);
 			}
