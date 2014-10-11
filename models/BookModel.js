@@ -4,8 +4,8 @@ var bookSchema = mongoose.Schema({
 	isbn: String,
 	title: String,
 	authors: Array,
-	genre: String,
-	publishers: Array,
+	genre: Array,
+	publishers: String,
 	publishedDate: String,
 	thumbnail: String
 });
