@@ -113,7 +113,8 @@ router.post('/save', function(req, res) {
 
 router.post('/search', function(req, res) {
 	var searchLocation = req.body;
-	var user = req.body.user;
+	var targetUser = req.body.user;
+	var targetISBN = req.body.isbn;
 	var distance;
 	var returnList = [];
 	var returnObj = {};
@@ -125,8 +126,8 @@ router.post('/search', function(req, res) {
 			}
 
 			users.forEach(function(user) {
-
-				if(user._id === user){
+				console.log(user._id);
+				if(targetUser && user._id === targetUser){
 					return;
 				}
 				distance = getDistance(parseFloat(searchLocation.latitude), parseFloat(searchLocation.longitude),
@@ -140,10 +141,20 @@ router.post('/search', function(req, res) {
 								book = null;
 							}
 
-							if(book) {
-								returnObj.userDetails = user;
-								returnObj.bookDetails = book;
-								returnList.push(returnObj);
+							if(targetISBN){
+								console.log(book.isbn);
+								if(book && (book.isbn === targetISBN)) {
+									returnObj.userDetails = user;
+									returnObj.bookDetails = book;
+									returnList.push(returnObj);	
+								}
+							}
+							else{
+								if(book) {
+									returnObj.userDetails = user;
+									returnObj.bookDetails = book;
+									returnList.push(returnObj);	
+								}
 							}
 
 						});
