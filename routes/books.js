@@ -113,6 +113,7 @@ router.post('/save', function(req, res) {
 
 router.post('/search', function(req, res) {
 	var searchLocation = req.body;
+	var user = req.body.user;
 	var distance;
 	var returnList = [];
 	var returnObj = {};
@@ -124,6 +125,10 @@ router.post('/search', function(req, res) {
 			}
 
 			users.forEach(function(user) {
+
+				if(user._id === user){
+					return;
+				}
 				distance = getDistance(parseFloat(searchLocation.latitude), parseFloat(searchLocation.longitude),
 									parseFloat(user.currentLocation.latitude), parseFloat(user.currentLocation.longitude));
 
