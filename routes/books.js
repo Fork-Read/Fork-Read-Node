@@ -146,6 +146,7 @@ router.post('/search', function(req, res) {
 								if(book && (book.isbn === targetISBN)) {
 									returnObj.userDetails = user;
 									returnObj.bookDetails = book;
+									returnObj.distance = distance + 'km';
 									returnList.push(returnObj);	
 								}
 							}
@@ -153,6 +154,7 @@ router.post('/search', function(req, res) {
 								if(book) {
 									returnObj.userDetails = user;
 									returnObj.bookDetails = book;
+									returnObj.distance = distance + 'km';
 									returnList.push(returnObj);	
 								}
 							}
