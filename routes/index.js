@@ -6,4 +6,9 @@ router.get('/', function(req, res) {
   res.render('index');
 });
 
+router.get('/noResult', function(req, res) {
+	res.set('Content-Type', 'application/json');
+	res.send(JSON.stringify(null));
+});
+
 module.exports = router;

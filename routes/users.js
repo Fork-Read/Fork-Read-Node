@@ -5,13 +5,18 @@ var UserModel = require('../models/UserModel');
 router.get('/:email', function(req, res) {
 	var email = req.param('email');
 
-	UserModel.findOne({email: email}, function(err, user) {
-		if(err) {
-			return console.error(err);
-		}
-		res.set('Content-Type', 'application/json');
-		res.send(JSON.stringify(user));
-	});
+	if(email) {
+		UserModel.findOne({email: email}, function(err, user) {
+			if(err) {
+				return console.error(err);
+			}
+			res.set('Content-Type', 'application/json');
+			res.send(JSON.stringify(user));
+		});
+	}
+	else{
+		res.redirect('/noResult');
+	}
 });
 
 router.post('/save', function(req, res) {
@@ -51,6 +56,9 @@ router.post('/save', function(req, res) {
 				});
 			}
 		});
+	}
+	else {
+		res.redirect('/noResult');
 	}
 });
 
@@ -93,6 +101,9 @@ router.post('/addSearchLocation', function(req, res) {
 		});
 
 	}
+	else{
+		res.redirect('/noResult');
+	}
 });
 
 router.post('/update', function(req, res) {
@@ -108,6 +119,9 @@ router.post('/update', function(req, res) {
 				res.send(JSON.stringify(user));
 			
 		});
+	}
+	else{
+		res.redirect('/noResult');
 	}
 });
 

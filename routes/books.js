@@ -8,31 +8,36 @@ router.get('/:user', function(req, res) {
 
 	var returnObj = [];
 
-	UserModel.findOne({'_id': user}, function(err, user) {
-		if(err) {
-			return console.error(err);
-		}
+	if(user){
+		UserModel.findOne({'_id': user}, function(err, user) {
+			if(err) {
+				return console.error(err);
+			}
 
-		var i = 0;
+			var i = 0;
 
-		for(; i< user.books.length; i++) {
-			BookModel.findOne({_id: user.books[i]}, function(err, book) {
-				if(err) {
-					return console.error(err);
-				}
+			for(; i< user.books.length; i++) {
+				BookModel.findOne({_id: user.books[i]}, function(err, book) {
+					if(err) {
+						return console.error(err);
+					}
 
-				if(book){
-					returnObj.push(book);
-				}
+					if(book){
+						returnObj.push(book);
+					}
 
-				// Return Book Data if this is the last query
-				if(i = user.books.length - 1){
-					res.set('Content-Type', 'application/json');
-					res.send(JSON.stringify(returnObj));
-				}
-			});
-		}
-	});
+					// Return Book Data if this is the last query
+					if(i = user.books.length - 1){
+						res.set('Content-Type', 'application/json');
+						res.send(JSON.stringify(returnObj));
+					}
+				});
+			}
+		});
+	}
+	else{
+		res.redirect('/noResult');
+	}
 });
 
 router.post('/save', function(req, res) {
@@ -101,6 +106,9 @@ router.post('/save', function(req, res) {
 			}
 		});
 	}
+	else{
+		res.redirect('/noResult');
+	}
 });
 
 router.post('/search', function(req, res) {
@@ -142,6 +150,9 @@ router.post('/search', function(req, res) {
 				res.send(JSON.stringify(returnList));
 			}, 0);
 		});
+	}
+	else{
+		res.redirect('/noResult');
 	}
 });
 
