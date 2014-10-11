@@ -6,7 +6,8 @@ var userSchema = mongoose.Schema({
 	contactNo: String,
 	gender: String,
 	currentLocation: String,
-	books: Array
+	books: Array,
+	searchedLocations: Array,
 });
 
 var UserModel = mongoose.model('User', userSchema);

@@ -16,7 +16,6 @@ router.get('/:email', function(req, res) {
 
 router.post('/save', function(req, res) {
 
-	console.log(req.body);
 	var email = req.body.email;
 
 	if(email) {
@@ -37,7 +36,8 @@ router.post('/save', function(req, res) {
 					contactNo: req.body.contactNo,
 					gender: req.body.gender,
 					currentLocation: req.body.currentLocation,
-					books: []   // No Books will be added to owned list when user entry is created
+					books: [],   // No Books will be added to owned list when user entry is created,
+					searchedLocations: []  // No Searched Locations will be added when user entry is created
 				});
 
 				console.log('new user');
@@ -51,6 +51,37 @@ router.post('/save', function(req, res) {
 				});
 			}
 		});
+	}
+});
+
+router.post('/addSearchLocation', function(req, res) {
+	var user = req.body.user;
+	var latitude = req.body.latitude;
+	var longitude = req.body.longitude;
+
+	if(user && latitude && longitude) {
+		var newLocation = {
+			longitude: req.body.longitude,
+			latitude : req.body.latitude
+		}
+
+		UserModel.findOne({email: email}, function(err, user) {
+			if(err) {
+				return console.error(err);
+			}
+
+			var finalLocations = user.searchedLocations;
+			finalLocations.push(newLocation);
+
+			user.update({searchedLocations: finalLocations}, function(err, user) {
+				if(err) {
+					return console.error(err)
+				}
+				res.set('Content-Type', 'application/json');
+				res.send(JSON.stringify(user));
+			});
+		});
+
 	}
 });
 
