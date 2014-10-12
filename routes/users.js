@@ -30,7 +30,6 @@ router.post('/save', function(req, res) {
 			}
 
 			if(user) {
-				console.log('existing user');
 				res.set('Content-Type', 'application/json');
 				res.send(JSON.stringify(user));
 			}
@@ -44,8 +43,6 @@ router.post('/save', function(req, res) {
 					books: [],   // No Books will be added to owned list when user entry is created,
 					searchedLocations: []  // No Searched Locations will be added when user entry is created
 				});
-
-				console.log('new user');
 
 				newUser.save(function(err, newUser) {
 					if(err) {
@@ -94,7 +91,6 @@ router.post('/addSearchLocation', function(req, res) {
 				if(err) {
 					return console.error(err)
 				}
-				console.log("user updated");
 				res.set('Content-Type', 'application/json');
 				res.send(JSON.stringify(user));
 			});

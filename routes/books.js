@@ -45,15 +45,11 @@ router.post('/save', function(req, res) {
 	var isbn = req.body.isbn;
 	var user = req.body.user;
 
-	console.log('route reached');
-
 	if(isbn && user) {
 		UserModel.findOne({'_id': user}, function(err, user) {
 			if(err) {
 				return console.error(err);
 			}
-
-			console.log('user found');
 
 			if(user){
 				BookModel.findOne({isbn: isbn}, function(err, book) {
@@ -64,7 +60,6 @@ router.post('/save', function(req, res) {
 					var ownedBooks = user.books;
 
 					if(book) {
-						console.log('existing book');
 						if(!(ownedBooks.indexOf(book._id) > -1)) {
 							ownedBooks.push(book._id);
 							user.update({books: ownedBooks}, function(err, user) {
@@ -87,8 +82,6 @@ router.post('/save', function(req, res) {
 							publishedDate: req.body.publishedDate,
 							thumbnail: req.body.thumbnail
 						});
-
-						console.log('new book');
 
 						newBook.save(function(err, newBook) {
 							if(err) {
@@ -130,7 +123,7 @@ router.post('/search', function(req, res) {
 			}
 
 			users.forEach(function(user) {
-				console.log(user._id);
+
 				if(targetUser && user._id === targetUser){
 					return;
 				}
@@ -147,7 +140,6 @@ router.post('/search', function(req, res) {
 							}
 
 							if(targetISBN){
-								console.log(book.isbn);
 								if(book && (book.isbn === targetISBN)) {
 									returnObj.userDetails = user;
 									returnObj.bookDetails = book;
