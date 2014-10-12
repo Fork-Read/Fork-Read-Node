@@ -138,6 +138,7 @@ router.post('/search', function(req, res) {
 									parseFloat(user.currentLocation.latitude), parseFloat(user.currentLocation.longitude));
 
 				if(distance < 50) {
+					distance = distance.toFixed(2);
 					for(var i=0; i<user.books.length; i++) {
 						returnObj = {};
 						BookModel.findOne({'_id': user.books[i]}, function(err, book) {
