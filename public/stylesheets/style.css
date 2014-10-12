@@ -66,7 +66,7 @@ HomePage CSS
 
 body {
   padding: 50px;
-  background: #0099CC;
+  background: #4E4E53;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -95,7 +95,7 @@ a {
 	font-family: "Futura Bk BT Book";
 	font-size: 1.3em;
 	font-style: italic;
-	background: #33B5E5;
+	background: rgba(0, 0, 0, 0.1);
 	padding: 15px;
 	border-radius: 4px;
 }
@@ -106,7 +106,7 @@ a {
 	display: block;
 	padding: 15px;
 	color: #FFFFFF;
-	background: #33B5E5;
+	background: #DF4A32;
 	border: none;
 	border-radius: 4px;
 	font-family: "Futura Bk BT Book";
