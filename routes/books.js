@@ -45,11 +45,15 @@ router.post('/save', function(req, res) {
 	var isbn = req.body.isbn;
 	var user = req.body.user;
 
+	console.log('route reached');
+
 	if(isbn && user) {
 		UserModel.findOne({'_id': user}, function(err, user) {
 			if(err) {
 				return console.error(err);
 			}
+
+			console.log('user found');
 
 			if(user){
 				BookModel.findOne({isbn: isbn}, function(err, book) {
