@@ -171,7 +171,7 @@ router.post('/search', function(req, res) {
 			setTimeout(function(){
 				res.set('Content-Type', 'application/json');
 				res.send(JSON.stringify({results: returnList}));
-			}, 2000);
+			}, 1000);
 		});
 	}
 	else{
