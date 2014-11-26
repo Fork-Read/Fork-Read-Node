@@ -6,8 +6,17 @@ var userSchema = mongoose.Schema({
 	contactNo: String,
 	gender: String,
 	currentLocation: {
-		latitude: String,
-		longitude: String
+		position: {
+			latitude: String,
+			longitude: String	
+		},
+		address: {
+			location: String,
+			street: String,
+			city: String,
+			country: String,
+			zipcode: String
+		}
 	},
 	books: Array,
 	searchedLocations: Array,
