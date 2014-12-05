@@ -3,6 +3,8 @@ html
   head
     title= 'Welcome to Fork-Read'
     link(rel='stylesheet', href='/stylesheets/style.css')
+    script(type='text/javascript', src='/js/jquery-1.11.1.min.js')
+    script(type='text/javascript', src='/js/custom.js')
   body
     img.logo(src='/images/logo_white.png')
     div.coming_soon
@@ -10,4 +12,10 @@ html
         p The book to read is not the one that thinks for you but the one which makes you think.
         p(style='text-align: right; position: relative; left: -5px; top: 5px;') -Harper Lee
       button.coming_soon_button COMING SOON
+      div(style="background: none; margin-top: 20px;")
+        p(style="margin-bottom: 10px;") Want to be informed when we launch?
+        p.error Please enter correct email address.
+        p.success Thank You for your interest.
+        input(type='text', name="email", placeholder="enter email..")
+        button.count-me-in Count me in!
     

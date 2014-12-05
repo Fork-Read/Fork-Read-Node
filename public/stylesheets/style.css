@@ -112,3 +112,34 @@ a {
 	font-family: "Futura Bk BT Book";
 	font-size: 1.3em;
 }
+
+input{
+	padding: 8px 4px;
+}
+
+.count-me-in{
+	padding: 7px 5px;
+	color: #FFFFFF;
+	background: #DF4A32;
+	margin-left: 5px;
+	border: none;
+	border-radius: 4px;
+	font-family: "Futura Bk BT Book";
+	font-size: 1em;
+}
+
+.count-me-in:hover{
+	cursor: pointer;
+}
+
+.error, .success{
+	background-color: #F44336;
+	margin-bottom: 5px;
+	border-radius: 4px;
+	display: none;
+}
+
+.success{
+	background-color: #4CAF50;
+	display: none;
+}
