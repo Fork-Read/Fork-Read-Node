@@ -115,6 +115,11 @@ a {
 
 input{
 	padding: 8px 4px;
+	border-radius: 4px;
+	border: none;
+	width: 200px;
+	font-size: 0.9em;
+	color: #424242;
 }
 
 .count-me-in{
