@@ -38,6 +38,8 @@
 						setTimeout(function(){
 							$('.success').fadeOut();
 						}, 3000);
+
+						$('input[name="email"]').val('');
 			  		}
 			  		else{
 			  			$('.error').html('Sorry! We were unable to add your email.').show();
