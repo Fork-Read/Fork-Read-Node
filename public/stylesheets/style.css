@@ -77,14 +77,15 @@ a {
 .logo{
 	display: block;
 	margin: auto;
-	width: 28%;
+	width: 300px;
 }
 
 .coming_soon{
 	margin: auto;
 	position: absolute;
 	top: 100px; left: 0px; right: 0px; bottom: 0px;
-	width: 400px;
+	max-width: 400px;
+	min-width: 300px;
 	height: 250px;
 }
 
