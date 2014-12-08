@@ -15,7 +15,8 @@ var userSchema = mongoose.Schema({
 			street: String,
 			city: String,
 			country: String,
-			zipcode: String
+			zipcode: String,
+			formatted_address: String,
 		}
 	},
 	books: Array,
