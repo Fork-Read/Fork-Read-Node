@@ -21,10 +21,39 @@ router.get('/:id', function(req, res) {
 
 router.post('/save', function(req, res) {
 
+	/*
+	5490787185864eb1119845f7
+	Expected Object Structure
+	{
+	  "name": "Prateek Agarwal",
+	  "email": "prateekagr98@gmail.com",
+	  "contactNo": "8861986656",
+	  "gender": "Male",
+	  "currentLocation": {
+	    "position": {
+	      "latitude": "123456",
+	      "longitude": "654321"
+	    },
+	    "address": {
+	      "location": "E-808, Appt",
+	      "street": "Taverkere Main Road",
+	      "city": "Bangalore",
+	      "state": "Karnataka",
+	      "country": "India",
+	      "zipCode": "560029",
+	      "formatted_address": "E-808, Appt, taverkere, bangalore, india"
+	    }
+	    
+	  },
+	  "books": [],
+	  "searchedLocations": []
+	}*/
+
 	var email = req.body.email;
 
 	if(email) {
 		UserModel.findOne({email: email}, function(err, user) {
+
 			if(err) {
 				return console.error(err);
 			}

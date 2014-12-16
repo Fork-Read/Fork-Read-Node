@@ -42,64 +42,110 @@ router.get('/:user', function(req, res) {
 
 router.post('/save', function(req, res) {
 
-	var isbn = req.body.isbn;
-	var user = req.body.user;
+	/*
+	Expected Object Structure
+	{
+	  "user": "5490787185864eb1119845f7",
+	  "books": [
+	    {
+	      "isbn": "123456",
+	      "title": "Lord of the Rings",
+	      "authors": [
+	        "J. R. R. Tolkien",
+	        "Prateek Agarwal"
+	      ],
+	      "genre": [
+	        "Fiction",
+	        "Thriller"
+	      ],
+	      "publishers": "My Publishing House",
+	      "publishedDate": "12-1-2014",
+	      "thumbnail": "http://www.google.com"
+	    },
+	    {
+	      "isbn": "1234567889",
+	      "title": "Game of Thrones",
+	      "authors": [
+	        "George R. R. Martin",
+	        "Prateek Agarwal"
+	      ],
+	      "genre": [
+	        "Fiction",
+	        "Thriller"
+	      ],
+	      "publishers": "My Publishing House",
+	      "publishedDate": "12-2-2014",
+	      "thumbnail": "http://www.gmail.com"
+	    }
+	  ]
+	}*/
 
-	if(isbn && user) {
+	var user = req.body.user;
+	var books = req.body.books;
+
+	if(user && books){
 		UserModel.findOne({'_id': user}, function(err, user) {
 			if(err) {
 				return console.error(err);
 			}
 
 			if(user){
-				BookModel.findOne({isbn: isbn}, function(err, book) {
-					if(err) {
-						return console.error(err);
-					}
+
+				for(var i=0; i<books.length; i++){
+					var isbn = books[i].isbn;
 
 					var ownedBooks = user.books;
 
-					if(book) {
-						if(!(ownedBooks.indexOf(book._id) > -1)) {
-							ownedBooks.push(book._id);
-							user.update({books: ownedBooks}, function(err, user) {
-								if(err) {
-									return console.error(err)
-								}
-							});
+					BookModel.findOne({'isbn': isbn}, function(err, book) {
+						if(err) {
+							return console.error(err);
 						}
 
-						res.set('Content-Type', 'application/json');
-						res.send(JSON.stringify(book));
-					}
-					else {
-						var newBook = new BookModel({
-							isbn: req.body.isbn,
-							title: req.body.title,
-							authors: req.body.authors,
-							genre: req.body.genre,
-							publishers: req.body.publishers,
-							publishedDate: req.body.publishedDate,
-							thumbnail: req.body.thumbnail
-						});
-
-						newBook.save(function(err, newBook) {
-							if(err) {
-								return console.error(err);
+						if(book) {
+							if(!(ownedBooks.indexOf(book._id) > -1)) {
+								ownedBooks.push(book._id);
+								user.update({books: ownedBooks}, function(err, user) {
+									if(err) {
+										return console.error(err)
+									}
+								});
 							}
-
-							ownedBooks.push(book._id);
-							user.update({books: ownedBooks}, function(err, user) {
-								if(err) {
-									return console.error(err)
-								}
+						}
+						else {
+							var newBook = new BookModel({
+								isbn: req.body.isbn,
+								title: req.body.title,
+								authors: req.body.authors,
+								genre: req.body.genre,
+								publishers: req.body.publishers,
+								publishedDate: req.body.publishedDate,
+								thumbnail: req.body.thumbnail
 							});
 
-							res.set('Content-Type', 'application/json');
-							res.send(JSON.stringify(newBook));
-						});
-					}
-				});
+							newBook.save(function(err, newBook) {
+								if(err) {
+									return console.error(err);
+								}
+
+								ownedBooks.push(newBook._id);
+								user.update({'books': ownedBooks}, function(err, user) {
+									if(err) {
+										return console.error(err)
+									}
+								});
+							});
+						}
+					});
+				}
+
+				// TODO Right now not waiting for database calls to complete. use parallel calls to handle this in nodejs
+				// http://stackoverflow.com/questions/10551499/simplest-way-to-wait-some-asynchronous-tasks-complete-in-javascript
+				res.set('Content-Type', 'application/json');
+				res.send(JSON.stringify({}));
+				
+			}
+			else{
+				res.redirect('/noResult');
 			}
 		});
 	}
