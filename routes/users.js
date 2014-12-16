@@ -22,7 +22,6 @@ router.get('/:id', function(req, res) {
 router.post('/save', function(req, res) {
 
 	/*
-	5490787185864eb1119845f7
 	Expected Object Structure
 	{
 	  "name": "Prateek Agarwal",
