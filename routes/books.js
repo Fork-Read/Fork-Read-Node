@@ -140,8 +140,8 @@ router.post('/save', function(req, res) {
 
 				// TODO Right now not waiting for database calls to complete. use parallel calls to handle this in nodejs
 				// http://stackoverflow.com/questions/10551499/simplest-way-to-wait-some-asynchronous-tasks-complete-in-javascript
-				res.set('Content-Type', 'application/json');
-				res.send(JSON.stringify({}));
+				/*res.set('Content-Type', 'application/json');
+				res.send(JSON.stringify({}));*/
 				
 			}
 			else{
