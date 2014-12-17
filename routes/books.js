@@ -93,6 +93,7 @@ router.post('/save', function(req, res) {
 
 				for(var i=0; i<books.length; i++){
 					var isbn = books[i].isbn;
+					var bookItem = books[i];
 
 					var ownedBooks = user.books;
 
@@ -113,13 +114,13 @@ router.post('/save', function(req, res) {
 						}
 						else {
 							var newBook = new BookModel({
-								isbn: req.body.isbn,
-								title: req.body.title,
-								authors: req.body.authors,
-								genre: req.body.genre,
-								publishers: req.body.publishers,
-								publishedDate: req.body.publishedDate,
-								thumbnail: req.body.thumbnail
+								isbn: bookItem.isbn,
+								title: bookItem.title,
+								authors: bookItem.authors,
+								genre: bookItem.genre,
+								publishers: bookItem.publishers,
+								publishedDate: bookItem.publishedDate,
+								thumbnail: bookItem.thumbnail
 							});
 
 							newBook.save(function(err, newBook) {
@@ -140,8 +141,8 @@ router.post('/save', function(req, res) {
 
 				// TODO Right now not waiting for database calls to complete. use parallel calls to handle this in nodejs
 				// http://stackoverflow.com/questions/10551499/simplest-way-to-wait-some-asynchronous-tasks-complete-in-javascript
-				/*res.set('Content-Type', 'application/json');
-				res.send(JSON.stringify({}));*/
+				res.set('Content-Type', 'application/json');
+				res.send(JSON.stringify({}));
 				
 			}
 			else{
