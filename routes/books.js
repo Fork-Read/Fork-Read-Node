@@ -1,4 +1,5 @@
 var express = require('express');
+var forEach = require('async-foreach').forEach;
 var router = express.Router();
 var UserModel = require('../models/UserModel');
 var BookModel = require('../models/BookModel');
@@ -91,13 +92,10 @@ router.post('/save', function(req, res) {
 
 			if(user){
 
-				for(var i=0; i<books.length; i++){
-					var isbn = books[i].isbn;
-					var bookItem = books[i];
+				var operations = [];
 
-					var ownedBooks = user.books;
-
-					BookModel.findOne({'isbn': isbn}, function(err, book) {
+				operations.push(function(user, bookItem, ownedBooks){
+					BookModel.findOne({'isbn': bookItem.isbn}, function(err, book) {
 						if(err) {
 							return console.error(err);
 						}
@@ -136,6 +134,16 @@ router.post('/save', function(req, res) {
 								});
 							});
 						}
+					});
+				});
+
+				for(var i=0; i<books.length; i++){
+					var isbn = books[i].isbn;
+					var bookItem = books[i];
+
+					var ownedBooks = user.books;
+					forEach(operations, function(item, index, arr){
+						item(user, bookItem, ownedBooks);
 					});
 				}
 
