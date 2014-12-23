@@ -2,11 +2,11 @@ var express = require('express');
 var router = express.Router();
 var UserModel = require('../models/UserModel');
 
-router.get('/:id', function(req, res) {
-	var id = req.param('id');
+router.get('/:email', function(req, res) {
+	var email = req.param('email');
 
-	if(id) {
-		UserModel.findOne({'_id': id}, function(err, user) {
+	if(email) {
+		UserModel.findOne({'email': email}, function(err, user) {
 			if(err) {
 				return console.error(err);
 			}
