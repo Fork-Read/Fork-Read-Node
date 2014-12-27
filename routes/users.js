@@ -10,8 +10,14 @@ router.get('/:email', function(req, res) {
 			if(err) {
 				return console.error(err);
 			}
-			res.set('Content-Type', 'application/json');
-			res.send(JSON.stringify(user));
+			if(user){
+				res.set('Content-Type', 'application/json');
+				res.send(JSON.stringify(user));
+			}
+			else{
+				res.set('Content-Type', 'application/json');
+				res.send(JSON.stringify({}));
+			}
 		});
 	}
 	else{

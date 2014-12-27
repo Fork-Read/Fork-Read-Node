@@ -9,7 +9,7 @@ router.get('/', function(req, res) {
 
 router.get('/noResult', function(req, res) {
 	res.set('Content-Type', 'application/json');
-	res.send(JSON.stringify(null));
+	res.send(JSON.stringify({}));
 });
 
 router.get('/subscribe/:email', function(req, res) {
