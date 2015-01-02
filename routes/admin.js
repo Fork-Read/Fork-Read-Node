@@ -22,6 +22,11 @@ router.get('/login', function(req, res) {
 	res.render('admin-login');
 });
 
+router.get('/logout', function(req, res) {
+	req.logout();
+	res.redirect('/admin/login');
+});
+
 router.post('/authenticate', passport.authenticate('local', { 
 	successRedirect: '/admin',
     failureRedirect: '/admin/login',
