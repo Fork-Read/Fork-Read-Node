@@ -1,0 +1,108 @@
+/*
+========================================
+Fonts Used
+========================================
+*/
+
+@font-face{
+	font-family: "Futura Bk BT Book";
+	src: url('../fonts/tt0140m_.ttf');
+}
+
+/*
+=======================================
+Common CSS
+=======================================
+*/
+
+body {
+  padding: 50px;
+  background: #009688;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.logo{
+	display: block;
+	margin: auto;
+	width: 300px;
+}
+
+/*
+=======================================
+Common CSS
+=======================================
+*/
+
+*::-webkit-input-placeholder {
+    color: #FFFFFF !important;
+    opacity: 0.5 !important;
+}
+*:-moz-placeholder {
+    /* FF 4-18 */
+    color: #FFFFFF !important;
+    opacity: 0.5 !important;
+}
+*::-moz-placeholder {
+    /* FF 19+ */
+    color: #FFFFFF !important;
+    opacity: 0.5 !important;
+}
+*:-ms-input-placeholder {
+    /* IE 10+ */
+    color: #FFFFFF !important;
+    opacity: 0.5 !important;
+}
+
+.btn{
+	border-radius: 0px;
+}
+
+.btn-darkTeal{
+	background: #00796B;
+	color: #FFFFFF;
+}
+
+.btn-darkTeal:hover{
+	color: #FFFFFF;
+}
+
+/*
+=======================================
+Admin Login
+=======================================
+*/
+
+.login-container{
+	margin: auto;
+	position: absolute;
+	top: 0; left: 0; right: 0; bottom: 0;
+	width: 400px;
+	height: 290px;
+	border-radius: 6px;
+	padding: 15px;
+}
+
+.login-container h3{
+	color: #F8F8F8;
+	text-align: center;
+}
+
+.login-container label{
+	color: #F8F8F8;
+}
+
+.login-container input{
+	background: none;
+	color: #FFFFFF;
+	border: none;
+	box-shadow: none;
+}
+
+.login-container input:focus{
+	box-shadow: none;
+	border-bottom: 1px solid #FFFFFF;
+}
