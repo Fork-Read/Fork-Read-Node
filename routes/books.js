@@ -1,8 +1,9 @@
-var express = require('express');
-var forEach = require('async-foreach').forEach;
-var router = express.Router();
-var UserModel = require('../models/UserModel');
-var BookModel = require('../models/BookModel');
+var 
+	express = require('express'),
+	forEach = require('async-foreach').forEach,
+	router = express.Router(),
+	UserModel = require('../models/UserModel'),
+	BookModel = require('../models/BookModel');
 
 router.get('/:user', function(req, res) {
 	var user = req.param('user');

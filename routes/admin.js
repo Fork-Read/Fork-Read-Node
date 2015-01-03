@@ -1,6 +1,9 @@
-var express = require('express');
-var router = express.Router();
-var passport = require('passport');
+var 
+	express = require('express'),
+	router = express.Router(),
+	passport = require('passport'),
+	UserModel = require('../models/UserModel'),
+	BookModel = require('../models/BookModel');
 
 function isAuthenticated(req, res, next) {
 
@@ -15,7 +18,27 @@ function isAuthenticated(req, res, next) {
 
 /* GET Admin Homepage */
 router.get('/', isAuthenticated, function(req, res) {
-  res.render('admin-index');
+	res.render('admin-index');
+});
+
+router.get('/users', isAuthenticated, function(req, res) {
+	UserModel.find({}, function(err, users) {
+			if(err) {
+				return console.error(err);
+			}
+
+			res.render('admin-users', {users: users});
+		});
+});
+
+router.get('/books', isAuthenticated, function(req, res) {
+	BookModel.find({}, function(err, books) {
+			if(err) {
+				return console.error(err);
+			}
+
+			res.render('admin-books', {books: books});
+		});
 });
 
 router.get('/login', function(req, res) {

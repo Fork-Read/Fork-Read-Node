@@ -1,6 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var UserModel = require('../models/UserModel');
+var 
+	express = require('express'),
+	router = express.Router(),
+	UserModel = require('../models/UserModel');
 
 router.get('/:email', function(req, res) {
 	var email = req.param('email');
