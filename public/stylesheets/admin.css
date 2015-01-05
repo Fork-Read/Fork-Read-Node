@@ -81,6 +81,19 @@ Common CSS
 	margin: auto;
 }
 
+.item-delete{
+	position: absolute;
+	top: 0px; right: 0px;
+	background-color: #DF4A32;
+	color: #FFFFFF;
+	padding: 8px;
+	border-top-right-radius: 6px;
+	border-bottom-left-radius: 6px;
+}
+
+.item-delete:hover{
+	cursor: pointer;
+}
 
 /*
 =======================================
