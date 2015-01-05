@@ -142,10 +142,13 @@ User List
 	padding: 15px;
 	padding-top: 70px;
 	padding-bottom: 70px;
-	border: 1px solid #111111;
+	border-top: 1px solid #CCCCCC; 
 	border-radius: 6px;
 	font-family: "Futura Bk BT Book" !important;
-	margin-top: 25px;
+	margin-top: 30px;
+	background-color: #FFFFFF;
+
+	box-shadow: 5px 5px 8px 1px #888888;
 }
 
 .user-name-email{
