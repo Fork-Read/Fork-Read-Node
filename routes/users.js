@@ -57,6 +57,9 @@ router.post('/save', function(req, res) {
 
 	var email = req.body.email;
 
+	console.log('received object');
+	console.log(req.body);
+
 	if(email) {
 		UserModel.findOne({email: email}, function(err, user) {
 
