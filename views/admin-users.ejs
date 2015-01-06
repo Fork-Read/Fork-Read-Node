@@ -12,7 +12,28 @@
 		<% include ./partials/header %>
 		<% include ./partials/logout %>
 		<div class="main-container">
-			<h3>User List</h3>
+			<h3>User List <%= totalPages %></h3>
+			<nav class="pagination-nav">
+				<ul class="pagination">
+					<li class="disabled">
+			      		<a href="#" aria-label="Previous">
+			        		<span aria-hidden="true">&laquo;</span>
+			      		</a>
+			    	</li>
+					<% for(var i=1; i<=totalPages; i++) {%>
+						<% if(i === currentPage) { %>
+				    		<li class="active"><a href="/admin/users?page=1"><%= i %></a></li>
+				    	<% } else { %>
+				    		<li><a href="/admin/users?page=<%= i %>"><%= i %></a></li>
+				    	<% } %>
+			    	<% } %>
+			    	<li>
+			      		<a href="#" aria-label="Next">
+			        		<span aria-hidden="true">&raquo;</span>
+			      		</a>
+			    	</li>
+			  	</ul>
+			</nav>
 			<% for(var i=0; i<users.length; i++) {%>
 				<div class="user-item">
 					<p class="user-name-email">

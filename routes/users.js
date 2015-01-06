@@ -83,6 +83,8 @@ router.post('/save', function(req, res) {
 					if(err) {
 						return console.error(err);
 					}
+					console.log('New User');
+					console.log(newUser);
 					res.set('Content-Type', 'application/json');
 					res.send(JSON.stringify(newUser));
 				});

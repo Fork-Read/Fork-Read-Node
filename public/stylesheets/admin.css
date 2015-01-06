@@ -95,6 +95,11 @@ Common CSS
 	cursor: pointer;
 }
 
+.pagination-nav{
+	text-align: right;
+	margin-top: -60px;
+}
+
 /*
 =======================================
 Header CSS
@@ -153,8 +158,8 @@ User List
 .user-item{
 	position: relative;
 	padding: 15px;
-	padding-top: 70px;
-	padding-bottom: 70px;
+	padding-top: 50px;
+	padding-bottom: 50px;
 	border-top: 1px solid #CCCCCC; 
 	border-radius: 6px;
 	font-family: "Futura Bk BT Book" !important;
@@ -189,7 +194,8 @@ User List
 	margin-left: 50px;
 	padding-right: 7px;
 	overflow-y: auto;
-	max-height: 150px;
+	width: 250px;
+	max-height: 80px;
 }
 
 .view-owned-books{
