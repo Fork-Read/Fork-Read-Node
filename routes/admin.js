@@ -50,6 +50,35 @@ router.get('/users', isAuthenticated, function(req, res) {
 		});
 });
 
+router.get('/users/inactive', isAuthenticated, function(req, res) {
+	var startIndex,
+		currentPage,
+		pageSize = 10;
+
+	if(req.query && req.query.page){
+		currentPage = parseInt(req.query.page);
+		startIndex = (currentPage-1) * pageSize;
+	}
+	else{
+		currentPage = 1;
+		startIndex = 0;
+	}
+	UserModel.find({isActive: false}, {}, { skip: startIndex, limit: pageSize }, function(err, users) {
+			if(err) {
+				return console.error(err);
+			}
+
+			UserModel.count({isActive: false}, function(err, count){
+				var pageCount = Math.ceil(count/pageSize);
+
+				if(pageCount === 0){
+					pageCount = 1;
+				}
+				res.render('admin-users-inactive', {users: users, totalPages: pageCount, currentPage: currentPage});
+			});
+		});
+});
+
 router.get('/books', isAuthenticated, function(req, res) {
 	BookModel.find({}, function(err, books) {
 			if(err) {

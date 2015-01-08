@@ -83,7 +83,7 @@ Common CSS
 	padding-bottom: 30px;
 }
 
-.item-delete{
+.item-delete, .item-activate{
 	position: absolute;
 	top: 0px; right: 0px;
 	background-color: #DF4A32;
@@ -93,7 +93,11 @@ Common CSS
 	border-bottom-left-radius: 6px;
 }
 
-.item-delete:hover{
+.item-activate{
+	background-color: #4CAF50;
+}
+
+.item-delete:hover, .item-activate:hover{
 	cursor: pointer;
 }
 
@@ -175,7 +179,7 @@ User List
 	position: absolute;
 	top: 0px; left: 0px;
 	padding: 7px 12px;
-	background-color: #43A047;
+	background-color: #388E3C;
 	color: #FFFFFF;
 	font-family: "Futura Bk BT Book";
 	font-size: 1.1em;
