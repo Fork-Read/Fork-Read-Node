@@ -119,7 +119,8 @@ router.post('/save', function(req, res) {
 								genre: bookItem.genre,
 								publishers: bookItem.publishers,
 								publishedDate: bookItem.publishedDate,
-								thumbnail: bookItem.thumbnail
+								thumbnail: bookItem.thumbnail,
+								description: bookItem.description
 							});
 
 							newBook.save(function(err, newBook) {

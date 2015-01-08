@@ -7,7 +7,8 @@ var bookSchema = mongoose.Schema({
 	genre: Array,
 	publishers: String,
 	publishedDate: String,
-	thumbnail: String
+	thumbnail: String,
+	description: String
 });
 
 var BookModel = mongoose.model('Book', bookSchema);
