@@ -34,13 +34,17 @@ router.get('/users', isAuthenticated, function(req, res) {
 		currentPage = 1;
 		startIndex = 0;
 	}
-	UserModel.find({}, {}, { skip: startIndex, limit: pageSize }, function(err, users) {
+	UserModel.find({isActive: true}, {}, { skip: startIndex, limit: pageSize }, function(err, users) {
 			if(err) {
 				return console.error(err);
 			}
 
-			UserModel.count({}, function(err, count){
+			UserModel.count({isActive: true}, function(err, count){
 				var pageCount = Math.ceil(count/pageSize);
+
+				if(pageCount === 0){
+					pageCount = 1;
+				}
 				res.render('admin-users', {users: users, totalPages: pageCount, currentPage: currentPage});
 			});
 		});
@@ -63,6 +67,28 @@ router.get('/login', function(req, res) {
 router.get('/logout', function(req, res) {
 	req.logout();
 	res.redirect('/admin/login');
+});
+
+router.post('/user/changeStatus', function(req, res) {
+	var user = req.body.user,
+		isActive = req.body.isActive;
+
+	if(user) {
+		UserModel.findOneAndUpdate({_id: user}, {isActive: isActive}, function(err, user) {
+			if(err) {
+				res.set('Content-Type', 'application/json');
+				res.send(JSON.stringify({hasChanged: false}));
+				return console.error(err);
+			}
+
+			res.set('Content-Type', 'application/json');
+			res.send(JSON.stringify({hasChanged: true}));
+			
+		});
+	}
+	else{
+		res.redirect('/noResult');
+	}
 });
 
 router.post('/authenticate', passport.authenticate('local', { 

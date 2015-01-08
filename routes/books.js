@@ -138,15 +138,12 @@ router.post('/save', function(req, res) {
 					});
 				});
 
-				console.log('books');
-
 				for(var i=0; i<books.length; i++){
 					var isbn = books[i].isbn;
 					var bookItem = books[i];
 
 					var ownedBooks = user.books;
 					forEach(operations, function(item, index, arr){
-						console.log(bookItem);
 						item(user, bookItem, ownedBooks);
 					});
 				}

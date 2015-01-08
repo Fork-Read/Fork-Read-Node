@@ -70,15 +70,17 @@ Common CSS
 }
 
 .logout-btn{
-	position: fixed;
+	position: absolute;
 	top: 20px;
 	right: 20px;
+	z-index: 100;
 }
 
 .main-container{
 	width: 90%;
 	min-width: 990px;
 	margin: auto;
+	padding-bottom: 30px;
 }
 
 .item-delete{

@@ -57,9 +57,6 @@ router.post('/save', function(req, res) {
 
 	var email = req.body.email;
 
-	console.log('received object');
-	console.log(req.body);
-
 	if(email) {
 		UserModel.findOne({email: email}, function(err, user) {
 
@@ -79,15 +76,14 @@ router.post('/save', function(req, res) {
 					gender: req.body.gender,
 					currentLocation: req.body.currentLocation,
 					books: [],   // No Books will be added to owned list when user entry is created,
-					searchedLocations: []  // No Searched Locations will be added when user entry is created
+					searchedLocations: [],  // No Searched Locations will be added when user entry is created
+					isActive: true
 				});
 
 				newUser.save(function(err, newUser) {
 					if(err) {
 						return console.error(err);
 					}
-					console.log('New User');
-					console.log(newUser);
 					res.set('Content-Type', 'application/json');
 					res.send(JSON.stringify(newUser));
 				});
@@ -151,8 +147,8 @@ router.post('/update', function(req, res) {
 				return console.error(err);
 			}
 
-				res.set('Content-Type', 'application/json');
-				res.send(JSON.stringify(user));
+			res.set('Content-Type', 'application/json');
+			res.send(JSON.stringify(user));
 			
 		});
 	}

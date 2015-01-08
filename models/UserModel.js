@@ -22,6 +22,7 @@ var userSchema = mongoose.Schema({
 	},
 	books: Array,
 	searchedLocations: Array,
+	isActive: Boolean // True/False to decide if the user is deleted or not
 });
 
 var UserModel = mongoose.model('User', userSchema);
