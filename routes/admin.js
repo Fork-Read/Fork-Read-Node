@@ -2,6 +2,7 @@ var
 	express = require('express'),
 	router = express.Router(),
 	passport = require('passport'),
+	forEach = require('async-foreach').forEach,
 	UserModel = require('../models/UserModel'),
 	BookModel = require('../models/BookModel');
 
@@ -21,6 +22,7 @@ router.get('/', isAuthenticated, function(req, res) {
 	res.render('admin-index');
 });
 
+// Show List of Active Users
 router.get('/users', isAuthenticated, function(req, res) {
 	var startIndex,
 		currentPage,
@@ -50,6 +52,7 @@ router.get('/users', isAuthenticated, function(req, res) {
 		});
 });
 
+// Show List of Inactive Users
 router.get('/users/inactive', isAuthenticated, function(req, res) {
 	var startIndex,
 		currentPage,
@@ -79,6 +82,56 @@ router.get('/users/inactive', isAuthenticated, function(req, res) {
 		});
 });
 
+
+// Show List of Owned Books
+router.get('/users/books/:id', isAuthenticated, function(req, res) {
+	var user = req.param('id');
+
+	UserModel.findOne({'_id': user}, function(err, user){
+		if(err){
+			return console.error(err);
+		}
+
+		if(user){
+			var ownedBooks = user.books;
+
+			if(ownedBooks.length === 0){
+				res.render('admin-owned-books', {books: []});
+			}
+
+			var operations = [],
+				bookList = [];
+
+			operations.push(function(bookId){
+				BookModel.findOne({'_id': bookId}, function(err, book) {
+					if(err) {
+						return console.error(err);
+					}
+
+					if(book){
+						bookList.push(book);
+					}
+
+					// Edit this code to make the calls parallel and remvoe this logic
+					if(ownedBooks.length === bookList.length){
+						res.render('admin-owned-books', {user: user, books: bookList});
+					}
+				});
+			});
+
+			for(var i=0; i<ownedBooks.length; i++){
+				forEach(operations, function(item, index, arr){
+					item(ownedBooks[i]);
+				});
+			}
+		}
+		else{
+			// Render Incorrect Data Error Page
+		}
+	});
+});
+
+// Show List of Books in Database
 router.get('/books', isAuthenticated, function(req, res) {
 	BookModel.find({}, function(err, books) {
 			if(err) {
@@ -89,15 +142,18 @@ router.get('/books', isAuthenticated, function(req, res) {
 		});
 });
 
+// View Login Page
 router.get('/login', function(req, res) {
 	res.render('admin-login');
 });
 
+// Admin Logout
 router.get('/logout', function(req, res) {
 	req.logout();
 	res.redirect('/admin/login');
 });
 
+// Change User Status
 router.post('/user/changeStatus', function(req, res) {
 	var user = req.body.user,
 		isActive = req.body.isActive;
@@ -120,6 +176,7 @@ router.post('/user/changeStatus', function(req, res) {
 	}
 });
 
+// Authenticate Admin
 router.post('/authenticate', passport.authenticate('local', { 
 	successRedirect: '/admin',
     failureRedirect: '/admin/login',

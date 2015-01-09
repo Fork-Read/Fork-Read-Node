@@ -16,7 +16,7 @@ Common CSS
 */
 
 body {
-  background: #009688;
+  background: #EEEEEE;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -89,6 +89,7 @@ Common CSS
 	background-color: #DF4A32;
 	color: #FFFFFF;
 	padding: 8px;
+	padding-bottom: 9px;
 	border-top-right-radius: 6px;
 	border-bottom-left-radius: 6px;
 }
@@ -213,14 +214,63 @@ User List
 	border-bottom-right-radius: 6px;
 }
 
+.view-owned-books:active, .view-owned-books:visited{
+	color: #FFFFFF;
+}
+
 /*
 =======================================
 Books List
 =======================================
 */
 
+.book-owner-name{
+	color: #00796B;
+}
+
 .book-item{
-	background: #CCCCCC;
-	padding: 10px;
+	display: inline-block;
+	vertical-align: top;
+	position: relative;
+	width: 500px;
+	padding: 15px;
+	padding-top: 50px;
+	padding-bottom: 50px;
+	border-top: 1px solid #CCCCCC; 
+	border-radius: 6px;
+	font-family: "Futura Bk BT Book" !important;
+	margin: 15px;
+	background-color: #FFFFFF;
+
+	box-shadow: 5px 5px 8px 1px #888888;
+}
+
+.book-name{
+	position: absolute;
+	top: 0px; left: 0px;
+	width: 100%;
+	padding: 7px 12px;
+	background-color: #388E3C;
+	color: #FFFFFF;
+	text-align: center;
+	font-family: "Futura Bk BT Book";
+	font-size: 1.2em;
+	border-radius: 6px;
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+.book-image{
+	float: left;
+	margin-right: 30px;
+}
+
+.book-image img{
+	width: 150px;
+}
+
+.book-info{
+	float: left;
 	margin-top: 20px;
+	width: calc(100% - 180px);
 }

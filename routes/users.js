@@ -52,7 +52,7 @@ router.post('/save', function(req, res) {
 	    
 	  },
 	  "books": [],
-	  "searchedLocations": []
+	  "searchHistory": []
 	}*/
 
 	var email = req.body.email;
@@ -76,7 +76,7 @@ router.post('/save', function(req, res) {
 					gender: req.body.gender,
 					currentLocation: req.body.currentLocation,
 					books: [],   // No Books will be added to owned list when user entry is created,
-					searchedLocations: [],  // No Searched Locations will be added when user entry is created
+					searchHistory: [],  // No Searched Locations will be added when user entry is created
 					isActive: true
 				});
 
@@ -91,49 +91,6 @@ router.post('/save', function(req, res) {
 		});
 	}
 	else {
-		res.redirect('/noResult');
-	}
-});
-
-router.post('/addSearchLocation', function(req, res) {
-	var userId = req.body.user;
-	var latitude = req.body.latitude;
-	var longitude = req.body.longitude;
-
-	if(userId && latitude && longitude) {
-		var newLocation = {
-			longitude: req.body.longitude,
-			latitude : req.body.latitude
-		}
-
-		UserModel.findOne({"_id": userId}, function(err, user) {
-			if(err) {
-				return console.error(err);
-			}
-
-			var finalLocations = user.searchedLocations;
-			var isNewLocation = true;
-			finalLocations.forEach(function(item) {
-				if(item.latitude == newLocation.latitude && item.longitude == newLocation.longitude) {
-					isNewLocation = false;
-				}
-			});
-			
-			if(isNewLocation) {
-				finalLocations.push(newLocation);
-			}
-
-			UserModel.findOneAndUpdate({"_id": userId}, {searchedLocations: finalLocations}, function(err, user) {
-				if(err) {
-					return console.error(err)
-				}
-				res.set('Content-Type', 'application/json');
-				res.send(JSON.stringify(user));
-			});
-		});
-
-	}
-	else{
 		res.redirect('/noResult');
 	}
 });
