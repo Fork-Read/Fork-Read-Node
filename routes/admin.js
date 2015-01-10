@@ -133,12 +133,33 @@ router.get('/users/books/:id', isAuthenticated, function(req, res) {
 
 // Show List of Books in Database
 router.get('/books', isAuthenticated, function(req, res) {
-	BookModel.find({}, function(err, books) {
+	var startIndex,
+		currentPage,
+		pageSize = 10;
+
+	if(req.query && req.query.page){
+		currentPage = parseInt(req.query.page);
+		startIndex = (currentPage-1) * pageSize;
+	}
+	else{
+		currentPage = 1;
+		startIndex = 0;
+	}
+
+	BookModel.find({}, {}, { skip: startIndex, limit: pageSize }, function(err, books) {
 			if(err) {
 				return console.error(err);
 			}
 
-			res.render('admin-books', {books: books});
+			BookModel.count({}, function(err, count){
+				var pageCount = Math.ceil(count/pageSize);
+
+				if(pageCount === 0){
+					pageCount = 1;
+				}
+				res.render('admin-books', {books: books, totalPages: pageCount, currentPage: currentPage});
+			});
+
 		});
 });
 

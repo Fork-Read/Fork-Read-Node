@@ -7,9 +7,69 @@
 		<% include ./partials/header %>
 		<% include ./partials/logout %>
 		<div class="main-container">
-			<h3>Book List</h3>
-			<% for(var i=0; i<books.length; i++) {%>
-	   			<div class="book-item"><%= books[i] %></div>
+			<h3>Books List</h3>
+			<nav class="pagination-nav">
+				<ul class="pagination">
+					<li class="disabled">
+			      		<a href="#" aria-label="Previous">
+			        		<span aria-hidden="true">&laquo;</span>
+			      		</a>
+			    	</li>
+					<% for(var i=1; i<=totalPages; i++) {%>
+						<% if(i === currentPage) { %>
+				    		<li class="active"><a href="/admin/users?page=1"><%= i %></a></li>
+				    	<% } else { %>
+				    		<li><a href="/admin/users?page=<%= i %>"><%= i %></a></li>
+				    	<% } %>
+			    	<% } %>
+			    	<li>
+			      		<a href="#" aria-label="Next">
+			        		<span aria-hidden="true">&raquo;</span>
+			      		</a>
+			    	</li>
+			  	</ul>
+			</nav>
+			<% for(var i=0; i<books.length; i++) { %>
+				<div class="book-item">
+					<p class="book-name">
+						<%= books[i].title %>
+					</p>
+					<div class="book-details">
+						<div class="book-image">
+							<img src="<%= books[i].thumbnail %>" />
+						</div>
+						<div class="book-info">
+							<p>
+								<strong>ISBN :</strong> <%= books[i].isbn %>
+							</p>
+							<p>
+								<strong>Authors : </strong>
+								<% for(var j=0; j< books[i].authors.length; j++) { %>
+									<%= books[i].authors[j] %>, 
+								<% } %>
+							</p>
+							<p>
+								<strong>Genre :</strong>
+								<% for(var j=0; j< books[i].genre.length; j++) { %>
+									<%= books[i].genre[j] %>, 
+								<% } %>
+							</p>
+							<p>
+								Published by <%= books[i].publishers %> on <%= books[i].publishedDate %>
+							</p>
+						</div>
+						<div class="clearfix"></div>
+						<% if(books[i].description) { %>
+							<div>
+								<h4>Description</h4>
+								<p>
+									<%= books[i].description %>
+								</p>
+							</div>
+						<% } %>
+						<a href="/admin/books/users/<%= books[i]._id %>" +  class="btn btn-darkTeal view-owned-books" target="_blank">View User Owning this Book</a>
+					</div>
+				</div>
 			<% } %>
 		</div>
     </body>
