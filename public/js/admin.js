@@ -39,5 +39,26 @@
 				}
 			});
 		});
+
+		$('.item-disown').on('click', function(e){
+			var user = $(this).attr('data-user'),
+				book = $(this).attr('data-book');
+
+			$.ajax({
+				url: '/api/books/disown',
+				type: 'POST',
+				data: JSON.stringify({user: user, book: book}),
+				contentType: 'application/json',
+				success: function(status){
+					if(status){
+						$(e.target).closest('.book-item').remove();
+					}
+					else{
+						alert('not deleted');
+						// Show Alert
+					}
+				}
+			});
+		});
 	});
 })()

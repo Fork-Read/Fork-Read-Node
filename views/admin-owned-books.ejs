@@ -13,7 +13,7 @@
 					<p class="book-name">
 						<%= books[i].title %>
 					</p>
-					<p class="item-delete" title="Remove from Owned" data-book="<%= books[i]._id %>">
+					<p class="item-disown" title="Remove from Owned" data-book="<%= books[i]._id %>" data-user="<%= user._id %>">
 						<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 					</p>
 					<div class="book-details">

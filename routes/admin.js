@@ -197,6 +197,7 @@ router.post('/user/changeStatus', function(req, res) {
 	}
 });
 
+
 // Authenticate Admin
 router.post('/authenticate', passport.authenticate('local', { 
 	successRedirect: '/admin',

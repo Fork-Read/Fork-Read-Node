@@ -77,13 +77,12 @@ Common CSS
 }
 
 .main-container{
-	width: 90%;
-	min-width: 990px;
 	margin: auto;
+	width: 1100px;
 	padding-bottom: 30px;
 }
 
-.item-delete, .item-activate{
+.item-delete, .item-activate, .item-disown{
 	position: absolute;
 	top: 0px; right: 0px;
 	background-color: #DF4A32;
@@ -98,7 +97,7 @@ Common CSS
 	background-color: #4CAF50;
 }
 
-.item-delete:hover, .item-activate:hover{
+.item-delete:hover, .item-activate:hover, .item-disown:hover{
 	cursor: pointer;
 }
 
@@ -163,14 +162,17 @@ User List
 */
 
 .user-item{
+	display: inline-block;
+	vertical-align: top;
 	position: relative;
+	width: 500px;
 	padding: 15px;
 	padding-top: 50px;
 	padding-bottom: 50px;
 	border-top: 1px solid #CCCCCC; 
 	border-radius: 6px;
 	font-family: "Futura Bk BT Book" !important;
-	margin-top: 30px;
+	margin: 20px;
 	background-color: #FFFFFF;
 
 	box-shadow: 5px 5px 8px 1px #888888;

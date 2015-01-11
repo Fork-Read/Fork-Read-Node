@@ -244,5 +244,44 @@ function getDistance(lat1, lon1, lat2, lon2) {
     return dist
 }
 
+// Disown Book
+router.post('/disown', function(req, res) {
+	var user = req.body.user,
+		book = req.body.book;
+
+	var newOwnedList = [];
+
+	if(user) {
+		UserModel.findOne({_id: user}, function(err, user) {
+			if(err) {
+				return console.error(err);
+			}
+
+			if(user){
+				for(var i=0; i<user.books.length; i++){
+					// No strict checking as in mongodb it might be in ObjectId format
+					if(user.books[i] != book){
+						newOwnedList.push(user.books[i]);
+					}
+				}
+
+				UserModel.findOneAndUpdate({_id: user}, {books: newOwnedList}, function(err, user) {
+					if(err) {
+						return console.error(err);
+					}
+
+					res.set('Content-Type', 'application/json');
+					res.send(JSON.stringify(true));
+					
+				});
+			}
+			
+		});
+	}
+	else{
+		res.redirect('/noResult');
+	}
+});
+
 
 module.exports = router;
