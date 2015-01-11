@@ -96,7 +96,7 @@ router.get('/users/books/:id', isAuthenticated, function(req, res) {
 			var ownedBooks = user.books;
 
 			if(ownedBooks.length === 0){
-				res.render('admin-owned-books', {books: []});
+				res.render('admin-owned-books', {user: user, books: []});
 			}
 
 			var operations = [],
