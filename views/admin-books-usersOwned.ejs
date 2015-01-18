@@ -7,14 +7,11 @@
 		<% include ./partials/header %>
 		<% include ./partials/logout %>
 		<div class="main-container">
-			<h3>Users owning <%= book.title %></h3>
+			<h3>Users owning <span class="book-owner-name"><%= book.title %></span></h3>
 			<% for(var i=0; i<users.length; i++) {%>
 				<div class="user-item">
 					<p class="user-name-email">
 						<%= users[i].name %> (<%= users[i].email %>)
-					</p>
-					<p class="item-delete" title="Deactivate User" data-user="<%= users[i]._id %>">
-						<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 					</p>
 					<div class="user-contact-info">
 						<p>
@@ -44,6 +41,7 @@
 						</p>
 						<% } %>
 					</div>
+					<a href="/admin/users/books/<%= users[i]._id %>" +  class="btn btn-darkTeal view-owned-books" target="_blank">View Owned Books (<%= users[i].books.length %>)</a>
 				</div>
 			<% } %>
 		</div>
