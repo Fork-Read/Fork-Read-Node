@@ -2,7 +2,7 @@ var
 	express = require('express'),
 	router = express.Router(),
 	passport = require('passport'),
-	forEach = require('async-foreach').forEach,
+	async = require('async'),
 	UserModel = require('../models/UserModel'),
 	BookModel = require('../models/BookModel');
 
@@ -99,37 +99,37 @@ router.get('/users/books/:id', isAuthenticated, function(req, res) {
 				res.render('admin-owned-books', {user: user, books: []});
 			}
 
-			var operations = [],
-				bookList = [];
+			var bookList = [];
+			
 
-			operations.push(function(bookId){
-				BookModel.findOne({'_id': bookId}, function(err, book) {
-					if(err) {
-						return console.error(err);
-					}
+			// 1st para in async.each() is the array of items
+			async.each(ownedBooks,
+			  // 2nd param is the function that each item is passed to
+				function(bookItem, callback){
+			  		BookModel.findOne({'_id': bookItem}, function(err, book) {
+						if(err) {
+							return console.error(err);
+						}
 
-					if(book){
-						bookList.push(book);
-					}
-
-					// Edit this code to make the calls parallel and remvoe this logic
-					if(ownedBooks.length === bookList.length){
-						res.render('admin-owned-books', {user: user, books: bookList});
-					}
-				});
-			});
-
-			for(var i=0; i<ownedBooks.length; i++){
-				forEach(operations, function(item, index, arr){
-					item(ownedBooks[i]);
-				});
-			}
+						if(book){
+							bookList.push(book);
+							callback();
+						}
+					});
+			  	},
+			  	// 3rd param is the function to call when everything's done
+			  	function(err){
+			    	// All tasks are done now
+			    	res.render('admin-owned-books', {user: user, books: bookList});
+			  	}
+			);
 		}
 		else{
 			// Render Incorrect Data Error Page
 		}
 	});
 });
+
 
 // Show List of Books in Database
 router.get('/books', isAuthenticated, function(req, res) {
