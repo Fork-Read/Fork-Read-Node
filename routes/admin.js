@@ -1,5 +1,6 @@
 var 
 	express = require('express'),
+	mongoose = require ("mongoose"),
 	router = express.Router(),
 	passport = require('passport'),
 	async = require('async'),
@@ -163,6 +164,38 @@ router.get('/books', isAuthenticated, function(req, res) {
 		});
 });
 
+
+// Show List of Users owning a Book
+router.get('/books/usersOwned/:id', isAuthenticated, function(req, res) {
+	var bookId = req.param('id');
+
+	if(bookId){
+		BookModel.findOne({"_id": bookId}, function(err, book){
+			if(err) {
+				return console.error(err);
+			}
+
+			if(book){
+				UserModel.find({books: mongoose.Types.ObjectId(bookId)}, function(err, users){
+					if(err) {
+						return console.error(err);
+					}
+
+					if(users){
+						res.render('admin-books-usersOwned', {users: users, book: book});
+					}
+					else{
+						res.render('admin-books-usersOwned', {users: [], book: book});
+					}
+				});
+			}
+		});
+	}
+	else{
+		//TODO Show the error page
+	}
+	
+});
 // View Login Page
 router.get('/login', function(req, res) {
 	res.render('admin-login');
