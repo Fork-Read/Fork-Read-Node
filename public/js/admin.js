@@ -5,6 +5,37 @@
 		$('.item-delete').on('click', function(e){
 			var self = this;
 
+			$.prompt('This user would be deleted. Are you sure?', {
+				title: "Delete User",
+				buttons: { "Yes, Delete User": true, "No, Lets Wait": false },
+				overlayspeed: "fast",
+				submit: function(e,v,m,f){
+					// use e.preventDefault() to prevent closing when needed or return false. 
+					// e.preventDefault(); 
+					if(v){
+						var id = $(self).attr('data-user');
+						$.ajax({
+							url: '/admin/user/deleteUser',
+							type: 'DELETE',
+							data: JSON.stringify({user: id}),
+							contentType: 'application/json',
+							success: function(status){
+								if(status.deleted){
+									$(self).closest('.user-item').remove();
+								}
+								else{
+									$.prompt("Unable to Delete User. Try after some time :)");
+								}
+							}
+						});
+					}
+				}
+			});
+		});
+
+		$('.item-deactivate').on('click', function(e){
+			var self = this;
+
 			$.prompt('This user would be deactivated. Are you sure?', {
 				title: "Deactivate User",
 				buttons: { "Yes, Deactivate User": true, "No, Lets Wait": false },
@@ -16,7 +47,7 @@
 						var id = $(self).attr('data-user');
 						$.ajax({
 							url: '/admin/user/changeStatus',
-							type: 'POST',
+							type: 'PUT',
 							data: JSON.stringify({user: id, isActive: false}),
 							contentType: 'application/json',
 							success: function(status){
@@ -24,7 +55,7 @@
 									$(self).closest('.user-item').remove();
 								}
 								else{
-									$.prompt("Unable to deactivate User. Try after some time :)");
+									$.prompt("Unable to Deactivate User. Try after some time :)");
 								}
 							}
 						});
@@ -47,7 +78,7 @@
 						var id = $(self).attr('data-user');
 						$.ajax({
 							url: '/admin/user/changeStatus',
-							type: 'POST',
+							type: 'PUT',
 							data: JSON.stringify({user: id, isActive: true}),
 							contentType: 'application/json',
 							success: function(status){
@@ -55,7 +86,7 @@
 									$(self).closest('.user-item').remove();
 								}
 								else{
-									$.prompt("Unable to activate User. Try after some time :)");
+									$.prompt("Unable to Activate User. Try after some time :)");
 								}
 							}
 						});
@@ -88,7 +119,7 @@
 									$(self).closest('.book-item').remove();
 								}
 								else{
-									$.prompt("Unable to disown the book. Try after some time :)");
+									$.prompt("Unable to Disown the book. Try after some time :)");
 								}
 							}
 						});

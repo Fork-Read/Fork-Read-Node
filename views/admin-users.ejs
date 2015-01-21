@@ -34,7 +34,10 @@
 					<p class="user-name-email">
 						<%= users[i].name %> (<%= users[i].email %>)
 					</p>
-					<p class="item-delete" title="Deactivate User" data-user="<%= users[i]._id %>">
+					<p class="item-deactivate" title="Deactivate User" data-user="<%= users[i]._id %>">
+						<span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
+					</p>
+					<p class="item-delete" title="Delete User" data-user="<%= users[i]._id %>">
 						<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 					</p>
 					<div class="user-contact-info">

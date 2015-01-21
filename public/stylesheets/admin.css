@@ -82,7 +82,7 @@ Common CSS
 	padding-bottom: 30px;
 }
 
-.item-delete, .item-activate, .item-disown{
+.item-deactivate, .item-activate, .item-disown, .item-delete{
 	position: absolute;
 	top: 0px; right: 0px;
 	background-color: #DF4A32;
@@ -93,11 +93,19 @@ Common CSS
 	border-bottom-left-radius: 6px;
 }
 
+.item-delete{
+	background-color: #B71C1C;
+	right: 50px;
+	border-radius: 0px;
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+}
+
 .item-activate{
 	background-color: #4CAF50;
 }
 
-.item-delete:hover, .item-activate:hover, .item-disown:hover{
+.item-deactivate:hover, .item-activate:hover, .item-disown:hover, .item-delete{
 	cursor: pointer;
 }
 

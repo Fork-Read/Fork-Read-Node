@@ -208,7 +208,7 @@ router.get('/logout', function(req, res) {
 });
 
 // Change User Status
-router.post('/user/changeStatus', function(req, res) {
+router.put('/user/changeStatus', function(req, res) {
 	var user = req.body.user,
 		isActive = req.body.isActive;
 
@@ -223,6 +223,27 @@ router.post('/user/changeStatus', function(req, res) {
 			res.set('Content-Type', 'application/json');
 			res.send(JSON.stringify({hasChanged: true}));
 			
+		});
+	}
+	else{
+		res.redirect('/noResult');
+	}
+});
+
+// Delete User
+router.delete('/user/deleteUser', function(req, res) {
+	var user = req.body.user;
+
+	if(user) {
+		UserModel.find({_id: user}).remove(function(err){
+			if(err){
+				res.set('Content-Type', 'application/json');
+				res.send(JSON.stringify({deleted: false}));
+			}
+			else{
+				res.set('Content-Type', 'application/json');
+				res.send(JSON.stringify({deleted: true}));
+			}
 		});
 	}
 	else{
