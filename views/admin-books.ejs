@@ -19,10 +19,10 @@
 						<% if(i === currentPage) { %>
 				    		<li class="active"><a href="/admin/users?page=1"><%= i %></a></li>
 				    	<% } else { %>
-				    		<li><a href="/admin/users?page=<%= i %>"><%= i %></a></li>
+				    		<li><a href="/admin/books?page=<%= i %>"><%= i %></a></li>
 				    	<% } %>
 			    	<% } %>
-			    	<li>
+			    	<li class="disabled">
 			      		<a href="#" aria-label="Next">
 			        		<span aria-hidden="true">&raquo;</span>
 			      		</a>
