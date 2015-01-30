@@ -36,7 +36,11 @@
 					</p>
 					<div class="book-details">
 						<div class="book-image">
-							<img src="<%= books[i].thumbnail %>" />
+							<% if(books[i].thumbnail) { %>
+								<img src="<%= books[i].thumbnail %>" />
+							<% } else { %>
+								<img src="/images/empty_cover.jpg" />
+							<% } %>
 						</div>
 						<div class="book-info">
 							<p>
