@@ -1,6 +1,7 @@
 var 
 	express = require('express'),
 	forEach = require('async-foreach').forEach,
+	async = require('async'),
 	router = express.Router(),
 	UserModel = require('../models/UserModel'),
 	BookModel = require('../models/BookModel');
@@ -43,7 +44,6 @@ router.get('/:user', function(req, res) {
 });
 
 router.post('/save', function(req, res) {
-
 	/*
 	Expected Object Structure
 	{
@@ -91,69 +91,62 @@ router.post('/save', function(req, res) {
 				return console.error(err);
 			}
 
+			var ownedBooks = user.books;
+
 			if(user){
+				async.each(books,
+					// 2nd param is the function that each item is passed to
+					function(bookItem, callback){
+				  		BookModel.findOne({'isbn': bookItem.isbn}, function(err, book) {
+							if(err) {
+								return console.error(err);
+							}
 
-				var operations = [];
+							if(book) {
+								if(!(ownedBooks.indexOf(book._id) > -1)) {
+									ownedBooks.push(book._id);
+									user.update({books: ownedBooks}, function(err, user) {
+										if(err) {
+											return console.error(err)
+										}
+										callback();
+									});
+								}
+							}
+							else {
+								var newBook = new BookModel({
+									isbn: bookItem.isbn,
+									title: bookItem.title,
+									authors: bookItem.authors,
+									genre: bookItem.genre,
+									publishers: bookItem.publishers,
+									publishedDate: bookItem.publishedDate,
+									thumbnail: bookItem.thumbnail,
+									description: bookItem.description
+								});
 
-				operations.push(function(user, bookItem, ownedBooks){
-					BookModel.findOne({'isbn': bookItem.isbn}, function(err, book) {
-						if(err) {
-							return console.error(err);
-						}
-
-						if(book) {
-							if(!(ownedBooks.indexOf(book._id) > -1)) {
-								ownedBooks.push(book._id);
-								user.update({books: ownedBooks}, function(err, user) {
+								newBook.save(function(err, newBook) {
 									if(err) {
-										return console.error(err)
+										return console.error(err);
 									}
+									ownedBooks.push(newBook._id);
+									user.update({'books': ownedBooks}, function(err, user) {
+										if(err) {
+											return console.error(err)
+										}
+										callback();
+									});
 								});
 							}
-						}
-						else {
-							var newBook = new BookModel({
-								isbn: bookItem.isbn,
-								title: bookItem.title,
-								authors: bookItem.authors,
-								genre: bookItem.genre,
-								publishers: bookItem.publishers,
-								publishedDate: bookItem.publishedDate,
-								thumbnail: bookItem.thumbnail,
-								description: bookItem.description
-							});
-
-							newBook.save(function(err, newBook) {
-								if(err) {
-									return console.error(err);
-								}
-
-								ownedBooks.push(newBook._id);
-								user.update({'books': ownedBooks}, function(err, user) {
-									if(err) {
-										return console.error(err)
-									}
-								});
-							});
-						}
-					});
-				});
-
-				for(var i=0; i<books.length; i++){
-					var isbn = books[i].isbn;
-					var bookItem = books[i];
-
-					var ownedBooks = user.books;
-					forEach(operations, function(item, index, arr){
-						item(user, bookItem, ownedBooks);
-					});
-				}
-
-				// TODO Right now not waiting for database calls to complete. use parallel calls to handle this in nodejs
-				// http://stackoverflow.com/questions/10551499/simplest-way-to-wait-some-asynchronous-tasks-complete-in-javascript
-				res.set('Content-Type', 'application/json');
-				res.send(JSON.stringify({}));
-				
+						});
+				  	},
+				  	// 3rd param is the function to call when everything's done
+				  	function(err){
+				    	// All tasks are done now
+				    	res.set('Content-Type', 'application/json');
+						res.send(JSON.stringify({}));
+				  	}
+				);
 			}
 			else{
 				res.redirect('/noResult');
@@ -166,66 +159,7 @@ router.post('/save', function(req, res) {
 });
 
 router.post('/search', function(req, res) {
-	var searchLocation = req.body;
-	var targetUser = req.body.user;
-	var targetISBN = req.body.isbn;
-	var distance;
-	var returnList = [];
-	var returnObj = {};
-
-	if(searchLocation.latitude && searchLocation.longitude) {
-		UserModel.find(function(err, users) {
-			if(err) {
-				return console.error(err);
-			}
-
-			users.forEach(function(user) {
-
-				if(targetUser && user._id === targetUser){
-					return;
-				}
-				distance = getDistance(parseFloat(searchLocation.latitude), parseFloat(searchLocation.longitude),
-									parseFloat(user.currentLocation.latitude), parseFloat(user.currentLocation.longitude));
-
-				if(distance < 50) {
-					distance = distance.toFixed(2);
-					for(var i=0; i<user.books.length; i++) {
-						returnObj = {};
-						BookModel.findOne({'_id': user.books[i]}, function(err, book) {
-							if(err){
-								book = null;
-							}
-
-							if(targetISBN){
-								if(book && (book.isbn === targetISBN)) {
-									returnObj.userDetails = user;
-									returnObj.bookDetails = book;
-									returnObj.distance = distance + 'km';
-									returnList.push(returnObj);	
-								}
-							}
-							else{
-								if(book) {
-									returnObj.userDetails = user;
-									returnObj.bookDetails = book;
-									returnObj.distance = distance + 'km';
-									returnList.push(returnObj);	
-								}
-							}
-
-						});
-					}
-				}
-			});
-			setTimeout(function(){
-				res.set('Content-Type', 'application/json');
-				res.send(JSON.stringify({results: returnList}));
-			}, 1000);
-		});
-	}
-	else{
-		res.redirect('/noResult');
-	}
+	
 });
 
 // Calculates Distance in Km
