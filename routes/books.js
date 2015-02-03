@@ -1,6 +1,5 @@
 var 
 	express = require('express'),
-	forEach = require('async-foreach').forEach,
 	async = require('async'),
 	router = express.Router(),
 	UserModel = require('../models/UserModel'),
