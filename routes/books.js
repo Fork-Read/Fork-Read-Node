@@ -158,7 +158,8 @@ router.post('/save', function(req, res) {
 });
 
 router.post('/search', function(req, res) {
-	
+	res.set('Content-Type', 'application/json');
+	res.send(JSON.stringify({}));
 });
 
 // Calculates Distance in Km
