@@ -1,5 +1,6 @@
 var 
 	express = require('express'),
+	mongoose = require ("mongoose"),
 	async = require('async'),
 	router = express.Router(),
 	UserModel = require('../models/UserModel'),
@@ -158,8 +159,115 @@ router.post('/save', function(req, res) {
 });
 
 router.post('/search', function(req, res) {
-	res.set('Content-Type', 'application/json');
-	res.send(JSON.stringify({}));
+
+	/* Search Requst Structure
+	{
+	  "radius": 5,
+	  "bookFilter": {
+	    "type": "isbn",
+	    "value": "123456"
+	  },
+	  "searchLocation": {
+	    "position": {
+	      "latitude": "12.940882",
+	      "longitude": "77.6292825"
+	    },
+	    "address": {
+	      "location": "jhgfvjdsf",
+	      "street": "isfjskdf",
+	      "city": "Bangalore",
+	      "state": "Karnataka",
+	      "country": "India",
+	      "zipcode": "560029",
+	      "formatted_address": "kjdfbdbnfbdfng"
+	    }
+	  }
+	}*/
+
+	var searchedLocation = req.body.searchLocation;
+
+	var searchedFilter = {},
+		searchResult = {
+			results: []
+		};
+
+	searchedFilter[req.body.bookFilter.type] = req.body.bookFilter.value;
+
+	switch(req.body.bookFilter.type){
+		case 'title': 	searchedFilter = {
+							'title': req.body.bookFilter.value
+						};
+						break;
+		case 'isbn': 	searchedFilter = {
+							'isbn': req.body.bookFilter.value
+						};
+						break; 
+		case 'genre': 	searchedFilter = {
+							'genre' : {$in: [req.body.bookFilter.value]}
+						};
+						break;
+		case 'auhtor': 	searchedFilter = {
+							'authors' : {$in: [req.body.bookFilter.value]}
+						};
+						break;
+	}
+
+	//TODO Add searchedLocation in Users Collection before searching
+
+	BookModel.find(searchedFilter, function(err, books){
+		if(err){
+			return console.error(err);
+		}
+
+		if(!books.length){
+			// searchResult would contain empty array so send that
+			res.set('Content-Type', 'application/json');
+			res.send(JSON.stringify(searchResult));
+		}
+
+		async.each(books,
+			// 2nd param is the function that each item is passed to
+			function(bookItem, callback){
+				
+				// Reset Item for every new book
+				var searchResultItem = {};
+
+				searchResultItem['book'] = bookItem;
+				searchResultItem['owners'] = [];
+
+		  		UserModel.find({
+					'currentLocation.address.city': searchedLocation.address.city,
+					'currentLocation.address.state': searchedLocation.address.state,
+					'currentLocation.address.country': searchedLocation.address.country,
+					'books' : {$in: [mongoose.Types.ObjectId(bookItem._id)]}
+				}, function(err, users){
+					if(err){
+						return console.error(err);
+					}
+
+					var dist;
+					
+					for(var i=0; i< users.length; i++){
+						dist = getDistance(users[i].currentLocation.position.latitude, users[i].currentLocation.position.longitude, searchedLocation.position.latitude, searchedLocation.position.longitude);
+						if(dist < parseFloat(req.body.radius)){
+							searchResultItem.owners.push(users[i]);
+						}
+					}
+
+					searchResult.results.push(searchResultItem);
+
+					callback();
+					// TODO Create a list of users inside the radius
+				});
+		  	},
+		  	// 3rd param is the function to call when everything's done
+		  	function(err){
+		    	// All tasks are done now. Send the searchResult Object
+		    	res.set('Content-Type', 'application/json');
+				res.send(JSON.stringify(searchResult));
+		  	}
+		);
+	});
 });
 
 // Calculates Distance in Km
