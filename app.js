@@ -10,6 +10,7 @@ var
     mongoose = require ("mongoose"),
     passport = require('passport'),
     session = require('express-session'),
+    elasticsearch = require('elasticsearch'),
     LocalStrategy = require('passport-local').Strategy,
     AdminModel = require('./models/AdminModel');
 
@@ -59,6 +60,11 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
+var client = new elasticsearch.Client({
+  host: 'localhost:9200',
+  log: 'trace'
+});
+
 var 
     routes = require('./routes/index'),
     users = require('./routes/users'),
@@ -66,6 +72,11 @@ var
     admin = require('./routes/admin');
 
 var app = express();
+
+app.use(function(req, res, next) {
+    req.elasticClient = client;
+    next();
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -87,12 +98,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Define the Routes
-/*app.post('/admin/authenticate',
-  passport.authenticate('local', { successRedirect: '/admin',
-                                   failureRedirect: '/admin/login',
-                                   failureFlash: false })
-);
-*/
 app.use('/', routes);
 app.use('/admin', admin);
 app.use('/api/users', users);

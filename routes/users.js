@@ -84,8 +84,27 @@ router.post('/save', function(req, res) {
 					if(err) {
 						return console.error(err);
 					}
-					res.set('Content-Type', 'application/json');
-					res.send(JSON.stringify(newUser));
+
+					// Index User Details
+					req.elasticClient.index({
+						index: 'forkread',
+						type: 'users',
+						id: newUser._id + '',
+						body: {
+							_id: newUser._id,
+							name: newUser.name,
+					    	email: newUser.email,
+					    	contactNo: newUser.contactNo,
+					    	gender: newUser.gender,
+					    	currentLocation: newUser.currentLocation,
+					    	books: newUser.books,
+					    	searchHistory: newUser.searchHistory,
+					    	isActive: newUser.isActive
+					  	}
+					}, function (err, resp) {
+						res.set('Content-Type', 'application/json');
+						res.send(JSON.stringify(newUser));
+					});
 				});
 			}
 		});

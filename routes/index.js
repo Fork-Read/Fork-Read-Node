@@ -4,7 +4,7 @@ var SubscribeModel = require('../models/SubscribeModel');
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index');
+	res.render('index');
 });
 
 router.get('/noResult', function(req, res) {
