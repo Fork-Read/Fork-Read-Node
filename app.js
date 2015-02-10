@@ -61,7 +61,7 @@ passport.deserializeUser(function(id, done) {
 });
 
 var client = new elasticsearch.Client({
-  host: 'https://495at1r8:6cos31apso3htvsg@apple-8662755.us-east-1.bonsai.io/',
+  host: 'https://495at1r8:6cos31apso3htvsg@apple-8662755.us-east-1.bonsai.io/', // 'localhost:9200'
   log: 'trace'
 });
 
