@@ -88,7 +88,6 @@ router.post('/save', function(req, res) {
 
 					res.set('Content-Type', 'application/json');
 					res.send(JSON.stringify(newUser));
-					
 				});
 			}
 		});

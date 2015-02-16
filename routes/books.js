@@ -129,12 +129,31 @@ router.post('/save', function(req, res) {
 									if(err) {
 										return console.error(err);
 									}
-									ownedBooks.push(newBook._id);
-									user.update({'books': ownedBooks}, function(err, user) {
-										if(err) {
-											return console.error(err)
-										}
-										callback();
+
+									// Index Book Details
+									req.elasticClient.index({
+										index: 'forkread',
+										type: 'books',
+										id: newBook._id + '',
+										body: {
+											_id: newBook._id,
+											isbn: newBook.isbn,
+									    	title: newBook.title,
+									    	authors: newBook.authors,
+									    	genre: newBook.genre,
+									    	publishers: newBook.publishers,
+									    	publishedDate: newBook.publishedDate,
+									    	thumbnail: newBook.thumbnail,
+									    	description: newBook.description
+									  	}
+									}, function (err, resp) {
+										ownedBooks.push(newBook._id);
+										user.update({'books': ownedBooks}, function(err, user) {
+											if(err) {
+												return console.error(err)
+											}
+											callback();
+										});
 									});
 								});
 							}
