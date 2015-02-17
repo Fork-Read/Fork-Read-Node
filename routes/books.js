@@ -213,10 +213,6 @@ router.post('/search', function(req, res) {
 	searchedFilter[req.body.bookFilter.type] = req.body.bookFilter.value;
 
 	switch(req.body.bookFilter.type){
-		case 'title': 	searchedFilter = {
-							'title': req.body.bookFilter.value
-						};
-						break;
 		case 'isbn': 	searchedFilter = {
 							'isbn': req.body.bookFilter.value
 						};
@@ -233,60 +229,133 @@ router.post('/search', function(req, res) {
 
 	//TODO Add searchedLocation in Users Collection before searching
 
-	BookModel.find(searchedFilter, function(err, books){
-		if(err){
-			return console.error(err);
-		}
+	// Search Using ElasticSearch when title searched.
+	// TODO Make entire search based on elastic search
+	if(req.body.bookFilter.type === 'title'){
 
-		if(!books.length){
-			// searchResult would contain empty array so send that
-			res.set('Content-Type', 'application/json');
-			res.send(JSON.stringify(searchResult));
-		}
-
-		async.each(books,
-			// 2nd param is the function that each item is passed to
-			function(bookItem, callback){
-				
-				// Reset Item for every new book
-				var searchResultItem = {};
-
-				searchResultItem['book'] = bookItem;
-				searchResultItem['owners'] = [];
-
-		  		UserModel.find({
-					'currentLocation.address.city': searchedLocation.address.city,
-					'currentLocation.address.state': searchedLocation.address.state,
-					'currentLocation.address.country': searchedLocation.address.country,
-					'books' : {$in: [mongoose.Types.ObjectId(bookItem._id)]}
-				}, function(err, users){
-					if(err){
-						return console.error(err);
-					}
-
-					var dist;
-					
-					for(var i=0; i< users.length; i++){
-						dist = getDistance(users[i].currentLocation.position.latitude, users[i].currentLocation.position.longitude, searchedLocation.position.latitude, searchedLocation.position.longitude);
-						if(dist < parseFloat(req.body.radius)){
-							searchResultItem.owners.push(users[i]);
-						}
-					}
-
-					searchResult.results.push(searchResultItem);
-
-					callback();
-					// TODO Create a list of users inside the radius
-				});
-		  	},
-		  	// 3rd param is the function to call when everything's done
-		  	function(err){
-		    	// All tasks are done now. Send the searchResult Object
-		    	res.set('Content-Type', 'application/json');
-				res.send(JSON.stringify(searchResult));
+		req.elasticClient.search({
+		 	index: 'forkread',
+			type: 'books',
+		  	size: 50,
+		  	body: {
+		    	query: {
+		      		match: {
+		        		title: req.body.bookFilter.value
+		      		}
+		    	}
 		  	}
-		);
-	});
+		}).then(function (resp) {
+
+			var books = resp.hits.hits;
+
+			if(!books.length){
+				// searchResult would contain empty array so send that
+				res.set('Content-Type', 'application/json');
+				res.send(JSON.stringify(searchResult));
+			}
+
+			async.each(books,
+				// 2nd param is the function that each item is passed to
+				function(bookItem, callback){
+					
+					// Reset Item for every new book
+					var searchResultItem = {};
+					bookItem = bookItem._source;
+
+					searchResultItem['book'] = bookItem;
+					searchResultItem['owners'] = [];
+
+			  		UserModel.find({
+						'currentLocation.address.city': searchedLocation.address.city,
+						'currentLocation.address.state': searchedLocation.address.state,
+						'currentLocation.address.country': searchedLocation.address.country,
+						'books' : {$in: [mongoose.Types.ObjectId(bookItem._id)]}
+					}, function(err, users){
+						if(err){
+							return console.error(err);
+						}
+
+						var dist;
+						
+						for(var i=0; i< users.length; i++){
+							dist = getDistance(users[i].currentLocation.position.latitude, users[i].currentLocation.position.longitude, searchedLocation.position.latitude, searchedLocation.position.longitude);
+							if(dist < parseFloat(req.body.radius)){
+								searchResultItem.owners.push(users[i]);
+							}
+						}
+
+						searchResult.results.push(searchResultItem);
+
+						callback();
+					});
+			  	},
+			  	// 3rd param is the function to call when everything's done
+			  	function(err){
+			    	// All tasks are done now. Send the searchResult Object
+			    	res.set('Content-Type', 'application/json');
+					res.send(JSON.stringify(searchResult));
+			  	}
+			);
+		}, function (error) {
+  			console.trace(error.message);
+		});
+	}
+	else{
+		BookModel.find(searchedFilter, function(err, books){
+			if(err){
+				return console.error(err);
+			}
+
+			if(!books.length){
+				// searchResult would contain empty array so send that
+				res.set('Content-Type', 'application/json');
+				res.send(JSON.stringify(searchResult));
+			}
+
+			async.each(books,
+				// 2nd param is the function that each item is passed to
+				function(bookItem, callback){
+					
+					// Reset Item for every new book
+					var searchResultItem = {};
+
+					searchResultItem['book'] = bookItem;
+					searchResultItem['owners'] = [];
+
+			  		UserModel.find({
+						'currentLocation.address.city': searchedLocation.address.city,
+						'currentLocation.address.state': searchedLocation.address.state,
+						'currentLocation.address.country': searchedLocation.address.country,
+						'books' : {$in: [mongoose.Types.ObjectId(bookItem._id)]}
+					}, function(err, users){
+						if(err){
+							return console.error(err);
+						}
+
+						var dist;
+						
+						for(var i=0; i< users.length; i++){
+							dist = getDistance(users[i].currentLocation.position.latitude, users[i].currentLocation.position.longitude, searchedLocation.position.latitude, searchedLocation.position.longitude);
+							if(dist < parseFloat(req.body.radius)){
+								searchResultItem.owners.push(users[i]);
+							}
+						}
+
+						searchResult.results.push(searchResultItem);
+
+						callback();
+					});
+			  	},
+			  	// 3rd param is the function to call when everything's done
+			  	function(err){
+			    	// All tasks are done now. Send the searchResult Object
+			    	res.set('Content-Type', 'application/json');
+					res.send(JSON.stringify(searchResult));
+			  	}
+			);
+		});
+	}
+
 });
 
 // Calculates Distance in Km
