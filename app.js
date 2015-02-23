@@ -60,9 +60,15 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
+var connectionString = process.env.SEARCHBOX_URL;
+
+// Use local elastic search if connection string not found
+if(!connectionString){
+    connectionString = 'localhost:9200';
+}
+
 var client = new elasticsearch.Client({
-  host: 'https://495at1r8:6cos31apso3htvsg@apple-8662755.us-east-1.bonsai.io/',
-  //hosts: 'localhost:9200',  // uncomment only for local environment
+  host: connectionString,
   log: 'trace'
 });
 
