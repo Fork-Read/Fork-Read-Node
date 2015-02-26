@@ -4,6 +4,7 @@ var userSchema = mongoose.Schema({
 	name: String,
 	email: String,
 	contactNo: String,
+	pictureUrl: String,
 	gender: String,
 	currentLocation: {
 		position: {

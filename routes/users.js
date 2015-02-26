@@ -34,6 +34,7 @@ router.post('/save', function(req, res) {
 	{
 	  "name": "Prateek Agarwal",
 	  "email": "prateekagr98@gmail.com",
+	  "pictureUrl": "http://www.facebook.com",
 	  "contactNo": "8861986656",
 	  "gender": "Male",
 	  "currentLocation": {
@@ -73,6 +74,7 @@ router.post('/save', function(req, res) {
 				var newUser = new UserModel({
 					name: req.body.name,
 					email: req.body.email,
+					pictureUrl: req.body.pictureUrl,
 					contactNo: req.body.contactNo,
 					gender: req.body.gender,
 					currentLocation: req.body.currentLocation,
