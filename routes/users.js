@@ -172,12 +172,14 @@ router.post('/sendMessage', function (req, res) {
                 message.addDate({
                     'from': {
                         'name': user.name,
-                        'id': user._id
+                        'id': user._id,
+                        'pictureUrl': user.pictureUrl
                     },
                     'message': req.body.message,
                     'to': {
                         'name': targetUser.name,
-                        'id': targetUser._id
+                        'id': targetUser._id,
+                        'pictureUrl': targetUser.pictureUrl
                     }
                 });
 
