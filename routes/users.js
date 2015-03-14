@@ -142,11 +142,69 @@ router.post('/update', function (req, res) {
 });
 
 router.post('/sendMessage', function (req, res) {
-    var message = new gcm.Message(),
+    var user = req.body.user,
+        targetUser = req.body.targetUser,
+        message = new gcm.Message(),
         sender = gcm.Sender('AIzaSyARi8rrbEO7Exv3WlB2ozDbKxGViR8uBRo'),
         devices = [];
 
-    message.addDate('notification', 'This is a notification message');
+    if (!user && !targetUser) {
+        res.redirect('/noResult');
+    }
+
+    UserModel.findOne({
+        '_id': user
+    }, function (err, user) {
+        if (err) {
+            return console.error(err);
+        }
+
+        UserModel.findOne({
+            '_id': targetUser
+        }, function (err, targetUser) {
+
+            if (err) {
+                return console.error(err);
+            }
+
+            if (targetUser) {
+
+                message.addDate({
+                    'from': {
+                        'name': user.name,
+                        'id': user._id
+                    },
+                    'message': req.body.message,
+                    'to': {
+                        'name': targetUser.name,
+                        'id': targetUser._id
+                    }
+                });
+
+                for (var device in targetUser.devices) {
+                    devices.psuh(device);
+                }
+                if (devices.length) {
+                    sender.send(message, registrationIds, function (err, result) {
+                        if (err) {
+                            console.error(err);
+                        } else {
+                            // Reply with a confirmation message
+                            res.set('Content-Type', 'application/json');
+                            res.send(JSON.stringify({}));
+                        }
+                    });
+                } else {
+                    res.redirect('/noResult');
+                }
+
+            } else {
+                res.redirect('/noResult');
+            }
+
+        });
+    });
+
 });
 
 module.exports = router;
