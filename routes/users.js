@@ -70,6 +70,9 @@ router.post('/save', function (req, res) {
             }
 
             if (user) {
+                if (!user.devices) {
+                    user.devices = [];
+                }
                 // Add Device ID if not already present
                 if (user.devices.indexOf(req.body.device) === -1) {
                     user.devices.push(req.body.devices);
