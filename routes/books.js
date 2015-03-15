@@ -65,7 +65,8 @@ router.post('/save', function (req, res) {
 	      ],
 	      "publishers": "My Publishing House",
 	      "publishedDate": "12-1-2014",
-	      "thumbnail": "http://www.google.com"
+	      "thumbnail": "http://www.google.com",
+          "description":""
 	    },
 	    {
 	      "isbn": "1234567889",
@@ -80,7 +81,8 @@ router.post('/save', function (req, res) {
 	      ],
 	      "publishers": "My Publishing House",
 	      "publishedDate": "12-2-2014",
-	      "thumbnail": "http://www.gmail.com"
+	      "thumbnail": "http://www.gmail.com",
+          "description":""
 	    }
 	  ]
 	}*/
