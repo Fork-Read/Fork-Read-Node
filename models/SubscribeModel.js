@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var subscribeSchema = mongoose.Schema({
-	email: String
+    email: String
 });
 
 var SubscribeModel = mongoose.model('Subscribe', subscribeSchema);
