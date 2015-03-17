@@ -165,11 +165,9 @@ router.post('/sendMessage', function (req, res) {
         UserModel.findOne({
             '_id': targetUser
         }, function (err, targetUser) {
-
             if (err) {
                 return console.error(err);
             }
-
             if (targetUser) {
 
                 message.addDate({
@@ -209,7 +207,6 @@ router.post('/sendMessage', function (req, res) {
 
         });
     });
-
 });
 
 module.exports = router;

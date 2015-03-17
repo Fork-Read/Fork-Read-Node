@@ -82,7 +82,8 @@ var
     routes = require('./routes/index'),
     users = require('./routes/users'),
     books = require('./routes/books'),
-    admin = require('./routes/admin');
+    admin = require('./routes/admin'),
+    publicRoute = require('./routes/public');
 
 var app = express();
 
@@ -114,6 +115,7 @@ app.use(passport.session());
 
 // Define the Routes
 app.use('/', routes);
+app.use('/public', publicRoute);
 app.use('/admin', admin);
 app.use('/api/users', users);
 app.use('/api/books', books);

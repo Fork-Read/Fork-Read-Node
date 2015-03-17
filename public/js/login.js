@@ -1,8 +1,8 @@
-$(document).ready(function(){
+$(document).ready(function () {
 
-	$('#quotesSlideshow').list_ticker({
-		speed: 6000,
-		effect: 'fade'
-	});
+    $('#quotesSlideshow').list_ticker({
+        speed: 6000,
+        effect: 'fade'
+    });
 
 });
