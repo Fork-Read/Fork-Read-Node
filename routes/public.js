@@ -1,45 +1,57 @@
 var
     express = require('express'),
     router = express.Router(),
+    async = require('async'),
     UserModel = require('../models/UserModel'),
     BookModel = require('../models/BookModel');
 
-router.get('/book/:user', function (req, res) {
-    var user = req.param('user');
+router.get('/books/:email', function (req, res) {
 
-    var returnObj = [];
+    var email = req.param('email');
 
-    if (user) {
+    var ownedBooks = [];
+
+    if (email) {
         UserModel.findOne({
-            '_id': user
+            'email': email
         }, function (err, user) {
             if (err) {
                 return console.error(err);
             }
 
-            var i = 0;
+            if (user) {
+                // 1st para in async.each() is the array of items
+                async.each(user.books,
+                    // 2nd param is the function that each item is passed to
+                    function (bookItem, callback) {
+                        BookModel.findOne({
+                            '_id': bookItem
+                        }, function (err, book) {
+                            if (err) {
+                                return console.error(err);
+                            }
 
-            for (; i < user.books.length; i++) {
-                BookModel.findOne({
-                    '_id': user.books[i]
-                }, function (err, book) {
-                    if (err) {
-                        return console.error(err);
+                            if (book) {
+                                ownedBooks.push(book);
+                                callback();
+                            }
+                        });
+                    },
+                    // 3rd param is the function to call when everything's done
+                    function (err) {
+                        // All tasks are done now
+                        res.render('owned-books', {
+                            user: user,
+                            books: ownedBooks
+                        });
                     }
-
-                    if (book) {
-                        returnObj.push(book);
-                    }
-
-                    // Return Book Data if this is the last query
-                    if (i = user.books.length - 1) {
-                        res.render('owned-books', {});
-                    }
-                });
+                );
+            } else {
+                res.render('owned-books', {});
             }
         });
     } else {
-        res.redirect('/noResult');
+        res.render('owned-books', {});
     }
 });
 

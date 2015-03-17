@@ -116,10 +116,10 @@ app.use(passport.session());
 
 // Define the Routes
 app.use('/', routes);
+app.use('/public', publicRoute);
 app.use('/admin', admin);
 app.use('/api/users', users);
 app.use('/api/books', books);
-app.use('/public', publicRoute);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

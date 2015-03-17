@@ -1,22 +1,78 @@
 <!DOCTYPE html>  
 <html lang="en">  
 	<head>
-		<% include ./partials/head %>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta property='og:title' content='Fork-Read' />
+		<meta property='og:url' content='www.forkread.com' />
+		<meta property='og:picture' content='http://www.forkread.com/images/logo_teal_500.png' />
+		<meta property='og:site_name' content='Fork-Read' />
+		<meta property="og:image:type" content="image/png">
+		<meta property="og:image:width" content="300">
+		<meta property="og:image:height" content="300">
+
+		<title>Welcome to Fork-Read</title>
+
+		<link rel='stylesheet' href='/stylesheets/bootstrap.min.css' />
+		<link rel='stylesheet' href='/stylesheets/bootstrap-theme.min.css' />
+		<link rel='stylesheet' href='/stylesheets/public.css' />
 	</head>
 	<body>
 		<% include ./partials/header %>
-		<div class="login-container">
-			<h3>Admin Login</h3>
-			<hr>
-			<form action="/admin/authenticate" method="POST">
-				<div class="form-group">
-			    	<input type="text" class="form-control" id="exampleInputEmail1" placeholder="Username" name="username" required autofocus="autofocus" autocomplete="off">
-			  	</div>
-			  	<div class="form-group">
-			    	<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password" required>
-			  	</div>
-			  	<button type="submit" class="btn btn-darkTeal btn-block">Login</button>
-			</form>
+		<div class="main-container">
+			<% if(typeof user !== 'undefined' && typeof books !== 'undefined'){ %>
+				<h4>Books Owned by <span class="book-owner-name"><%= user.name %></span></h4>
+				<% if(books.length === 0) { %>
+					<p> No books owned </p>
+				<% } %>
+				<% for(var i=0; i<books.length; i++) { %>
+					<div class="book-item">
+						<p class="book-name">
+							<%= books[i].title %>
+						</p>
+						<div class="book-details">
+							<div class="book-image">
+								<% if(books[i].thumbnail) { %>
+									<img src="<%= books[i].thumbnail %>" />
+								<% } else { %>
+									<img src="/images/empty_cover.jpg" />
+								<% } %>
+							</div>
+							<div class="book-info">
+								<p>
+									<strong>ISBN :</strong> <%= books[i].isbn %>
+								</p>
+								<p>
+									<strong>Authors : </strong>
+									<% for(var j=0; j< books[i].authors.length; j++) { %>
+										<%= books[i].authors[j] %>, 
+									<% } %>
+								</p>
+								<p>
+									<strong>Genre :</strong>
+									<% for(var j=0; j< books[i].genre.length; j++) { %>
+										<%= books[i].genre[j] %>, 
+									<% } %>
+								</p>
+								<p>
+									Published by <%= books[i].publishers %> on <%= books[i].publishedDate %>
+								</p>
+							</div>
+							<div class="clearfix"></div>
+							<% if(books[i].description) { %>
+								<div>
+									<h4>Description</h4>
+									<p>
+										<%= books[i].description %>
+									</p>
+								</div>
+							<% } %>
+						</div>
+					</div>
+				<% } %>
+			<% } else { %>
+				<p> User and Books not found </p>
+			<% } %>
 		</div>
     </body>
 </html>

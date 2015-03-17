@@ -19,26 +19,32 @@ router.get('/:user', function (req, res) {
                 return console.error(err);
             }
 
-            var i = 0;
+            if (user) {
+                async.each(user.books,
+                    // 2nd param is the function that each item is passed to
+                    function (bookItem, callback) {
+                        BookModel.findOne({
+                            '_id': bookItem
+                        }, function (err, book) {
+                            if (err) {
+                                return console.error(err);
+                            }
 
-            for (; i < user.books.length; i++) {
-                BookModel.findOne({
-                    _id: user.books[i]
-                }, function (err, book) {
-                    if (err) {
-                        return console.error(err);
-                    }
-
-                    if (book) {
-                        returnObj.push(book);
-                    }
-
-                    // Return Book Data if this is the last query
-                    if (i = user.books.length - 1) {
+                            if (book) {
+                                returnObj.push(book);
+                                callback();
+                            }
+                        });
+                    },
+                    // 3rd param is the function to call when everything's done
+                    function (err) {
+                        // All tasks are done now
                         res.set('Content-Type', 'application/json');
                         res.send(JSON.stringify(returnObj));
                     }
-                });
+                );
+            } else {
+                res.redirect('/noResult');
             }
         });
     } else {
