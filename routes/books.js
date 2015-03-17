@@ -246,7 +246,7 @@ router.post('/search', function (req, res) {
             genre: req.body.bookFilter.value
         };
         break;
-    case 'auhtor':
+    case 'author':
         searchedFilter = {
             'authors': req.body.bookFilter.value
         };
