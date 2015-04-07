@@ -237,6 +237,10 @@ router.get('/books/usersOwned/:id', isAuthenticated, function (req, res) {
 });
 // View Login Page
 router.get('/login', function (req, res) {
+    if (req.user && req.user._id) {
+        res.redirect('/admin');
+        return;
+    }
     res.render('admin-login');
 });
 
