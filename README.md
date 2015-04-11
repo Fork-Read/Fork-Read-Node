@@ -26,7 +26,7 @@ Note: You can also install [elasticsearch head plugin](https://github.com/mobz/e
 
 After last command. You would see something like
 ```
-> Fork-Read-Node@0.0.0 start <Path to your code directory>
+> Fork-Read-Node@<app_version> start <Path to your code directory>
 > node ./bin/www
 
 Elasticsearch INFO: 2015-03-13T17:37:13Z
