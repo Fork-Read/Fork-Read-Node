@@ -2,19 +2,14 @@ var
     express = require('express'),
     router = express.Router(),
     gcm = require('node-gcm'),
-    UserModel = require('../models/UserModel');
+    UserModel = require('../models/UserModel'),
+    UserController = require('../controllers/UserController');
 
 router.get('/:email', function (req, res) {
     var email = req.param('email');
 
     if (email) {
-
-        UserModel.findOne({
-            'email': email
-        }, function (err, user) {
-            if (err) {
-                return console.error(err);
-            }
+        UserController.getUserByEmail(email, function (user) {
             if (user) {
                 res.set('Content-Type', 'application/json');
                 res.send(JSON.stringify(user));
