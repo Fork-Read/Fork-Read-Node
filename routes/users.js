@@ -56,61 +56,9 @@ router.post('/save', function (req, res) {
     var email = req.body.email;
 
     if (email) {
-        UserModel.findOne({
-            email: email
-        }, function (err, user) {
-
-            if (err) {
-                return console.error(err);
-            }
-
-            if (user) {
-                if (!user.devices) {
-                    user.devices = [];
-                }
-                // Add Device ID if not already present
-                if (user.devices.indexOf(req.body.device) === -1) {
-                    user.devices.push(req.body.devices);
-                    UserModel.findOneAndUpdate({
-                        email: email
-                    }, {
-                        devices: user.devices
-                    }, function (err, user) {
-                        if (err) {
-                            return console.error(err);
-                        }
-
-                        res.set('Content-Type', 'application/json');
-                        res.send(JSON.stringify(user));
-                    });
-                } else {
-                    // If already present then send the user object back
-                    res.set('Content-Type', 'application/json');
-                    res.send(JSON.stringify(user));
-                }
-            } else {
-                var newUser = new UserModel({
-                    name: req.body.name,
-                    email: req.body.email,
-                    pictureUrl: req.body.pictureUrl,
-                    contactNo: req.body.contactNo,
-                    gender: req.body.gender,
-                    currentLocation: req.body.currentLocation,
-                    books: [], // No Books will be added to owned list when user entry is created,
-                    searchHistory: [], // No Searched Locations will be added when user entry is created
-                    isActive: true,
-                    devices: [req.body.device]
-                });
-
-                newUser.save(function (err, newUser) {
-                    if (err) {
-                        return console.error(err);
-                    }
-
-                    res.set('Content-Type', 'application/json');
-                    res.send(JSON.stringify(newUser));
-                });
-            }
+        UserController.save(req.body, function (user) {
+            res.set('Content-Type', 'application/json');
+            res.send(JSON.stringify(user));
         });
     } else {
         res.redirect('/noResult');
