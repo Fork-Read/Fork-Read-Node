@@ -4,48 +4,16 @@ var
     async = require('async'),
     router = express.Router(),
     UserModel = require('../models/UserModel'),
-    BookModel = require('../models/BookModel');
+    BookModel = require('../models/BookModel'),
+    BookController = require('../controllers/BookController');
 
 router.get('/:user', function (req, res) {
     var user = req.param('user');
 
-    var returnObj = [];
-
     if (user) {
-        UserModel.findOne({
-            '_id': user
-        }, function (err, user) {
-            if (err) {
-                return console.error(err);
-            }
-
-            if (user) {
-                async.each(user.books,
-                    // 2nd param is the function that each item is passed to
-                    function (bookItem, callback) {
-                        BookModel.findOne({
-                            '_id': bookItem
-                        }, function (err, book) {
-                            if (err) {
-                                return console.error(err);
-                            }
-
-                            if (book) {
-                                returnObj.push(book);
-                                callback();
-                            }
-                        });
-                    },
-                    // 3rd param is the function to call when everything's done
-                    function (err) {
-                        // All tasks are done now
-                        res.set('Content-Type', 'application/json');
-                        res.send(JSON.stringify(returnObj));
-                    }
-                );
-            } else {
-                res.redirect('/noResult');
-            }
+        BookController.getUserBooks(user, function (returnObj) {
+            res.set('Content-Type', 'application/json');
+            res.send(JSON.stringify(returnObj));
         });
     } else {
         res.redirect('/noResult');
