@@ -94,6 +94,11 @@ router.post('/search', function (req, res) {
             'authors': req.body.bookFilter.value
         };
         break;
+    default:
+        searchedFilter = {
+            title: req.body.bookFilter.value
+        };
+        break;
     }
 
     //TODO Add searchedLocation in Users Collection before searching
