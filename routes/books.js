@@ -59,7 +59,11 @@ router.post('/search', function (req, res) {
 	  }
 	}*/
 
-    var searchedLocation = req.body.searchLocation;
+    var searchedLocation;
+
+    if (req.body.searchLocation) {
+        searchedLocation = req.body.searchLocation;
+    }
 
     var searchedFilter = {},
         searchResult = {
@@ -103,6 +107,10 @@ router.post('/search', function (req, res) {
         if (user) {
             var userSearchHistory = user.searchHistory,
                 alreadySearched = false;
+
+            if (!searchedLocation) {
+                searchedLocation = user.currentLocation;
+            }
 
             // Check if already searched for same filter
             for (var i = 0; i < userSearchHistory.length; i++) {
