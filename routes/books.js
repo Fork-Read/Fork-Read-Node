@@ -102,7 +102,7 @@ router.post('/search', function (req, res) {
         };
         break;
     }
-
+    console.log('user', user);
     //TODO Add searchedLocation in Users Collection before searching
     UserModel.findOne({
         _id: user
