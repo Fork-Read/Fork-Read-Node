@@ -59,6 +59,8 @@ router.post('/search', function (req, res) {
 	  }
 	}*/
 
+    console.log(req.body);
+
     var searchedLocation;
 
     if (req.body.searchLocation) {
