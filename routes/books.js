@@ -4,6 +4,8 @@ var
     async = require('async'),
     router = express.Router(),
     UserModel = require('../models/UserModel'),
+    LocationModel = require('../models/LocationModel'),
+    UserBookModel = require('../models/UserBookModel'),
     BookController = require('../controllers/BookController');
 
 router.get('/:user', function (req, res) {
@@ -58,8 +60,6 @@ router.post('/search', function (req, res) {
 	  }
 	}*/
 
-    console.log(req.body);
-
     var searchedLocation;
 
     if (req.body.searchLocation) {
@@ -101,48 +101,28 @@ router.post('/search', function (req, res) {
         };
         break;
     }
-    console.log('user', user);
-    //TODO Add searchedLocation in Users Collection before searching
-    UserModel.findOne({
-        _id: user
-    }, function (err, user) {
-        if (err) {
-            return console.error(err);
-        }
 
-        if (user) {
-            var userSearchHistory = user.searchHistory,
-                alreadySearched = false;
+    // Add Location to Users List
+    if (searchedLocation) {
+        LocationModel.findOne({
+            user_id: user,
+            position: searchedLocation.position
+        }, function (err, location) {
+            if (err) return console.error(err);
 
-            if (!searchedLocation) {
-                searchedLocation = user.currentLocation;
-            }
+            if (!location) {
+                var newLocation = new LocationModel({
+                    user_id: user,
+                    position: searchedLocation.position,
+                    address: searchedLocation.address
+                });
 
-            // Check if already searched for same filter
-            for (var i = 0; i < userSearchHistory.length; i++) {
-                if (req.body.bookFilter.type === userSearchHistory[i].bookFilter.type &&
-                    req.body.bookFilter.value === userSearchHistory[i].bookFilter.value) {
-                    alreadySearched = true;
-                }
-            }
-
-            if (!alreadySearched) {
-                userSearchHistory.push(req.body);
-                UserModel.findOneAndUpdate({
-                    _id: user
-                }, {
-                    searchHistory: userSearchHistory
-                }, function (err, user) {
-                    if (err) {
-                        return console.error(err);
-                    }
+                newLocation.save(function (err, location) {
+                    if (err) return console.error(err);
                 });
             }
-        } else {
-            // Add error message for user not found
-        }
-
-    });
+        });
+    }
 
     req.elasticClient.search({
         index: 'forkread',
@@ -161,8 +141,6 @@ router.post('/search', function (req, res) {
             // Send searchResult as empty array
             res.set('Content-Type', 'application/json');
             res.send(JSON.stringify(searchResult));
-
-            // Return from here to prevent executing code further
             return;
         }
 
@@ -177,30 +155,29 @@ router.post('/search', function (req, res) {
                 searchResultItem['book'] = bookItem;
                 searchResultItem['owners'] = [];
 
-                UserModel.find({
-                    'currentLocation.address.city': searchedLocation.address.city,
-                    'currentLocation.address.state': searchedLocation.address.state,
-                    'currentLocation.address.country': searchedLocation.address.country,
-                    'books': {
-                        $in: [mongoose.Types.ObjectId(bookItem._id)]
-                    }
+                UserBookModel.find({
+                    book_id: bookItem._id
                 }, function (err, users) {
-                    if (err) {
-                        return console.error(err);
+                    if (err) return console.error(err);
+                    if (!userBooks.length) {
+                        callback();
+                    } else {
+                        async.each(userBooks, function (userItem, next) {
+                            LocationModel.findOne({
+                                user_id: userItem._id,
+                                isHome: true
+                            }, function (err, userLocation) {
+                                if (err) return console.error(err);
+                                dist = getDistance(userLocation.position.latitude, userLocation.position.longitude, searchedLocation.position.latitude, searchedLocation.position.longitude);
+                                if (dist < parseFloat(req.body.radius)) {
+                                    searchResultItem.owners.push(userItem._id);
+                                }
+                                next();
+                            });
+                        }, function (err) {
+                            callback();
+                        });
                     }
-
-                    var dist;
-
-                    for (var i = 0; i < users.length; i++) {
-                        dist = getDistance(users[i].currentLocation.position.latitude, users[i].currentLocation.position.longitude, searchedLocation.position.latitude, searchedLocation.position.longitude);
-                        if (dist < parseFloat(req.body.radius)) {
-                            searchResultItem.owners.push(users[i]);
-                        }
-                    }
-
-                    searchResult.results.push(searchResultItem);
-
-                    callback();
                 });
             },
             // 3rd param is the function to call when everything's done
