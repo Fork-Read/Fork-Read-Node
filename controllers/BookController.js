@@ -3,25 +3,27 @@ var
     mongoose = require("mongoose"),
     async = require('async'),
     UserModel = require('../models/UserModel'),
+    UserBookModel = require('../models/UserBookModel'),
     BookModel = require('../models/BookModel');
 
 var BookController = {
     getUserBooks: function (user, callback) {
         var returnObj = [];
 
-        UserModel.findOne({
-            '_id': user
-        }, function (err, user) {
+        UserBookModel.find({
+            'user_id': user,
+            'isOwner': true
+        }, function (err, books) {
             if (err) {
                 return console.error(err);
             }
 
             if (user) {
-                async.each(user.books,
+                async.each(books,
                     // 2nd param is the function that each item is passed to
                     function (bookItem, next) {
                         BookModel.findOne({
-                            '_id': bookItem
+                            '_id': bookItem.book_id
                         }, function (err, book) {
                             if (err) {
                                 return console.error(err);
@@ -94,8 +96,6 @@ var BookController = {
                 return console.error(err);
             }
 
-            var ownedBooks = user.books;
-
             if (user) {
                 async.each(books,
                     // 2nd param is the function that each item is passed to
@@ -108,17 +108,29 @@ var BookController = {
                             }
 
                             if (book) {
-                                if (!(ownedBooks.indexOf(book._id) > -1)) {
-                                    ownedBooks.push(book._id);
-                                    user.update({
-                                        books: ownedBooks
-                                    }, function (err, user) {
-                                        if (err) {
-                                            return console.error(err)
-                                        }
+                                UserBookModel.findOne({
+                                    'user_id': user._id,
+                                    'book_id': book._id
+                                }, function (err, userBook) {
+                                    if (err) return console.error(err);
+
+                                    if (userBook) {
                                         next();
-                                    });
-                                }
+                                    } else {
+                                        var newUserBook = new UserBookModel({
+                                            user_id: user._id,
+                                            book_id: book._id,
+                                            isOwner: true,
+                                            hasLiked: false,
+                                            isWished: false
+                                        });
+
+                                        newUserBook.save(function (err, newUserBook) {
+                                            if (err) return console.error(err);
+                                            next();
+                                        });
+                                    }
+                                });
                             } else {
                                 var newBook = new BookModel({
                                     isbn: bookItem.isbn,
@@ -153,14 +165,28 @@ var BookController = {
                                             description: newBook.description
                                         }
                                     }, function (err, resp) {
-                                        ownedBooks.push(newBook._id);
-                                        user.update({
-                                            'books': ownedBooks
-                                        }, function (err, user) {
-                                            if (err) {
-                                                return console.error(err)
+                                        UserBookModel.findOne({
+                                            'user_id': user._id,
+                                            'book_id': newBook._id
+                                        }, function (err, userBook) {
+                                            if (err) return console.error(err);
+
+                                            if (userBook) {
+                                                next();
+                                            } else {
+                                                var newUserBook = new UserBookModel({
+                                                    user_id: user._id,
+                                                    book_id: newBook._id,
+                                                    isOwner: true,
+                                                    hasLiked: false,
+                                                    isWished: false
+                                                });
+
+                                                newUserBook.save(function (err, newUserBook) {
+                                                    if (err) return console.error(err);
+                                                    next();
+                                                });
                                             }
-                                            callback();
                                         });
                                     });
                                 });

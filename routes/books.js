@@ -4,7 +4,6 @@ var
     async = require('async'),
     router = express.Router(),
     UserModel = require('../models/UserModel'),
-    BookModel = require('../models/BookModel'),
     BookController = require('../controllers/BookController');
 
 router.get('/:user', function (req, res) {
