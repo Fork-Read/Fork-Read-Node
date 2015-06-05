@@ -216,36 +216,25 @@ router.post('/disown', function (req, res) {
     var newOwnedList = [];
 
     if (user) {
-        UserModel.findOne({
-            _id: user
-        }, function (err, user) {
-            if (err) {
-                return console.error(err);
-            }
+        UserBookModel.findOne({
+            user_id: user,
+            book_id: book
+        }, function (err, userBook) {
+            if (err) return console.error(err);
 
-            if (user) {
-                for (var i = 0; i < user.books.length; i++) {
-
-                    if (user.books[i] !== mongoose.Types.ObjectId(book)) {
-                        newOwnedList.push(user.books[i]);
-                    }
-                }
-
-                UserModel.findOneAndUpdate({
-                    _id: user
+            if (userBook) {
+                UserBookModel.findOneAndUpdate({
+                    user_id: user,
+                    book_id: book
                 }, {
-                    books: newOwnedList
-                }, function (err, user) {
-                    if (err) {
-                        return console.error(err);
-                    }
+                    isOwner: false
+                }, function (err, userBook) {
+                    if (err) return console.error(err);
 
                     res.set('Content-Type', 'application/json');
                     res.send(JSON.stringify(true));
-
                 });
             }
-
         });
     } else {
         res.redirect('/noResult');

@@ -25,9 +25,7 @@ var BookController = {
                         BookModel.findOne({
                             '_id': bookItem.book_id
                         }, function (err, book) {
-                            if (err) {
-                                return console.error(err);
-                            }
+                            if (err) return console.error(err);
 
                             if (book) {
                                 returnObj.push(book);
@@ -103,9 +101,7 @@ var BookController = {
                         BookModel.findOne({
                             'isbn': bookItem.isbn
                         }, function (err, book) {
-                            if (err) {
-                                return console.error(err);
-                            }
+                            if (err) return console.error(err);
 
                             if (book) {
                                 UserBookModel.findOne({
@@ -144,9 +140,7 @@ var BookController = {
                                 });
 
                                 newBook.save(function (err, newBook) {
-                                    if (err) {
-                                        return console.error(err);
-                                    }
+                                    if (err) return console.error(err);
 
                                     // Index Book Details
                                     elasticClient.index({
