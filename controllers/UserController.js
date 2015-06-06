@@ -112,9 +112,6 @@ var UserController = {
             }
         });
     },
-    updateHomeLocation: function (user, location, callback) {
-
-    },
     message: function (senderID, receiverID, message, callback) {
         var message = new gcm.Message(),
             sender = gcm.Sender('AIzaSyARi8rrbEO7Exv3WlB2ozDbKxGViR8uBRo');

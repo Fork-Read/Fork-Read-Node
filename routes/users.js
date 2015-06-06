@@ -36,19 +36,6 @@ router.post('/save', function (req, res) {
     }
 });
 
-router.post('/update', function (req, res) {
-    var email = req.body.user_id;
-
-    if (email) {
-        UserController.updateHomeLocation(user, req.body.location, function (user) {
-            res.set('Content-Type', 'application/json');
-            res.send(JSON.stringify(user));
-        });
-    } else {
-        res.redirect('/noResult');
-    }
-});
-
 router.post('/sendMessage', function (req, res) {
 
     if (!req.body.user && !req.body.targetUser) {
