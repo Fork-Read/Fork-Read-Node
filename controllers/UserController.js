@@ -2,7 +2,6 @@ var
     express = require('express'),
     gcm = require('node-gcm'),
     UserModel = require('../models/UserModel'),
-    LocationModel = require('../models/LocationModel'),
     DeviceModel = require('../models/DeviceModel');
 
 var UserController = {
@@ -90,6 +89,7 @@ var UserController = {
                     pictureUrl: data.pictureUrl,
                     contactNo: data.contactNo,
                     gender: data.gender,
+                    homeLocation: data.homeLocation,
                     isActive: true
                 });
 
@@ -98,43 +98,22 @@ var UserController = {
                         return console.error(err);
                     }
 
-                    var homeLocation = new LocationModel({
+                    var newDevice = new DeviceModel({
                         user_id: newUser._id,
-                        position: data.position,
-                        address: data.address,
-                        isHome: true
+                        device: data.device
                     });
 
-                    homeLocation.save(function (err, home) {
+                    newDevice.save(function (err, newDevice) {
                         if (err) return console.error(err);
-                        var newDevice = new DeviceModel({
-                            user_id: newUser._id,
-                            device: data.device
-                        });
-
-                        newDevice.save(function (err, newDevice) {
-                            if (err) return console.error(err);
-                            callback(newUser);
-                            return;
-                        });
+                        callback(newUser);
+                        return;
                     });
                 });
             }
         });
     },
     updateHomeLocation: function (user, location, callback) {
-        LocationModel.findOneAndUpdate({
-            user_id: user,
-            isHome: true
-        }, {
-            position: location.position,
-            address: location.address
-        }, function (err, user) {
-            if (err) {
-                return console.error(err);
-            }
-            callback(user);
-        });
+
     },
     message: function (senderID, receiverID, message, callback) {
         var message = new gcm.Message(),

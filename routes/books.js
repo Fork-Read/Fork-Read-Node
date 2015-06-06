@@ -4,7 +4,6 @@ var
     async = require('async'),
     router = express.Router(),
     UserModel = require('../models/UserModel'),
-    LocationModel = require('../models/LocationModel'),
     UserBookModel = require('../models/UserBookModel'),
     BookController = require('../controllers/BookController');
 
@@ -100,28 +99,6 @@ router.post('/search', function (req, res) {
             title: req.body.bookFilter.value
         };
         break;
-    }
-
-    // Add Location to Users List
-    if (searchedLocation) {
-        LocationModel.findOne({
-            user_id: user,
-            position: searchedLocation.position
-        }, function (err, location) {
-            if (err) return console.error(err);
-
-            if (!location) {
-                var newLocation = new LocationModel({
-                    user_id: user,
-                    position: searchedLocation.position,
-                    address: searchedLocation.address
-                });
-
-                newLocation.save(function (err, location) {
-                    if (err) return console.error(err);
-                });
-            }
-        });
     }
 
     req.elasticClient.search({

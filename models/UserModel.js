@@ -6,6 +6,21 @@ var userSchema = mongoose.Schema({
     contactNo: String,
     pictureUrl: String,
     gender: String,
+    homeLocation: {
+        position: {
+            latitide: String,
+            longitude: String
+        },
+        address: {
+            location: String,
+            street: String,
+            city: String,
+            state: String,
+            country: String,
+            zipcode: String,
+            formatted_address: String
+        },
+    },
     isActive: Boolean, // True/False to decide if the user is deleted or not
 });
 
