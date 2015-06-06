@@ -18,7 +18,7 @@ var BookController = {
                 return console.error(err);
             }
 
-            if (user) {
+            if (books) {
                 async.each(books,
                     // 2nd param is the function that each item is passed to
                     function (bookItem, next) {
@@ -117,7 +117,7 @@ var BookController = {
                                             user_id: user._id,
                                             book_id: book._id,
                                             isOwner: true,
-                                            hasLiked: false,
+                                            isLiked: false,
                                             isWished: false
                                         });
 
@@ -172,7 +172,7 @@ var BookController = {
                                                     user_id: user._id,
                                                     book_id: newBook._id,
                                                     isOwner: true,
-                                                    hasLiked: false,
+                                                    isLiked: false,
                                                     isWished: false
                                                 });
 
