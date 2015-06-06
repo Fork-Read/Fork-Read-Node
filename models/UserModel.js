@@ -8,7 +8,7 @@ var userSchema = mongoose.Schema({
     gender: String,
     homeLocation: {
         position: {
-            latitide: String,
+            latitude: String,
             longitude: String
         },
         address: {

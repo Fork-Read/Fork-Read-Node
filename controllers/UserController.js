@@ -28,26 +28,29 @@ var UserController = {
     },
     save: function (data, callback) {
         /*
-        Expected Object Structure {
+        Expected Object Structure 
+        {
             "name": "Prateek Agarwal",
             "email": "prateekagr98@gmail.com",
             "pictureUrl": "http://www.facebook.com",
             "contactNo": "8861986656",
             "gender": "Male",
-            "position":{
-                "latitude": "12312",
-                "longitude": "23234234"
+            "homeLocation":{
+                "position":{
+                    "latitude": "12312",
+                    "longitude": "23234234"
+                },
+                "address":{
+                    "location": "E-808",
+                    "street": "taverekere",
+                    "city":"Bangalore",
+                    "state":"Karnataka",
+                    "country":"India",
+                    "zipcode": "560029",
+                    "formatted_address":"E-808, Bangalore, Karnataka"
+                }
             },
-            "address":{
-                "location": "E-808",
-                "street": "taverekere",
-                "city":"Bangalore",
-                "state":"Karnataka",
-                "country":"India",
-                "zipcode": "560029",
-                "formatted_address":"E-808, Bangalore, Karnataka"
-            },
-            device: "<device ID>"
+            "device": "<device ID>"
         }*/
 
         UserModel.findOne({
