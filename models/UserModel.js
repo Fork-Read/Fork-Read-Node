@@ -6,7 +6,7 @@ var userSchema = mongoose.Schema({
     contactNo: String,
     pictureUrl: String,
     gender: String,
-    currentLocation: {
+    homeLocation: {
         position: {
             latitude: String,
             longitude: String
@@ -18,13 +18,10 @@ var userSchema = mongoose.Schema({
             state: String,
             country: String,
             zipcode: String,
-            formatted_address: String,
-        }
+            formatted_address: String
+        },
     },
-    books: Array,
-    searchHistory: Array, // Array of Search Object
     isActive: Boolean, // True/False to decide if the user is deleted or not
-    devices: Array
 });
 
 var UserModel = mongoose.model('User', userSchema);

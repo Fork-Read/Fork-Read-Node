@@ -2,7 +2,6 @@ var
     express = require('express'),
     router = express.Router(),
     gcm = require('node-gcm'),
-    UserModel = require('../models/UserModel'),
     UserController = require('../controllers/UserController');
 
 router.get('/:email', function (req, res) {
@@ -29,19 +28,6 @@ router.post('/save', function (req, res) {
 
     if (email) {
         UserController.save(req.body, function (user) {
-            res.set('Content-Type', 'application/json');
-            res.send(JSON.stringify(user));
-        });
-    } else {
-        res.redirect('/noResult');
-    }
-});
-
-router.post('/update', function (req, res) {
-    var email = req.body.email;
-
-    if (email) {
-        UserController.updateLocation(email, req.body.location, function (user) {
             res.set('Content-Type', 'application/json');
             res.send(JSON.stringify(user));
         });
