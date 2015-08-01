@@ -64,7 +64,6 @@ var UserController = {
             if (user) {
                 callback(user);
                 DeviceModel.findOne({
-                    'user_id': user._id,
                     'device': data.device
                 }, function (err, device) {
                     if (err) return console.error(err);
@@ -81,7 +80,17 @@ var UserController = {
                             return;
                         });
                     } else {
-                        callback(user);
+                        DeviceModel.findOneAndUpdate({
+                            device: data.device
+                        }, {
+                            user_id: user._id
+                        }, function (err, deviceDetail) {
+                            if (err) {
+                                return console.error(err);
+                            }
+                            callback(user);
+                            return;
+                        });
                     }
                 });
                 return;
