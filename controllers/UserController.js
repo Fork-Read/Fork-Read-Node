@@ -62,18 +62,16 @@ var UserController = {
             }
 
             if (user) {
-                callback(user);
                 DeviceModel.findOne({
-                    'device': data.device
+                    'device_id': data.device
                 }, function (err, device) {
                     if (err) return console.error(err);
 
                     if (!device) {
                         var newDevice = new DeviceModel({
                             user_id: user._id,
-                            device: data.device
+                            device_id: data.device
                         });
-
                         newDevice.save(function (err, newDevice) {
                             if (err) return console.error(err);
                             callback(user);
@@ -81,7 +79,7 @@ var UserController = {
                         });
                     } else {
                         DeviceModel.findOneAndUpdate({
-                            device: data.device
+                            device_id: data.device
                         }, {
                             user_id: user._id
                         }, function (err, deviceDetail) {
@@ -105,20 +103,40 @@ var UserController = {
                     isActive: true
                 });
 
-                newUser.save(function (err, newUser) {
+                newUser.save(function (err, newuser) {
                     if (err) {
                         return console.error(err);
                     }
 
-                    var newDevice = new DeviceModel({
-                        user_id: newUser._id,
-                        device: data.device
-                    });
-
-                    newDevice.save(function (err, newDevice) {
+                    DeviceModel.findOne({
+                        'device_id': data.device
+                    }, function (err, device) {
                         if (err) return console.error(err);
-                        callback(newUser);
-                        return;
+
+                        if (!device) {
+                            var newDevice = new DeviceModel({
+                                user_id: newuser._id,
+                                device_id: data.device
+                            });
+
+                            newDevice.save(function (err, newDevice) {
+                                if (err) return console.error(err);
+                                callback(newuser);
+                                return;
+                            });
+                        } else {
+                            DeviceModel.findOneAndUpdate({
+                                device_id: data.device
+                            }, {
+                                user_id: newuser._id
+                            }, function (err, deviceDetail) {
+                                if (err) {
+                                    return console.error(err);
+                                }
+                                callback(newuser);
+                                return;
+                            });
+                        }
                     });
                 });
             }
