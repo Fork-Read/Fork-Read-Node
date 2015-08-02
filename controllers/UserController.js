@@ -1,8 +1,11 @@
 var
     express = require('express'),
     gcm = require('node-gcm'),
+    async = require('async'),
+    _ = require('underscore'),
     UserModel = require('../models/UserModel'),
-    DeviceModel = require('../models/DeviceModel');
+    DeviceModel = require('../models/DeviceModel'),
+    MessageModel = require('../models/MessageModel');
 
 var UserController = {
 
@@ -142,8 +145,8 @@ var UserController = {
             }
         });
     },
-    message: function (senderID, receiverID, message, callback) {
-        var message = new gcm.Message(),
+    sendMessage: function (senderID, receiverID, message, callback) {
+        var messageData = new gcm.Message(),
             sender = gcm.Sender('AIzaSyARi8rrbEO7Exv3WlB2ozDbKxGViR8uBRo');
 
         UserModel.findOne({
@@ -153,49 +156,117 @@ var UserController = {
                 return console.error(err);
             }
 
-            UserModel.findOne({
-                '_id': receiverID
-            }, function (err, targetUser) {
-                if (err) {
-                    return console.error(err);
-                }
-                if (targetUser) {
+            if (user) {
+                UserModel.findOne({
+                    '_id': receiverID
+                }, function (err, targetUser) {
+                    if (err) {
+                        return console.error(err);
+                    }
 
-                    message.addDate({
-                        'from': {
-                            'name': user.name,
-                            'id': user._id,
-                            'pictureUrl': user.pictureUrl
-                        },
-                        'message': message,
-                        'to': {
-                            'name': targetUser.name,
-                            'id': targetUser._id,
-                            'pictureUrl': targetUser.pictureUrl
-                        }
-                    });
+                    if (targetUser) {
 
-                    DeviceModel.find({
-                        user_id: targetUser._id
-                    }, function (err, devices) {
-                        if (err) return console.error(err);
-                        if (devices.length) {
-                            sender.send(message, devices, function (err, result) {
-                                if (err) {
-                                    console.error(err);
-                                } else {
-                                    callback(true);
-                                }
-                            });
-                        } else {
-                            callback(false);
+                        messageData.addDate({
+                            'from': {
+                                'name': user.name,
+                                'id': user._id,
+                                'pictureUrl': user.pictureUrl
+                            },
+                            'message': 'New message received',
+                            'to': {
+                                'name': targetUser.name,
+                                'id': targetUser._id,
+                                'pictureUrl': targetUser.pictureUrl
+                            }
+                        });
+
+                        DeviceModel.find({
+                            user_id: targetUser._id
+                        }, function (err, devices) {
+                            if (err) return console.error(err);
+                            if (devices.length) {
+
+                                UserController.saveUserMessage(user._id, targetUser._id, message, devices);
+
+                                sender.send(messageData, devices, function (err, result) {
+                                    if (err) {
+                                        console.error(err);
+                                    } else {
+                                        callback(true);
+                                    }
+                                });
+                            } else {
+                                callback(false);
+                            }
+                        });
+                    } else {
+                        callback(false);
+                    }
+
+                });
+            }
+        });
+    },
+    saveUserMessage: function (user_id, target_user_id, message, devices) {
+        var newMessage = new MessageModel({
+            'user_id': user_id,
+            'target_user_id': target_user_id,
+            'message': message,
+            'device_ids': devices,
+            'created_at': new Date()
+        });
+
+        newMessage.save(function (err) {
+            if (err) {
+                return console.error(err);
+            }
+        });
+    },
+    getMessage: function (user_id, device_id, callback) {
+        var returnObj = [];
+
+        MessageModel.find({
+            'user_id': user_id
+        }, function (err, messages) {
+            if (err) {
+                return console.error(err);
+            }
+
+            async(messages, function (messageItem, next) {
+                returnObj.push({
+                    'target_user_id': messageItem.target_user_id,
+                    'message': messageItem.messge
+                });
+
+                var devices = _.filter(messageItem.device_ids, function (item) {
+                    return item !== device_id;
+                });
+
+                if (devices.length) {
+                    // Update Attached device IDS
+                    MessageModel.findOneAndUpdate({
+                        '_id': messageItem._id
+                    }, {
+                        'device_ids': devices
+                    }, function (err) {
+                        if (err) {
+                            return console.error(err);
                         }
+
+                        next();
                     });
                 } else {
-                    callback(false);
+                    // Remove the message as delivered to all
+                    MessageModel.remove({
+                        '_id': messageItem._id
+                    }, next);
                 }
 
+            }, function (err) {
+                callback(returnObj);
+                return;
             });
+
         });
     }
 }

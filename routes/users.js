@@ -36,19 +36,31 @@ router.post('/save', function (req, res) {
     }
 });
 
-router.post('/sendMessage', function (req, res) {
+router.post('/message/send', function (req, res) {
 
     if (!req.body.user && !req.body.targetUser) {
         res.redirect('/noResult');
     }
 
-    UserController.message(req.body.user, req.body.targetUser, req.body.message, function (isSent) {
+    UserController.sendMessage(req.body.user, req.body.targetUser, req.body.message, function (isSent) {
         if (isSent) {
             res.set('Content-Type', 'application/json');
-            res.send(JSON.stringify({}));
+            res.send(JSON.stringify(isSent));
         } else {
             res.redirect('/noResult');
         }
+    });
+});
+
+router.get('/messages', function (req, res) {
+
+    if (!req.body.user && !req.body.device) {
+        res.redirect('/noResult');
+    }
+
+    UserController.getMessage(req.body.user, req.body.device, function (message) {
+        res.set('Content-Type', 'application/json');
+        res.send(JSON.stringify(message));
     });
 });
 
