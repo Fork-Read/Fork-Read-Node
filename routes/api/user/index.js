@@ -2,13 +2,13 @@ var
     express = require('express'),
     router = express.Router(),
     gcm = require('node-gcm'),
-    UserController = require('../controllers/UserController');
+    controller = require('./user.controller');
 
 router.get('/:email', function (req, res) {
     var email = req.param('email');
 
     if (email) {
-        UserController.getUserByEmail(email, function (user) {
+        controller.getUserByEmail(email, function (user) {
             if (user) {
                 res.set('Content-Type', 'application/json');
                 res.send(JSON.stringify(user));
@@ -22,19 +22,7 @@ router.get('/:email', function (req, res) {
     }
 });
 
-router.post('/save', function (req, res) {
-
-    var email = req.body.email;
-
-    if (email) {
-        UserController.save(req.body, function (user) {
-            res.set('Content-Type', 'application/json');
-            res.send(JSON.stringify(user));
-        });
-    } else {
-        res.redirect('/noResult');
-    }
-});
+router.post('/', controller.create);
 
 router.post('/message/send', function (req, res) {
 
@@ -42,7 +30,7 @@ router.post('/message/send', function (req, res) {
         res.redirect('/noResult');
     }
 
-    UserController.sendMessage(req.body.user, req.body.targetUser, req.body.message, function (isSent) {
+    controller.sendMessage(req.body.user, req.body.targetUser, req.body.message, function (isSent) {
         if (isSent) {
             res.set('Content-Type', 'application/json');
             res.send(JSON.stringify(isSent));
@@ -58,7 +46,7 @@ router.get('/messages', function (req, res) {
         res.redirect('/noResult');
     }
 
-    UserController.getMessage(req.body.user, req.body.device, function (message) {
+    controller.getMessage(req.body.user, req.body.device, function (message) {
         res.set('Content-Type', 'application/json');
         res.send(JSON.stringify(message));
     });

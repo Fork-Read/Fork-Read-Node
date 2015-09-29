@@ -3,14 +3,15 @@ var
     gcm = require('node-gcm'),
     async = require('async'),
     _ = require('underscore'),
-    UserModel = require('../models/UserModel'),
-    DeviceModel = require('../models/DeviceModel'),
-    MessageModel = require('../models/MessageModel');
+    User = require('./user.model'),
+    DeviceModel = require('../../../models/DeviceModel'),
+    MessageModel = require('../../../models/MessageModel'),
+    helpers = require('../helpers');
 
-var UserController = {
+var controller = {
 
     getUserByEmail: function (email, callback) {
-        UserModel.findOne({
+        User.findOne({
             'email': email
         }, function (err, user) {
             if (err) {
@@ -20,7 +21,7 @@ var UserController = {
         });
     },
     getUserById: function (id, callback) {
-        UserModel.findOne({
+        User.findOne({
             '_id': id
         }, function (err, user) {
             if (err) {
@@ -29,118 +30,22 @@ var UserController = {
             callback(user);
         });
     },
-    save: function (data, callback) {
-        /*
-        Expected Object Structure 
-        {
-            "name": "Prateek Agarwal",
-            "email": "prateekagr98@gmail.com",
-            "pictureUrl": "http://www.facebook.com",
-            "contactNo": "8861986656",
-            "gender": "Male",
-            "homeLocation":{
-                "position":{
-                    "latitude": "12312",
-                    "longitude": "23234234"
-                },
-                "address":{
-                    "location": "E-808",
-                    "street": "taverekere",
-                    "city":"Bangalore",
-                    "state":"Karnataka",
-                    "country":"India",
-                    "zipcode": "560029",
-                    "formatted_address":"E-808, Bangalore, Karnataka"
-                }
-            },
-            "device": "<device ID>"
-        }*/
-
-        UserModel.findOne({
-            email: data.email
-        }, function (err, user) {
-
+    create: function (req, res) {
+        User.findOne({
+            'email': req.body.email
+        }, function (err, usr) {
             if (err) {
-                return console.error(err);
+                return helpers.handleError(res, err);
             }
 
-            if (user) {
-                DeviceModel.findOne({
-                    'device_id': data.device
-                }, function (err, device) {
-                    if (err) return console.error(err);
-
-                    if (!device) {
-                        var newDevice = new DeviceModel({
-                            user_id: user._id,
-                            device_id: data.device
-                        });
-                        newDevice.save(function (err, newDevice) {
-                            if (err) return console.error(err);
-                            callback(user);
-                            return;
-                        });
-                    } else {
-                        DeviceModel.findOneAndUpdate({
-                            device_id: data.device
-                        }, {
-                            user_id: user._id
-                        }, function (err, deviceDetail) {
-                            if (err) {
-                                return console.error(err);
-                            }
-                            callback(user);
-                            return;
-                        });
-                    }
-                });
-                return;
+            if (usr) {
+                return res.status(201).json(usr.accessToken);
             } else {
-                var newUser = new UserModel({
-                    name: data.name,
-                    email: data.email,
-                    pictureUrl: data.pictureUrl,
-                    contactNo: data.contactNo,
-                    gender: data.gender,
-                    homeLocation: data.homeLocation,
-                    isActive: true
-                });
-
-                newUser.save(function (err, newuser) {
+                User.create(req.body, function (err, user) {
                     if (err) {
-                        return console.error(err);
+                        return helpers.handleError(res, err);
                     }
-
-                    DeviceModel.findOne({
-                        'device_id': data.device
-                    }, function (err, device) {
-                        if (err) return console.error(err);
-
-                        if (!device) {
-                            var newDevice = new DeviceModel({
-                                user_id: newuser._id,
-                                device_id: data.device
-                            });
-
-                            newDevice.save(function (err, newDevice) {
-                                if (err) return console.error(err);
-                                callback(newuser);
-                                return;
-                            });
-                        } else {
-                            DeviceModel.findOneAndUpdate({
-                                device_id: data.device
-                            }, {
-                                user_id: newuser._id
-                            }, function (err, deviceDetail) {
-                                if (err) {
-                                    return console.error(err);
-                                }
-                                callback(newuser);
-                                return;
-                            });
-                        }
-                    });
+                    return res.status(201).json(user.accessToken);
                 });
             }
         });
@@ -149,7 +54,7 @@ var UserController = {
         var messageData = new gcm.Message(),
             sender = gcm.Sender('AIzaSyARi8rrbEO7Exv3WlB2ozDbKxGViR8uBRo');
 
-        UserModel.findOne({
+        User.findOne({
             '_id': senderID
         }, function (err, user) {
             if (err) {
@@ -157,7 +62,7 @@ var UserController = {
             }
 
             if (user) {
-                UserModel.findOne({
+                User.findOne({
                     '_id': receiverID
                 }, function (err, targetUser) {
                     if (err) {
@@ -186,7 +91,7 @@ var UserController = {
                             if (err) return console.error(err);
                             if (devices.length) {
 
-                                UserController.saveUserMessage(user._id, targetUser._id, message, devices);
+                                controller.saveUserMessage(user._id, targetUser._id, message, devices);
 
                                 sender.send(messageData, devices, function (err, result) {
                                     if (err) {
@@ -271,4 +176,4 @@ var UserController = {
     }
 }
 
-module.exports = UserController;
+module.exports = controller;

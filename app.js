@@ -80,7 +80,7 @@ var client = new elasticsearch.Client({
 
 var
     routes = require('./routes/index'),
-    users = require('./routes/users'),
+    user = require('./routes/api/user/index'),
     books = require('./routes/books'),
     admin = require('./routes/admin'),
     publicRoute = require('./routes/public');
@@ -117,7 +117,7 @@ app.use(passport.session());
 app.use('/', routes);
 app.use('/public', publicRoute);
 app.use('/admin', admin);
-app.use('/api/users', users);
+app.use('/api/user', user);
 app.use('/api/books', books);
 
 // catch 404 and forward to error handler
