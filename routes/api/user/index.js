@@ -2,25 +2,10 @@ var
     express = require('express'),
     router = express.Router(),
     gcm = require('node-gcm'),
-    controller = require('./user.controller');
+    controller = require('./user.controller'),
+    helpers = require('../helpers');
 
-router.get('/:email', function (req, res) {
-    var email = req.param('email');
-
-    if (email) {
-        controller.getUserByEmail(email, function (user) {
-            if (user) {
-                res.set('Content-Type', 'application/json');
-                res.send(JSON.stringify(user));
-            } else {
-                res.set('Content-Type', 'application/json');
-                res.send(JSON.stringify({}));
-            }
-        });
-    } else {
-        res.redirect('/noResult');
-    }
-});
+router.get('/me', helpers.authenticate, controller.me);
 
 router.post('/', controller.create);
 

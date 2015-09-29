@@ -10,25 +10,22 @@ var
 
 var controller = {
 
-    getUserByEmail: function (email, callback) {
+    me: function (req, res) {
         User.findOne({
-            'email': email
-        }, function (err, user) {
+            'accessToken': req.accessToken
+        }, function (err, usr) {
             if (err) {
-                return console.error(err);
+                return helpers.handleError(res, err);
             }
-            callback(user);
-        });
-    },
-    getUserById: function (id, callback) {
-        User.findOne({
-            '_id': id
-        }, function (err, user) {
-            if (err) {
-                return console.error(err);
+
+            if (usr) {
+                delete usr.accessToken;
+                delete usr.refreshToken;
+                delete usr.oauthToken;
             }
-            callback(user);
-        });
+
+            return res.status(200).json(usr);
+        })
     },
     create: function (req, res) {
         User.findOne({
