@@ -48,6 +48,7 @@ var schema = mongoose.Schema({
         'type': String,
         'default': true
     },
+    'provider': String,
     'oauthToken': String,
     'refreshToken': String,
     'accessToken': String,

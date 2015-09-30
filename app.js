@@ -10,6 +10,7 @@ var
     passport = require('passport'),
     session = require('express-session'),
     elasticsearch = require('elasticsearch'),
+    swagger = require('swagger-express'),
     LocalStrategy = require('passport-local').Strategy,
     AdminModel = require('./models/AdminModel');
 
@@ -96,7 +97,7 @@ app.use(function (req, res, next) {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// uncomment after placing your favicon in /public
+// App Plugins
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({
@@ -112,6 +113,16 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(swagger.init(app, {
+    apiVersion: '0.0.1',
+    swaggerVersion: '1.0',
+    swaggerURL: '/swagger',
+    swaggerJSON: '/api-docs.json',
+    swaggerUI: './public/swagger/',
+    basePath: 'http://localhost:3000',
+    apis: ['./routes/api/user/index.js'],
+    middleware: function (req, res) {}
+}));
 
 // Define the Routes
 app.use('/', routes);
