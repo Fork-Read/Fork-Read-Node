@@ -11,6 +11,7 @@ var
     session = require('express-session'),
     elasticsearch = require('elasticsearch'),
     swagger = require('swagger-express'),
+    cors = require('cors'),
     LocalStrategy = require('passport-local').Strategy,
     AdminModel = require('./models/AdminModel');
 
@@ -128,6 +129,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(cors());
 app.use(swagger.init(app, swaggerConfig));
 
 // Routes Used
