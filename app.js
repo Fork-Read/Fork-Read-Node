@@ -86,7 +86,22 @@ var
     admin = require('./routes/admin'),
     publicRoute = require('./routes/public');
 
+var swaggerConfig = {
+    apiVersion: '0.0.1',
+    swaggerVersion: '1.0',
+    swaggerURL: '/swagger',
+    swaggerJSON: '/api-docs.json',
+    swaggerUI: './public/swagger/',
+    basePath: 'http://localhost:3000',
+    apis: ['./routes/api/user/index.js'],
+    middleware: function (req, res) {}
+};
+
 var app = express();
+
+if (app.get('env') === 'production') {
+    swaggerConfig.basePath = 'http://www.forkread.com';
+}
 
 app.use(function (req, res, next) {
     req.elasticClient = client;
@@ -113,18 +128,9 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(swagger.init(app, {
-    apiVersion: '0.0.1',
-    swaggerVersion: '1.0',
-    swaggerURL: '/swagger',
-    swaggerJSON: '/api-docs.json',
-    swaggerUI: './public/swagger/',
-    basePath: 'http://localhost:3000',
-    apis: ['./routes/api/user/index.js'],
-    middleware: function (req, res) {}
-}));
+app.use(swagger.init(app, swaggerConfig));
 
-// Define the Routes
+// Routes Used
 app.use('/', routes);
 app.use('/public', publicRoute);
 app.use('/admin', admin);
@@ -138,10 +144,6 @@ app.use(function (req, res, next) {
     next(err);
 });
 
-// error handlers
-
-// development error handler
-// will print stacktrace
 app.use(function (err, req, res, next) {
     if (app.get('env') === 'development') {
         if (err) {
@@ -151,15 +153,5 @@ app.use(function (err, req, res, next) {
         }
     }
 });
-
-// production error handler
-// no stacktraces leaked to user
-// app.use(function (err, req, res, next) {
-//     res.status(err.status || 500);
-//     res.render('error', {
-//         message: err.message,
-//         error: {}
-//     });
-// });
 
 module.exports = app;
