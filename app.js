@@ -83,7 +83,7 @@ var client = new elasticsearch.Client({
 var
     routes = require('./routes/index'),
     user = require('./routes/api/user/index'),
-    books = require('./routes/books'),
+    books = require('./routes/api/books/index'),
     admin = require('./routes/admin'),
     publicRoute = require('./routes/public');
 
@@ -94,7 +94,7 @@ var swaggerConfig = {
     swaggerJSON: '/api-docs.json',
     swaggerUI: './public/swagger/',
     basePath: 'http://localhost:3000',
-    apis: ['./routes/api/user/index.js'],
+    apis: ['./routes/api/user/index.js', './routes/api/books/index.js'],
     middleware: function (req, res) {}
 };
 

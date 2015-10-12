@@ -4,12 +4,12 @@ var mongoose = require('mongoose'),
 /*
  * User Schema - Describes the basic structure of the User Data
  *
- * name             - User's name
+ * name         - User's name
  * email        - User's email
  * contact      - Users's contact number
  * pictureUrl   - User's profile pic url
  * gender       - User's gender
- * location         - User's location with latitude and longitude
+ * location     - User's location with latitude and longitude
  * active       - User is active or inactive
  *
  */

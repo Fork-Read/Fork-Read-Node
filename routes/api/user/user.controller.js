@@ -1,5 +1,4 @@
 var
-    express = require('express'),
     gcm = require('node-gcm'),
     async = require('async'),
     _ = require('underscore'),
