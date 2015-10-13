@@ -30,7 +30,7 @@ var
  *       active:
  *         type: Boolean
  *       provider:
- *          type: String
+ *          type: Number
  */
 
 /**
@@ -79,10 +79,10 @@ router.get('/me', helpers.authenticate, controller.me);
  *          required: true
  *          dataType: string
  *        - name: provider
- *          description: Google/Facebook
+ *          description: Google - 1/Facebook - 2
  *          paramType: query
  *          required: true
- *          dataType: string
+ *          dataType: number
  *        - name: gender
  *          description: User's Gender
  *          paramType: query

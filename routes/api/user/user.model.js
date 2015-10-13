@@ -11,6 +11,7 @@ var mongoose = require('mongoose'),
  * gender       - User's gender
  * location     - User's location with latitude and longitude
  * active       - User is active or inactive
+ * provider     - Google (1), Facebook (2)
  *
  */
 
@@ -48,7 +49,7 @@ var schema = mongoose.Schema({
         'type': String,
         'default': true
     },
-    'provider': String,
+    'provider': Number,
     'oauthToken': String,
     'refreshToken': String,
     'accessToken': String,
