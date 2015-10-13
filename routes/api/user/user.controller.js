@@ -10,21 +10,7 @@ var
 var controller = {
 
     me: function (req, res) {
-        User.findOne({
-            'accessToken': req.accessToken
-        }, function (err, usr) {
-            if (err) {
-                return helpers.handleError(res, err);
-            }
-
-            if (usr) {
-                delete usr.accessToken;
-                delete usr.refreshToken;
-                delete usr.oauthToken;
-            }
-
-            return res.status(200).json(usr);
-        })
+        return res.status(200).json(req.user);
     },
     create: function (req, res) {
         User.findOne({

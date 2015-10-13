@@ -1,11 +1,26 @@
+var User = require('./user/user.model');
+
 var Helper = function () {};
 
 Helper.prototype.authenticate = function (req, res, next) {
+    var self = this;
     if (req.headers['x-access-token']) {
         req.accessToken = req.headers['x-access-token'];
-        next();
+        User.findOne({
+            'accessToken': req.accessToken
+        }, function (err, user) {
+            if (err) {
+                self.handleError(res, err);
+            }
+            if (user) {
+                req.user = user;
+                next();
+            } else {
+                self.accessDenied(res);
+            }
+        })
     } else {
-        accessDenied(res);
+        self.accessDenied(res);
     }
 }
 
