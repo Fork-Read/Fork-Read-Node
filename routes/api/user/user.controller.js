@@ -21,13 +21,17 @@ var controller = {
             }
 
             if (usr) {
-                return res.status(201).json(usr.accessToken);
+                return res.status(201).json({
+                    'accessToken': usr.accessToken
+                });
             } else {
                 User.create(req.body, function (err, user) {
                     if (err) {
                         return helpers.handleError(res, err);
                     }
-                    return res.status(201).json(user.accessToken);
+                    return res.status(201).json({
+                        'accessToken': user.accessToken
+                    });
                 });
             }
         });

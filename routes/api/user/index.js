@@ -44,7 +44,7 @@ var
  *      nickname: me
  */
 
-router.get('/me', helpers.authenticate, controller.me);
+router.get('/', helpers.authenticate, controller.me);
 
 /**
  * @swagger
