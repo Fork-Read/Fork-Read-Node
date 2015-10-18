@@ -85,6 +85,7 @@ var
     user = require('./routes/api/user/index'),
     books = require('./routes/api/books/index'),
     admin = require('./routes/admin'),
+    book_own = require('./routes/api/book-own/index'),
     publicRoute = require('./routes/public');
 
 var swaggerConfig = {
@@ -94,7 +95,7 @@ var swaggerConfig = {
     swaggerJSON: '/api-docs.json',
     swaggerUI: './public/swagger/',
     basePath: 'http://localhost:3000',
-    apis: ['./routes/api/user/index.js', './routes/api/books/index.js'],
+    apis: ['./routes/api/user/index.js', './routes/api/books/index.js', './routes/api/book-own/index.js'],
     middleware: function (req, res) {}
 };
 
@@ -138,6 +139,7 @@ app.use('/public', publicRoute);
 app.use('/admin', admin);
 app.use('/api/user', user);
 app.use('/api/books', books);
+app.use('/api/book/own', book_own);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

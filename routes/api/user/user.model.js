@@ -11,7 +11,8 @@ var mongoose = require('mongoose'),
  * gender       - User's gender
  * location     - User's location with latitude and longitude
  * active       - User is active or inactive
- * provider     - Google (1), Facebook (2)
+ * isGoogle     - true if google logged in
+ * isFacebook   - true if facebook logged in
  *
  */
 
@@ -49,11 +50,22 @@ var schema = mongoose.Schema({
         'type': String,
         'default': true
     },
-    'provider': Number,
+    'isGoogle': {
+        'type': Boolean,
+        'default': false
+    },
+    'isFacebook': {
+        'type': Boolean,
+        'default': false
+    },
     'oauthToken': String,
     'refreshToken': String,
     'accessToken': String,
-    'salt': String
+    'salt': String,
+    'created_at': {
+        'type': String,
+        'default': (Date.now()).toString()
+    }
 });
 
 /**

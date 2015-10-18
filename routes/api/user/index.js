@@ -29,8 +29,10 @@ var
  *         type: String
  *       active:
  *         type: Boolean
- *       provider:
- *          type: Number
+ *       isGoogle:
+ *          type: Boolean
+ *       isFacebook:
+ *          type: Boolean
  */
 
 /**
@@ -78,11 +80,16 @@ router.get('/', helpers.authenticate, controller.me);
  *          paramType: query
  *          required: true
  *          dataType: string
- *        - name: provider
- *          description: Google - 1/Facebook - 2
+ *        - name: isGoogle
+ *          description: true if logged in via Google
  *          paramType: query
  *          required: true
- *          dataType: number
+ *          dataType: boolean
+ *        - name: isFacebook
+ *          description: true if logged in via Facebook
+ *          paramType: query
+ *          required: true
+ *          dataType: boolean
  *        - name: gender
  *          description: User's Gender
  *          paramType: query

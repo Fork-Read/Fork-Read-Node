@@ -40,6 +40,10 @@ var schema = mongoose.Schema({
     description: {
         'type': String,
         'trim': true
+    },
+    created_at: {
+        'type': String,
+        'default': (Date.now()).toString()
     }
 });
 

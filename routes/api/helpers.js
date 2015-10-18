@@ -28,6 +28,12 @@ Helper.prototype.handleError = function (res, err) {
     return res.status(500).send(err);
 }
 
+Helper.prototype.missingParams = function (res) {
+    return res.status(200).send({
+        'message': 'Parameters missing'
+    });
+}
+
 function accessDenied(res) {
     return res.status(403).send({
         'message': 'User is not authenticated. Please authenticate.'
