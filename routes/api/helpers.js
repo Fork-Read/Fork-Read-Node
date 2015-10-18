@@ -34,6 +34,12 @@ Helper.prototype.missingParams = function (res) {
     });
 }
 
+Helper.prototype.permissionDenied = function (res) {
+    return res.status(200).send({
+        'message': 'Permission Denied'
+    });
+}
+
 function accessDenied(res) {
     return res.status(403).send({
         'message': 'User is not authenticated. Please authenticate.'

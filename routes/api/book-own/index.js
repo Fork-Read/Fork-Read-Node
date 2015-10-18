@@ -94,16 +94,16 @@ router.post('/:id', helpers.authenticate, controller.add);
  * @swagger
  * path: /:id
  * operations:
- *   -  httpMethod: POST
- *      summary: Add book to the owned list
- *      notes: Returns the owned book structure
+ *   -  httpMethod: DELETE
+ *      summary: Remove book from owned list
+ *      notes: Returns the deleted owned book structure
  *      responseClass: BookOwn
  *      nickname: add
  *      consumes:
  *        - application/json
  *      parameters:
  *        - name: id
- *          description: _id of the Book
+ *          description: _id of the Book to delete
  *          paramType: query
  *          required: true
  *          dataType: string

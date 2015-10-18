@@ -87,14 +87,17 @@ var controller = {
             if (err) {
                 helpers.handleError(res, err);
             }
+            if (model) {
+                model.remove(function (err, obj) {
+                    if (err) {
+                        helpers.handleError(res, err);
+                    }
 
-            model.remove(function (err, obj) {
-                if (err) {
-                    helpers.handleError(res, err);
-                }
-
-                res.status(201).json(obj);
-            })
+                    res.status(201).json(obj);
+                })
+            } else {
+                helpers.permissionDenied(res);
+            }
         })
     }
 }
