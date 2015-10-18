@@ -6,7 +6,7 @@ var
 
 /**
  * @swagger
- * resourcePath: '/book/like'
+ * resourcePath: '/like'
  * description: Books Like API
  */
 
@@ -50,7 +50,7 @@ var
 
 /**
  * @swagger
- * path: /:id
+ * path: /{id}
  * operations:
  *   -  httpMethod: GET
  *      summary: Get liked books
@@ -71,7 +71,7 @@ router.get('/:id?', helpers.authenticate, controller.get);
 
 /**
  * @swagger
- * path: /:id
+ * path: /{id}
  * operations:
  *   -  httpMethod: POST
  *      summary: Add book to the liked list
@@ -92,7 +92,7 @@ router.post('/:id', helpers.authenticate, controller.add);
 
 /**
  * @swagger
- * path: /:id
+ * path: /{id}
  * operations:
  *   -  httpMethod: DELETE
  *      summary: Remove book from liked list

@@ -6,7 +6,7 @@ var
 
 /**
  * @swagger
- * resourcePath: '/book/own'
+ * resourcePath: "/own"
  * description: Books Own API
  */
 
@@ -50,7 +50,7 @@ var
 
 /**
  * @swagger
- * path: /:id
+ * path: /{id}
  * operations:
  *   -  httpMethod: GET
  *      summary: Get owned books
@@ -71,7 +71,7 @@ router.get('/:id?', helpers.authenticate, controller.get);
 
 /**
  * @swagger
- * path: /:id
+ * path: /{id}
  * operations:
  *   -  httpMethod: POST
  *      summary: Add book to the owned list
@@ -92,7 +92,7 @@ router.post('/:id', helpers.authenticate, controller.add);
 
 /**
  * @swagger
- * path: /:id
+ * path: /{id}
  * operations:
  *   -  httpMethod: DELETE
  *      summary: Remove book from owned list

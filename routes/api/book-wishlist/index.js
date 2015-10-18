@@ -6,7 +6,7 @@ var
 
 /**
  * @swagger
- * resourcePath: '/book/wishlist'
+ * resourcePath: '/wishlist'
  * description: Books Wished API
  */
 
@@ -50,7 +50,7 @@ var
 
 /**
  * @swagger
- * path: /:id
+ * path: /{id}
  * operations:
  *   -  httpMethod: GET
  *      summary: Get wished books
@@ -71,7 +71,7 @@ router.get('/:id?', helpers.authenticate, controller.get);
 
 /**
  * @swagger
- * path: /:id
+ * path: /{id}
  * operations:
  *   -  httpMethod: POST
  *      summary: Add book to the wished list
@@ -92,7 +92,7 @@ router.post('/:id', helpers.authenticate, controller.add);
 
 /**
  * @swagger
- * path: /:id
+ * path: /{id}
  * operations:
  *   -  httpMethod: DELETE
  *      summary: Remove book from liked list
