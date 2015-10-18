@@ -87,6 +87,7 @@ var
     admin = require('./routes/admin'),
     book_own = require('./routes/api/book-own/index'),
     book_like = require('./routes/api/book-like/index'),
+    book_wish = require('./routes/api/book-wishlist/index'),
     publicRoute = require('./routes/public');
 
 var swaggerConfig = {
@@ -142,6 +143,7 @@ app.use('/api/user', user);
 app.use('/api/books', books);
 app.use('/api/book/own', book_own);
 app.use('/api/book/like', book_like);
+app.use('/api/book/wishlist', book_wish);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

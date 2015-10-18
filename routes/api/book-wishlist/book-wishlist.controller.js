@@ -2,7 +2,7 @@ var
     gcm = require('node-gcm'),
     async = require('async'),
     _ = require('underscore'),
-    BookOwn = require('./book-own.model'),
+    BookWishlist = require('./book-wishlist.model'),
     Book = require('../books/book.model'),
     helpers = require('../helpers');
 
@@ -19,16 +19,16 @@ var controller = {
             'books': []
         }
 
-        BookOwn.find({
+        BookWishlist.find({
             'user_id': user_id
-        }, function (err, books_owned) {
+        }, function (err, books_wished) {
             if (err) {
                 helpers.handleError(res, err);
             }
 
-            async.each(books_owned, function (owned_obj, next) {
+            async.each(books_wished, function (wished_obj, next) {
                 Book.findOne({
-                    '_id': owned_obj.book_id
+                    '_id': wished_obj.book_id
                 }, function (err, book) {
                     if (err) {
                         helpers.handleError(res, err);
@@ -51,26 +51,26 @@ var controller = {
     },
     add: function (req, res) {
         if (req.params.id) {
-            BookOwn.findOne({
+            BookWishlist.findOne({
                 'book_id': req.params.id,
                 'user_id': req.user._id
-            }, function (err, ownObj) {
+            }, function (err, wishObj) {
                 if (err) {
                     helpers.handleError(res, err);
                 }
 
-                if (ownObj) {
-                    res.status(201).json(ownObj);
+                if (wishObj) {
+                    res.status(201).json(wishObj);
                 } else {
-                    BookOwn.create({
+                    BookWishlist.create({
                         'book_id': req.params.id,
                         'user_id': req.user._id
-                    }, function (err, book_own) {
+                    }, function (err, book_wish) {
                         if (err) {
                             helpers.handleError(res, err);
                         }
 
-                        res.status(201).json(book_own);
+                        res.status(201).json(book_wish);
                     });
                 }
             })
@@ -79,7 +79,7 @@ var controller = {
         }
     },
     remove: function (req, res) {
-        BookOwn.findOne({
+        BookWishlist.findOne({
             'book_id': req.params.id,
             'user_id': req.user._id
         }, function (err, model) {
