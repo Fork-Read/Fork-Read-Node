@@ -80,7 +80,22 @@ var controller = {
         }
     },
     remove: function (req, res) {
+        BookOwn.findOne({
+            'book_id': req.params.id,
+            'user_id': req.user._id
+        }, function (err, model) {
+            if (err) {
+                helpers.handleError(res, err);
+            }
 
+            model.remove(function (err, obj) {
+                if (err) {
+                    helpers.handleError(res, err);
+                }
+
+                res.status(201).json(obj);
+            })
+        })
     }
 }
 
