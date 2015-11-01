@@ -58,6 +58,10 @@ var schema = mongoose.Schema({
         'type': Boolean,
         'default': false
     },
+    'role': {
+        'type': String,
+        'default': 'user'
+    },
     'oauthToken': String,
     'refreshToken': String,
     'accessToken': String,

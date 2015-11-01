@@ -10,8 +10,7 @@ var
     session = require('express-session'),
     elasticsearch = require('elasticsearch'),
     swagger = require('swagger-express'),
-    cors = require('cors'),
-    AdminModel = require('./models/AdminModel');
+    cors = require('cors');
 
 // Here we find an appropriate database to connect to, defaulting to
 // localhost if we don't find one.
