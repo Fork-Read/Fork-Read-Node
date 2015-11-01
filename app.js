@@ -7,12 +7,10 @@ var
     bodyParser = require('body-parser'),
     http = require('http'), // For serving a basic web page.
     mongoose = require("mongoose"),
-    passport = require('passport'),
     session = require('express-session'),
     elasticsearch = require('elasticsearch'),
     swagger = require('swagger-express'),
     cors = require('cors'),
-    LocalStrategy = require('passport-local').Strategy,
     AdminModel = require('./models/AdminModel');
 
 // Here we find an appropriate database to connect to, defaulting to
@@ -34,40 +32,6 @@ mongoose.connect(uristring, function (err, res) {
     }
 });
 
-passport.use(new LocalStrategy(
-    function (username, password, done) {
-        AdminModel.findOne({
-            username: username
-        }, function (err, admin) {
-            if (err) {
-                return done(err);
-            }
-
-            if (!admin) {
-                return done(null, false, {
-                    message: 'Incorrect username.'
-                });
-            }
-            if (!admin.validPassword(password)) {
-                return done(null, false, {
-                    message: 'Incorrect password.'
-                });
-            }
-            return done(null, admin);
-        });
-    }
-));
-
-passport.serializeUser(function (admin, done) {
-    done(null, admin._id);
-});
-
-passport.deserializeUser(function (id, done) {
-    AdminModel.findById(id, function (err, admin) {
-        done(err, admin);
-    });
-});
-
 var connectionString = process.env.SEARCHBOX_URL;
 
 // Use local elastic search if connection string not found
@@ -84,11 +48,9 @@ var
     routes = require('./routes/index'),
     user = require('./routes/api/user/index'),
     books = require('./routes/api/books/index'),
-    admin = require('./routes/admin'),
     book_own = require('./routes/api/book-own/index'),
     book_like = require('./routes/api/book-like/index'),
-    book_wish = require('./routes/api/book-wishlist/index'),
-    publicRoute = require('./routes/public');
+    book_wish = require('./routes/api/book-wishlist/index');
 
 var swaggerConfig = {
     apiVersion: '0.0.1',
@@ -130,15 +92,11 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(cors());
 app.use(swagger.init(app, swaggerConfig));
 
 // Routes Used
 app.use('/', routes);
-app.use('/public', publicRoute);
-app.use('/admin', admin);
 app.use('/api/user', user);
 app.use('/api/books', books);
 app.use('/api/own', book_own);
