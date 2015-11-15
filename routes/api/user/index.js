@@ -1,9 +1,9 @@
 var
-    express = require('express'),
-    router = express.Router(),
-    gcm = require('node-gcm'),
-    controller = require('./user.controller'),
-    helpers = require('../helpers');
+  express = require('express'),
+  router = express.Router(),
+  gcm = require('node-gcm'),
+  controller = require('./user.controller'),
+  helpers = require('../helpers');
 
 /**
  * @swagger
@@ -111,34 +111,55 @@ router.get('/', helpers.authenticate, controller.me);
  *          required: true
  *          dataType: json
  */
+
 router.post('/', controller.create);
+
+/**
+ * @swagger
+ * path: /otp
+ * operations:
+ *   -  httpMethod: POST
+ *      summary: Send OTP for verfication
+ *      notes: Returns the sent OTP
+ *      nickname: otp
+ *      consumes:
+ *        - application/json
+ *      parameters:
+ *        - name: number
+ *          description: Number to verify
+ *          paramType: query
+ *          required: true
+ *          dataType: string
+ */
+
+router.post('/otp', controller.otp);
 
 router.post('/message/send', function (req, res) {
 
-    if (!req.body.user && !req.body.targetUser) {
-        res.redirect('/noResult');
-    }
+  if (!req.body.user && !req.body.targetUser) {
+    res.redirect('/noResult');
+  }
 
-    controller.sendMessage(req.body.user, req.body.targetUser, req.body.message, function (isSent) {
-        if (isSent) {
-            res.set('Content-Type', 'application/json');
-            res.send(JSON.stringify(isSent));
-        } else {
-            res.redirect('/noResult');
-        }
-    });
+  controller.sendMessage(req.body.user, req.body.targetUser, req.body.message, function (isSent) {
+    if (isSent) {
+      res.set('Content-Type', 'application/json');
+      res.send(JSON.stringify(isSent));
+    } else {
+      res.redirect('/noResult');
+    }
+  });
 });
 
 router.get('/messages', function (req, res) {
 
-    if (!req.body.user && !req.body.device) {
-        res.redirect('/noResult');
-    }
+  if (!req.body.user && !req.body.device) {
+    res.redirect('/noResult');
+  }
 
-    controller.getMessage(req.body.user, req.body.device, function (message) {
-        res.set('Content-Type', 'application/json');
-        res.send(JSON.stringify(message));
-    });
+  controller.getMessage(req.body.user, req.body.device, function (message) {
+    res.set('Content-Type', 'application/json');
+    res.send(JSON.stringify(message));
+  });
 });
 
 module.exports = router;
