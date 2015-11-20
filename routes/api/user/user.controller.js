@@ -56,10 +56,30 @@ var controller = {
       from: "+12017731151",
       body: 'Enter ' + otp + ' for one time verification of your number on ForkRead.',
     }, function (err, message) {
-      return res.status(201).json({
-        'otp': otp
-      });
     });
+
+    var data = {
+    //Specify email data
+      from: 'forkreadpost@forkread.com',
+    //The email to contact
+      to: req.body.email.toString(),
+    //Subject and text data  
+      subject: 'OTP for first time verification by email',
+      html: 'please use this number to verify your email id'
+    }
+    mailgun.messages().send(data, function(err,body){
+      if(err){
+        res.staus(500).json({
+          'error':err
+        })
+      }
+      else{
+        return res.status(201).json({
+          'success': 'otp has been sent to your registered email id'
+        })
+      }
+    })
+
   }
   // sendMessage: function (senderID, receiverID, message, callback) {
   //     var messageData = new gcm.Message(),
