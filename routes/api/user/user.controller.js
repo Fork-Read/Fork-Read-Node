@@ -2,6 +2,12 @@ var
 // Twilio Credentials 
   accountSid = 'AC688715f5b7d28ed07ee03e71b6364c08',
   authToken = 'b4e755e60cea3299ca44afaa85702418',
+  //mail gun api key
+  api_key = 'key-6a53211a108d8c3d54eef6c5dd65d3b2',
+  //mail gun  domain name 
+  domain = 'sandbox025db70253544252bf9ce075f1eebc16.mailgun.org',
+  Mailgun = require('mailgun-js'),
+  mailgun = new Mailgun({apiKey: api_key, domain: domain});
 
   gcm = require('node-gcm'),
   async = require('async'),
