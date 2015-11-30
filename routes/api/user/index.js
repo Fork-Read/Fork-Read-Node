@@ -114,24 +114,6 @@ router.get('/', helpers.authenticate, controller.me);
 
 router.post('/', controller.create);
 
-/**
- * @swagger
- * path: /otp
- * operations:
- *   -  httpMethod: POST
- *      summary: Send OTP for verfication
- *      notes: Returns the sent OTP
- *      nickname: otp
- *      consumes:
- *        - application/json
- *      parameters:
- *        - name: number
- *          description: Number to verify
- *          paramType: query
- *          required: true
- *          dataType: string
- */
-
 router.post('/message/send', function (req, res) {
 
   if (!req.body.user && !req.body.targetUser) {

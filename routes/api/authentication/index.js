@@ -7,6 +7,12 @@ var
 
 /**
  * @swagger
+ * resourcePath: /authentication
+ * description: Authentication API
+ */
+
+/**
+ * @swagger
  * path: /otp
  * operations:
  *   -  httpMethod: POST
@@ -24,6 +30,29 @@ var
  */
 
 router.post('/otp', controller.otp);
+
+/**
+ * @swagger
+ * path: /verify
+ * operations:
+ *   -  httpMethod: POST
+ *      summary: Verify sent OTP
+ *      notes: Returns if verified or not
+ *      nickname: verify
+ *      consumes:
+ *        - application/json
+ *      parameters:
+ *        - name: number
+ *          description: Number to verify
+ *          paramType: query
+ *          required: true
+ *          dataType: string
+ *        - name: otp
+ *          description: OTP to confirm
+ *          paramType: query
+ *          required: true
+ *          dataType: string
+ */
 
 router.post('/verify', controller.verify);
 

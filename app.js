@@ -59,7 +59,14 @@ var swaggerConfig = {
   swaggerJSON: '/api-docs.json',
   swaggerUI: './public/swagger/',
   basePath: 'http://localhost:3000',
-  apis: ['./routes/api/user/index.js', './routes/api/books/index.js', './routes/api/book-own/index.js', './routes/api/book-like/index.js', './routes/api/book-wishlist/index.js'],
+  apis: [
+    './routes/api/user/index.js',
+    './routes/api/books/index.js',
+    './routes/api/book-own/index.js',
+    './routes/api/book-like/index.js',
+    './routes/api/book-wishlist/index.js',
+    './routes/api/authentication/index.js'
+  ],
   middleware: function (req, res) {}
 };
 
