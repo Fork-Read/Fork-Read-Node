@@ -132,8 +132,6 @@ router.post('/', controller.create);
  *          dataType: string
  */
 
-router.post('/otp', controller.otp);
-
 router.post('/message/send', function (req, res) {
 
   if (!req.body.user && !req.body.targetUser) {

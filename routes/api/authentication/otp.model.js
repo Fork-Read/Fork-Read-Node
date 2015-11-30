@@ -1,20 +1,20 @@
 var mongoose = require('mongoose');
 
 /*
- * Book Own Schema - Describes the basic structure of the Owned Books Table
+ * Book Wishlist Schema - Describes the basic structure of the Wishlist Books Table
  *
  * book_id        	- _id of the book
  * user_id        	- _id of the logged in user
- * created_at      	- Date in milliseconds on which user owned the book
+ * created_at      	- Date in milliseconds on which user wished the book
  *
  */
 
 var schema = mongoose.Schema({
-  'book_id': {
+  'number': {
     'type': String,
     'trim': true
   },
-  'user_id': {
+  'otp': {
     'type': String,
     'trim': true
   },
@@ -25,4 +25,4 @@ var schema = mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('book_own', schema);
+module.exports = mongoose.model('otp', schema);

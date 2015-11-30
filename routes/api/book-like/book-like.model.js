@@ -10,19 +10,19 @@ var mongoose = require('mongoose');
  */
 
 var schema = mongoose.Schema({
-    'book_id': {
-        'type': 'String',
-        'trim': true
-    },
-    'user_id': {
-        'type': 'String',
-        'trim': true
-    },
-    'created_at': {
-        'type': 'String',
-        'trim': true,
-        'default': (Date.now()).toString()
-    }
+  'book_id': {
+    'type': String,
+    'trim': true
+  },
+  'user_id': {
+    'type': String,
+    'trim': true
+  },
+  'created_at': {
+    'type': String,
+    'trim': true,
+    'default': (Date.now()).toString()
+  }
 });
 
 module.exports = mongoose.model('book_like', schema);
