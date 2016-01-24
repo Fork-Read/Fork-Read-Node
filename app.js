@@ -10,7 +10,8 @@ var
   session = require('express-session'),
   elasticsearch = require('elasticsearch'),
   swagger = require('swagger-express'),
-  cors = require('cors');
+  cors = require('cors'),
+  morgan = require('morgan');
 
 // Here we find an appropriate database to connect to, defaulting to
 // localhost if we don't find one.
@@ -86,6 +87,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // App Plugins
+app.use(morgan('dev'));
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({
