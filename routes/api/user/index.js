@@ -23,16 +23,8 @@ var
  *         type: String
  *       contact:
  *         type: String
- *       pictureUrl:
- *         type: String
- *       gender:
- *         type: String
  *       active:
  *         type: Boolean
- *       isGoogle:
- *          type: Boolean
- *       isFacebook:
- *          type: Boolean
  */
 
 /**
@@ -72,36 +64,6 @@ router.get('/', helpers.authenticate, controller.me);
  *          dataType: string
  *        - name: contact
  *          description: Verified Contact Number
- *          paramType: query
- *          required: true
- *          dataType: string
- *        - name: pictureUrl
- *          description: User's profile pic url from the provider
- *          paramType: query
- *          required: true
- *          dataType: string
- *        - name: isGoogle
- *          description: true if logged in via Google
- *          paramType: query
- *          required: true
- *          dataType: boolean
- *        - name: isFacebook
- *          description: true if logged in via Facebook
- *          paramType: query
- *          required: true
- *          dataType: boolean
- *        - name: gender
- *          description: User's Gender
- *          paramType: query
- *          required: true
- *          dataType: string
- *        - name: oauthToken
- *          description: oauthToken
- *          paramType: query
- *          required: true
- *          dataType: string
- *        - name: refreshToken
- *          description: refreshToken
  *          paramType: query
  *          required: true
  *          dataType: string

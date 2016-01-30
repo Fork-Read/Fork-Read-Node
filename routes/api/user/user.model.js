@@ -1,18 +1,14 @@
 var mongoose = require('mongoose'),
-  crypto = require('crypto');
+    crypto = require('crypto');
 
 /*
  * User Schema - Describes the basic structure of the User Data
  *
  * name         - User's name
  * email        - User's email
- * contact      - Users's contact number
- * pictureUrl   - User's profile pic url
- * gender       - User's gender
+ * number       - Users's contact number
  * location     - User's location with latitude and longitude
  * active       - User is active or inactive
- * isGoogle     - true if google logged in
- * isFacebook   - true if facebook logged in
  *
  */
 
@@ -25,12 +21,10 @@ var schema = mongoose.Schema({
     'type': String,
     'trim': true
   },
-  'contact': {
+  'number': {
     'type': String,
     'trim': true
   },
-  'pictureUrl': String,
-  'gender': String,
   'location': {
     'position': {
       'latitude': String,
@@ -50,20 +44,10 @@ var schema = mongoose.Schema({
     'type': String,
     'default': true
   },
-  'isGoogle': {
-    'type': Boolean,
-    'default': false
-  },
-  'isFacebook': {
-    'type': Boolean,
-    'default': false
-  },
   'role': {
     'type': String,
-    'default': 'user'
+    'default': 'User'
   },
-  'oauthToken': String,
-  'refreshToken': String,
   'accessToken': String,
   'salt': String,
   'created_at': {
@@ -82,7 +66,7 @@ var schema = mongoose.Schema({
 
 schema.pre('save', function (next) {
   this.salt = this.makeSalt();
-  this.accessToken = this.encryptToken(this.oauthToken);
+  this.accessToken = this.encryptToken(this.number);
   next();
 });
 
@@ -97,9 +81,9 @@ schema
   }, 'Email cannot be blank');
 
 schema
-  .path('contact')
-  .validate(function (contact) {
-    return contact.length;
+  .path('number')
+  .validate(function (number) {
+    return number.length;
   }, 'Contact Number cannot be blank');
 
 /*
@@ -123,10 +107,10 @@ schema.methods = {
    * @return {String}
    * @api public
    */
-  encryptToken: function (oauthToken) {
-    if (!oauthToken || !this.salt) return '';
+  encryptToken: function (number) {
+    if (!number || !this.salt) return '';
     var salt = new Buffer(this.salt, 'base64');
-    return crypto.pbkdf2Sync(oauthToken, salt, 10000, 64).toString('base64');
+    return crypto.pbkdf2Sync(number, salt, 10000, 64).toString('base64');
   }
 };
 

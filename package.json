@@ -17,6 +17,7 @@
     "debug": "~2.0.0",
     "ejs": "~1.0.0",
     "elasticsearch": "10.1.2",
+    "eslint": "^1.10.3",
     "express": "~4.9.0",
     "express-session": "^1.9.3",
     "mailchimp": "^1.1.0",
@@ -28,5 +29,9 @@
     "swagger-express": "^1.0.5",
     "twilio": "^2.5.2",
     "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "eslint": "^1.10.3",
+    "eslint-config-google": "^0.3.0"
   }
 }
