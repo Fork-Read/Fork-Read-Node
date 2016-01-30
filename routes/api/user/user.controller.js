@@ -7,12 +7,19 @@ var
 
 var controller = {
 
-  me: function (req, res) {
-    return res.status(200).json(req.user);
+  get: function (req, res) {
+    User.findOne({
+      'number': number
+    }, function (err, user) {
+      if (err) {
+        return helpers.handleError(res,err);
+      }
+      res.status(200).json(user);
+    })
   },
   create: function (req, res) {
     User.findOne({
-      'contact': req.body.contact
+      'number': req.body.number
     }, function (err, usr) {
       if (err) {
         return helpers.handleError(res, err);
@@ -20,7 +27,7 @@ var controller = {
 
       if (usr) {
         return res.status(201).json({
-          'accessToken': usr.accessToken
+          'already_registered': true
         });
       } else {
         User.create(req.body, function (err, user) {

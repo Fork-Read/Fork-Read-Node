@@ -33,12 +33,12 @@ var
  * operations:
  *   -  httpMethod: GET
  *      summary: Get current logged in user
- *      notes: Returns a user based on the access token set in header X-Access-Token
+ *      notes: Returns a user based on the number sent
  *      responseClass: User
  *      nickname: me
  */
 
-router.get('/', helpers.authenticate, controller.me);
+router.get('/', controller.get);
 
 /**
  * @swagger
