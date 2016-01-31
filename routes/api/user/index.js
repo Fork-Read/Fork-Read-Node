@@ -32,10 +32,8 @@ var
  * path: /
  * operations:
  *   -  httpMethod: GET
- *      summary: Get current logged in user
- *      notes: Returns a user based on the number sent
+ *      summary: Get array of all users
  *      responseClass: User
- *      nickname: me
  */
 
 router.get('/', controller.get);
@@ -48,7 +46,6 @@ router.get('/', controller.get);
  *      summary: Returns user with specific id
  *      notes: Returns a user based on the number sent
  *      responseClass: User
- *      nickname: me
  */
 
 router.get('/:id', controller.getById);
@@ -61,7 +58,7 @@ router.get('/:id', controller.getById);
  *      summary: Returns access token of the user
  *      notes: Returns a user based on the number sent
  *      responseClass: User
- *      nickname: me
+ *      nickname: login
  */
 
 router.post('/login', controller.login);
@@ -72,9 +69,9 @@ router.post('/login', controller.login);
  * operations:
  *   -  httpMethod: POST
  *      summary: Register User
- *      notes: Returns access token to be sent in every request as header X-Access-Token
+ *      notes: Returns user object with accessToken to be sent in every request as header X-Access-Token
  *      responseClass: String
- *      nickname: login
+ *      nickname: signup
  *      consumes:
  *        - application/json
  *      parameters:
