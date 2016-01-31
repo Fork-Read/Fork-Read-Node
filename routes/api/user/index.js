@@ -1,7 +1,6 @@
 var
   express = require('express'),
   router = express.Router(),
-  gcm = require('node-gcm'),
   controller = require('./user.controller'),
   helpers = require('../helpers');
 
