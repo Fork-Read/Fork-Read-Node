@@ -99,32 +99,17 @@ router.post('/login', controller.login);
 
 router.post('/', controller.create);
 
-router.post('/message/send', function (req, res) {
+/**
+ * @swagger
+ * path: /:id
+ * operations:
+ *   -  httpMethod: PUT
+ *      summary: Updates the user details with received user details if he's the logged in user
+ *      notes: User Data Updation
+ *      responseClass: User
+ *      nickname: update
+ */
 
-  if (!req.body.user && !req.body.targetUser) {
-    res.redirect('/noResult');
-  }
-
-  controller.sendMessage(req.body.user, req.body.targetUser, req.body.message, function (isSent) {
-    if (isSent) {
-      res.set('Content-Type', 'application/json');
-      res.send(JSON.stringify(isSent));
-    } else {
-      res.redirect('/noResult');
-    }
-  });
-});
-
-router.get('/messages', function (req, res) {
-
-  if (!req.body.user && !req.body.device) {
-    res.redirect('/noResult');
-  }
-
-  controller.getMessage(req.body.user, req.body.device, function (message) {
-    res.set('Content-Type', 'application/json');
-    res.send(JSON.stringify(message));
-  });
-});
+router.put('/:id', controller.update);
 
 module.exports = router;

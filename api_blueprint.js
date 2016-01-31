@@ -29,8 +29,15 @@
     'DELETE /api/users/:id': {
       'desc': 'Deletes a specific user and returns it. Does a soft delete',
       'response': '200 application/json',
+      'data': {},
+      'comments': 'Not Implemented as of now'
+    },
+
+    'POST /api/users/login': {
+      'desc': 'Checks if user exists and logs him in else returns that user does not exists',
+      'response': '201 application/json',
       'data': {}
-    }
+    },
   },
 
   'books': {

@@ -71,6 +71,21 @@ var controller = {
         });
       }
     });
+  },
+  update: function (req, res) {
+    if (req.user._id == res.body._id) {
+      User.update({
+        '_id': req.body._id
+      }, req.body, function (err, user) {
+        if(err) {
+          return helpers.handleError(res, err);
+        }
+
+        res.status(201).json(user);
+      })
+    } else {
+      return helpers.permissionDenied(res);
+    }
   }
 }
 
