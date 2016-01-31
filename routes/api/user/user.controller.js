@@ -1,7 +1,5 @@
 var
-  gcm = require('node-gcm'),
   async = require('async'),
-  _ = require('underscore'),
   User = require('./user.model'),
   helpers = require('../helpers');
 
@@ -74,8 +72,12 @@ var controller = {
   },
   update: function (req, res) {
     if (req.user._id == res.body._id) {
+      
+      // req.user is the present state of the user object
+      req.body = _.merge(req.user, req.body);
+
       User.update({
-        '_id': req.body._id
+        '_id': req.user._id
       }, req.body, function (err, user) {
         if(err) {
           return helpers.handleError(res, err);

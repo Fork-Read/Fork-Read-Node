@@ -1,7 +1,4 @@
 var
-  gcm = require('node-gcm'),
-  async = require('async'),
-  _ = require('underscore'),
   User = require('./../user/user.model'),
   Otp = require('./otp.model'),
   helpers = require('../helpers'),

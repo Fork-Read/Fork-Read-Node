@@ -3,11 +3,9 @@ var
   path = require('path'),
   favicon = require('serve-favicon'),
   logger = require('morgan'),
-  cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),
   http = require('http'), // For serving a basic web page.
   mongoose = require("mongoose"),
-  session = require('express-session'),
   elasticsearch = require('elasticsearch'),
   swagger = require('swagger-express'),
   cors = require('cors'),
@@ -94,13 +92,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true
-}));
 app.use(cors());
 app.use(swagger.init(app, swaggerConfig));
 

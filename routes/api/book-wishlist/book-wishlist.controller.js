@@ -1,7 +1,5 @@
 var
-    gcm = require('node-gcm'),
     async = require('async'),
-    _ = require('underscore'),
     BookWishlist = require('./book-wishlist.model'),
     Book = require('../books/book.model'),
     helpers = require('../helpers');
