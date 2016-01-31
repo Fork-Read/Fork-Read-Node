@@ -29,7 +29,7 @@ var
 
 /**
  * @swagger
- * path: /me
+ * path: /
  * operations:
  *   -  httpMethod: GET
  *      summary: Get current logged in user
@@ -39,6 +39,32 @@ var
  */
 
 router.get('/', controller.get);
+
+/**
+ * @swagger
+ * path: /:id
+ * operations:
+ *   -  httpMethod: GET
+ *      summary: Returns user with specific id
+ *      notes: Returns a user based on the number sent
+ *      responseClass: User
+ *      nickname: me
+ */
+
+router.get('/:id', controller.getById);
+
+/**
+ * @swagger
+ * path: /login
+ * operations:
+ *   -  httpMethod: GET
+ *      summary: Returns access token of the user
+ *      notes: Returns a user based on the number sent
+ *      responseClass: User
+ *      nickname: me
+ */
+
+router.post('/login', controller.login);
 
 /**
  * @swagger

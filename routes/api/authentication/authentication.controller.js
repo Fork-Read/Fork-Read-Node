@@ -2,6 +2,7 @@ var
   gcm = require('node-gcm'),
   async = require('async'),
   _ = require('underscore'),
+  User = require('./../user/user.model'),
   Otp = require('./otp.model'),
   helpers = require('../helpers'),
   twilio = {
@@ -106,6 +107,16 @@ var controller = {
       if (err) {
         return helpers.handleError(res, err);
       }
+
+      User.update({
+        'number': req.body.number
+      }, {
+        'isVerified': true
+      }, function (err, user) {
+        if(err) {
+          return helpers.handleError(res, err);
+        }
+      });
 
       res.status(201).json({
         'isVerified': obj && obj.otp == req.body.otp

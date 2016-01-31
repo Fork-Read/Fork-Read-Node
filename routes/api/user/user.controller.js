@@ -8,13 +8,44 @@ var
 var controller = {
 
   get: function (req, res) {
-    User.findOne({
-      'number': number
-    }, function (err, user) {
-      if (err) {
-        return helpers.handleError(res,err);
+    User.find({}, function(err, users) {
+      if(err) {
+        return helpers.handleError(res, err);
       }
+
+      res.status(200).json({
+        'users': users
+      });
+    });
+  },
+  getById: function (req, res) {
+    User.findOne({
+      '_id': req.params.id
+    }, function (err, user) {
+      if(err) {
+        return helpers.handleError(res, err);
+      }
+
       res.status(200).json(user);
+    })
+  },
+  login: function (req, res) {
+    User.findOne({
+      'number': req.body.number
+    }, function (err, user) {
+      if(err) {
+        return helpers.handleError(res, err);
+      }
+
+      if(user) {
+        user.is_registered = true;
+
+        res.status(200).json(user);
+      } else {
+        res.status(200).json({
+          'is_registered': false
+        });
+      }
     })
   },
   create: function (req, res) {
@@ -26,7 +57,7 @@ var controller = {
       }
 
       if (usr) {
-        return res.status(201).json({
+        return res.status(200).json({
           'already_registered': true
         });
       } else {
@@ -34,9 +65,9 @@ var controller = {
           if (err) {
             return helpers.handleError(res, err);
           }
-          return res.status(201).json({
-            'accessToken': user.accessToken
-          });
+
+          user.already_registered = false;
+          return res.status(201).json(user);
         });
       }
     });
