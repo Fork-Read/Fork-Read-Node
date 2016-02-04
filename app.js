@@ -49,6 +49,7 @@ var
   book_own = require('./routes/api/book-own/index'),
   book_like = require('./routes/api/book-like/index'),
   book_wish = require('./routes/api/book-wishlist/index'),
+  book_read = require('./routes/api/book-read/index'),
   authenticate = require('./routes/api/authentication/index');
 
 var swaggerConfig = {
@@ -99,10 +100,11 @@ app.use(swagger.init(app, swaggerConfig));
 // Routes Used
 app.use('/', routes);
 app.use('/api/user', user);
+app.use('/api/books/own', book_own);
+app.use('/api/books/like', book_like);
+app.use('/api/books/wishlist', book_wish);
+app.use('/api/books/read', book_read);
 app.use('/api/books', books);
-app.use('/api/own', book_own);
-app.use('/api/like', book_like);
-app.use('/api/wishlist', book_wish);
 app.use('/api/authentication', authenticate);
 
 // catch 404 and forward to error handler
