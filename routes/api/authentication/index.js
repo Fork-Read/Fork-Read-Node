@@ -21,14 +21,14 @@ var
  *      consumes:
  *        - application/json
  *      parameters:
- *        - name: number
+ *        - number: phone number
  *          description: Number to verify
  *          paramType: query
  *          required: true
  *          dataType: string
  */
 
-router.post('/otp', controller.otp);
+ router.post('/resend', controller.resend);
 
 /**
  * @swagger

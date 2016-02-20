@@ -47,4 +47,13 @@ var schema = mongoose.Schema({
     }
 });
 
+
+/*
+ * Virtual Methods
+ */
+
+schema.virtual('id').get(function(){
+    return this._id.toHexString();
+});
+
 module.exports = mongoose.model('book', schema);

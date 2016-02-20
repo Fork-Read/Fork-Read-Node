@@ -2,7 +2,6 @@ var
   express = require('express'),
   path = require('path'),
   favicon = require('serve-favicon'),
-  logger = require('morgan'),
   bodyParser = require('body-parser'),
   http = require('http'), // For serving a basic web page.
   mongoose = require("mongoose"),
@@ -86,9 +85,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // App Plugins
-app.use(morgan('dev'));
+app.use(morgan(':remote-addr - :remote-user [:date[web]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"'));
 app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use(logger('dev'));
 app.use(bodyParser.urlencoded({
   extended: true
 }));

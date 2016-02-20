@@ -1,7 +1,8 @@
 var
   async = require('async'),
   User = require('./user.model'),
-  helpers = require('../helpers');
+  helpers = require('../helpers'),
+  authenticationController = require('../authentication/authentication.controller');
 
 var controller = {
 
@@ -38,6 +39,13 @@ var controller = {
       if(user) {
         user.is_registered = true;
 
+        authenticationController.otp(user.number);
+
+        delete user.salt;
+        delete user._id;
+        delete user.number;
+        delete user.email;
+
         res.status(200).json(user);
       } else {
         res.status(200).json({
@@ -47,6 +55,11 @@ var controller = {
     })
   },
   create: function (req, res) {
+
+    // Delete isVerified and active key if present in request
+    delete req.body.isVerified;
+    delete req.body.active;
+
     User.findOne({
       'number': req.body.number
     }, function (err, usr) {
@@ -64,8 +77,11 @@ var controller = {
             return helpers.handleError(res, err);
           }
 
-          user.already_registered = false;
-          return res.status(201).json(user);
+          authenticationController.otp(user.number);
+          
+          return res.status(201).json({
+            'already_registered': false
+          });
         });
       }
     });

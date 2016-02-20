@@ -54,6 +54,10 @@ var schema = mongoose.Schema({
     'type': String,
     'default': (Date.now()).toString()
   },
+  'updated_at': {
+    'type': String,
+    'default': (Date.now()).toString()
+  },
   'isVerified': {
     'type': Boolean,
     'default': false
@@ -68,6 +72,14 @@ schema.pre('save', function (next) {
   this.salt = this.makeSalt();
   this.accessToken = this.encryptToken(this.number);
   next();
+});
+
+/*
+ * Virtual Methods
+ */
+
+schema.virtual('id').get(function(){
+    return this._id.toHexString();
 });
 
 /*
