@@ -24,6 +24,9 @@ var controller = {
       if(err) {
         return helpers.handleError(res, err);
       }
+      
+      delete user.email;
+      delete user.number;
 
       res.status(200).json(user);
     })
