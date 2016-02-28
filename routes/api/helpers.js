@@ -5,9 +5,9 @@ var Helper = function () {};
 Helper.prototype.authenticate = function (req, res, next) {
   var self = this;
   if (req.headers['x-access-token']) {
-    req.accessToken = req.headers['x-access-token'];
+    req.access_token = req.headers['x-access-token'];
     User.findOne({
-      'accessToken': req.accessToken
+      'access_token': req.access_token
     }, function (err, user) {
       if (err) {
         self.handleError(res, err);

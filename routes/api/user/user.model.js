@@ -31,13 +31,10 @@ var schema = mongoose.Schema({
       'longitude': String
     },
     'address': {
-      'location': String,
-      'street': String,
+      'locality': String,
       'city': String,
       'state': String,
-      'country': String,
-      'zipcode': String,
-      'formatted_address': String
+      'country': String
     },
   },
   'active': {
@@ -48,7 +45,7 @@ var schema = mongoose.Schema({
     'type': String,
     'default': 'User'
   },
-  'accessToken': String,
+  'access_token': String,
   'salt': String,
   'created_at': {
     'type': String,
@@ -58,7 +55,7 @@ var schema = mongoose.Schema({
     'type': String,
     'default': (Date.now()).toString()
   },
-  'isVerified': {
+  'verified': {
     'type': Boolean,
     'default': false
   }
@@ -70,7 +67,7 @@ var schema = mongoose.Schema({
 
 schema.pre('save', function (next) {
   this.salt = this.makeSalt();
-  this.accessToken = this.encryptToken(this.number);
+  this.access_token = this.encryptToken(this.number);
   next();
 });
 

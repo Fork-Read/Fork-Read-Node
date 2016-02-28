@@ -48,6 +48,7 @@ var controller = {
         delete user._id;
         delete user.number;
         delete user.email;
+        delete user.access_token;
 
         res.status(200).json(user);
       } else {
@@ -60,7 +61,7 @@ var controller = {
   create: function (req, res) {
 
     // Delete isVerified and active key if present in request
-    delete req.body.isVerified;
+    delete req.body.verified;
     delete req.body.active;
 
     User.findOne({
@@ -90,19 +91,19 @@ var controller = {
     });
   },
   update: function (req, res) {
-    if (req.user._id == res.body._id) {
+    if (req.user.id == res.body.id) {
       
       // req.user is the present state of the user object
       req.body = _.merge(req.user, req.body);
 
       User.update({
-        '_id': req.user._id
+        '_id': req.user.id
       }, req.body, function (err, user) {
         if(err) {
           return helpers.handleError(res, err);
         }
 
-        res.status(201).json(user);
+        res.status(200).json(user);
       })
     } else {
       return helpers.permissionDenied(res);

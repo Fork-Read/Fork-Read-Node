@@ -89,7 +89,8 @@ var controller = {
           from: "+12017731151",
           body: 'Enter ' + obj.otp + ' for one time verification of your number on ForkRead.',
         }, function (err, message) {
-          res.send(200).json({});
+          res.status(200).json({});
+          return;
         });
       } else {
         var otp = Math.floor(Math.random() * 90000) + 10000;
@@ -108,7 +109,8 @@ var controller = {
             from: "+12017731151",
             body: 'Enter ' + otp + ' for one time verification of your number on ForkRead.',
           }, function (err, message) {
-            res.send(200).json({});
+            res.status(200).json({});
+            return;
           });
         });
       }
@@ -123,25 +125,22 @@ var controller = {
       }
 
       if(obj.otp == req.body.otp){
-        User.update({
+        User.findOne({
           'number': req.body.number
-        }, {
-          'isVerified': true
-        }, function (err, user) {
+        }, function(err, user){
           if(err) {
             return helpers.handleError(res, err);
           }
 
           if(user){
-            res.status(201).json({
-              'id': user.id,
-              'accessToken': user.accessToken
-            });
+            user.save();
+            delete user.salt;
+            res.status(200).json(user);
           }
         });
       } else {
         res.status(200).json({
-          'isVerified': false
+          'verified': false
         });
       }
     })
