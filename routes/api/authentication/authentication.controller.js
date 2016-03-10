@@ -1,23 +1,8 @@
 var
   User = require('./../user/user.model'),
   Otp = require('./otp.model'),
-  helpers = require('../helpers'),
-  twilio = {
-    'accountSid': 'AC688715f5b7d28ed07ee03e71b6364c08',
-    'authToken': 'b4e755e60cea3299ca44afaa85702418'
-  };
-
-// //mail gun api key
-// api_key = 'key-6a53211a108d8c3d54eef6c5dd65d3b2',
-// //mail gun  domain name 
-// domain = 'sandbox025db70253544252bf9ce075f1eebc16.mailgun.org',
-// Mailgun = require('mailgun-js'),
-// mailgun = new Mailgun({
-//   apiKey: api_key,
-//   domain: domain
-// })
-
-twilio.client = require('twilio')(twilio.accountSid, twilio.authToken);
+  request = require('request'),
+  helpers = require('../helpers');
 
 var controller = {
 
@@ -43,13 +28,13 @@ var controller = {
             return false;
           }
 
-          twilio.client.messages.create({
-            to: number.toString(),
-            from: "+12017731151",
-            body: 'Enter ' + otp + ' for one time verification of your number on ForkRead.',
-          }, function (err, message) {
-            return true;
-          });
+          var message = 'OTP for phone number verification on ForkRead: ' + otp;
+
+          request
+            .get('https://control.msg91.com/api/sendhttp.php?authkey=106754AQHXQTHpCFK56e0ec22&mobiles=91'+ number +'&message=' + message + '&sender=VERIFY&route=4&country=91')
+            .on('response', function(response){
+              return true;
+            });
         });
 
       } else {
@@ -64,13 +49,13 @@ var controller = {
             return helpers.handleError(res, err);
           }
 
-          twilio.client.messages.create({
-            to: number.toString(),
-            from: "+12017731151",
-            body: 'Enter ' + otp + ' for one time verification of your number on ForkRead.',
-          }, function (err, message) {
-            return true;
-          });
+          var message = 'OTP for phone number verification on ForkRead: ' + otp;
+
+          request
+            .get('https://control.msg91.com/api/sendhttp.php?authkey=106754AQHXQTHpCFK56e0ec22&mobiles=91'+ number +'&message=' + message + '&sender=VERIFY&route=4&country=91')
+            .on('response', function(response){
+              return true;
+            });
         });
       }
     })
@@ -84,14 +69,16 @@ var controller = {
       }
 
       if(obj){
-        twilio.client.messages.create({
-          to: req.body.number.toString(),
-          from: "+12017731151",
-          body: 'Enter ' + obj.otp + ' for one time verification of your number on ForkRead.',
-        }, function (err, message) {
-          res.status(200).json({});
-          return;
-        });
+
+        var message = 'OTP for phone number verification on ForkRead: ' + obj.otp;
+
+        request
+          .get('https://control.msg91.com/api/sendhttp.php?authkey=106754AQHXQTHpCFK56e0ec22&mobiles=91'+ req.body.number +'&message=' + message + '&sender=VERIFY&route=4&country=91')
+          .on('response', function(response){
+            res.status(200).json({});
+            return;
+          });
+
       } else {
         var otp = Math.floor(Math.random() * 90000) + 10000;
 
@@ -104,14 +91,15 @@ var controller = {
             return helpers.handleError(res, err);
           }
 
-          twilio.client.messages.create({
-            to: req.body.number.toString(),
-            from: "+12017731151",
-            body: 'Enter ' + otp + ' for one time verification of your number on ForkRead.',
-          }, function (err, message) {
-            res.status(200).json({});
-            return;
-          });
+          var message = 'OTP for phone number verification on ForkRead: ' + otp;
+
+          request
+            .get('https://control.msg91.com/api/sendhttp.php?authkey=106754AQHXQTHpCFK56e0ec22&mobiles=91'+ req.body.number +'&message=' + message + '&sender=VERIFY&route=4&country=91')
+            .on('response', function(response){
+              res.status(200).json({});
+              return;
+            });
+
         });
       }
     });

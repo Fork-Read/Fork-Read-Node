@@ -98,12 +98,12 @@ var controller = {
 
       User.update({
         '_id': req.user.id
-      }, req.body, function (err, user) {
+      }, req.body, function (err, status) {
         if(err) {
           return helpers.handleError(res, err);
         }
 
-        res.status(200).json(user);
+        res.status(200).json({});
       })
     } else {
       return helpers.permissionDenied(res);
