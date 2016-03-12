@@ -4,6 +4,8 @@ var
   request = require('request'),
   helpers = require('../helpers');
 
+const OTP_TEXT = 'OTP for phone number verification on ForkRead is ';
+
 var controller = {
 
   otp: function (number) {
@@ -28,13 +30,23 @@ var controller = {
             return false;
           }
 
-          var message = 'OTP for phone number verification on ForkRead: ' + otp;
+          request({
+            url: 'https://control.msg91.com/api/sendhttp.php', //URL to hit
+            qs: {
+              'authkey': '106754AQHXQTHpCFK56e0ec22',
+              'mobiles': '91' + number,
+              'message': OTP_TEXT + otp,
+              'sender': 'VERIFY',
+              'route': 4,
+              'country': 91
+            }, //Query string data
+            method: 'GET', //Specify the method
+          }, function(error, response, body){
+            if(error) {
+                console.log(error);
+            }
+          });
 
-          request
-            .get('https://control.msg91.com/api/sendhttp.php?authkey=106754AQHXQTHpCFK56e0ec22&mobiles=91'+ number +'&message=' + message + '&sender=VERIFY&route=4&country=91')
-            .on('response', function(response){
-              return true;
-            });
         });
 
       } else {
@@ -49,13 +61,23 @@ var controller = {
             return helpers.handleError(res, err);
           }
 
-          var message = 'OTP for phone number verification on ForkRead: ' + otp;
+          request({
+            url: 'https://control.msg91.com/api/sendhttp.php', //URL to hit
+            qs: {
+              'authkey': '106754AQHXQTHpCFK56e0ec22',
+              'mobiles': '91' + number,
+              'message': OTP_TEXT + otp,
+              'sender': 'VERIFY',
+              'route': 4,
+              'country': 91
+            }, //Query string data
+            method: 'GET', //Specify the method
+          }, function(error, response, body){
+            if(error) {
+                console.log(error);
+            }
+          });
 
-          request
-            .get('https://control.msg91.com/api/sendhttp.php?authkey=106754AQHXQTHpCFK56e0ec22&mobiles=91'+ number +'&message=' + message + '&sender=VERIFY&route=4&country=91')
-            .on('response', function(response){
-              return true;
-            });
         });
       }
     })
@@ -70,14 +92,24 @@ var controller = {
 
       if(obj){
 
-        var message = 'OTP for phone number verification on ForkRead: ' + obj.otp;
-
-        request
-          .get('https://control.msg91.com/api/sendhttp.php?authkey=106754AQHXQTHpCFK56e0ec22&mobiles=91'+ req.body.number +'&message=' + message + '&sender=VERIFY&route=4&country=91')
-          .on('response', function(response){
+        request({
+          url: 'https://control.msg91.com/api/sendhttp.php',
+          qs: {
+            'authkey': '106754AQHXQTHpCFK56e0ec22',
+            'mobiles': '91' + req.body.number,
+            'message': OTP_TEXT + obj.otp,
+            'sender': 'VERIFY',
+            'route': 4,
+            'country': 91
+          },
+          method: 'GET',
+        }, function(error, response, body){
+          if(error) {
+              console.log(error);
+          } else {
             res.status(200).json({});
-            return;
-          });
+          }
+        });
 
       } else {
         var otp = Math.floor(Math.random() * 90000) + 10000;
@@ -91,14 +123,24 @@ var controller = {
             return helpers.handleError(res, err);
           }
 
-          var message = 'OTP for phone number verification on ForkRead: ' + otp;
-
-          request
-            .get('https://control.msg91.com/api/sendhttp.php?authkey=106754AQHXQTHpCFK56e0ec22&mobiles=91'+ req.body.number +'&message=' + message + '&sender=VERIFY&route=4&country=91')
-            .on('response', function(response){
+          request({
+            url: 'https://control.msg91.com/api/sendhttp.php',
+            qs: {
+              'authkey': '106754AQHXQTHpCFK56e0ec22',
+              'mobiles': '91' + req.body.number,
+              'message': OTP_TEXT + otp,
+              'sender': 'VERIFY',
+              'route': 4,
+              'country': 91
+            },
+            method: 'GET',
+          }, function(error, response, body){
+            if(error) {
+                console.log(error);
+            } else {
               res.status(200).json({});
-              return;
-            });
+            }
+          });
 
         });
       }
