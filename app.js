@@ -8,36 +8,24 @@ var
   elasticsearch = require('elasticsearch'),
   swagger = require('swagger-express'),
   cors = require('cors'),
-  morgan = require('morgan');
-
-// Here we find an appropriate database to connect to, defaulting to
-// localhost if we don't find one.
-var uristring = process.env.MONGOLAB_URI ||
-  process.env.MONGOHQ_URL ||
-  'mongodb://localhost:27017/snickers';
+  morgan = require('morgan'),
+  config = require('./config/environment');
 
 // The http server will listen to an appropriate port, or default to port 5000.
 var theport = process.env.PORT || 5000;
 
 // Makes connection asynchronously.  Mongoose will queue up database
 // operations and release them when the connection is complete.
-mongoose.connect(uristring, function (err, res) {
+mongoose.connect(config.mongo, function (err, res) {
   if (err) {
-    console.log('ERROR connecting to: ' + uristring + '. ' + err);
+    console.log('ERROR connecting to: ' + config.mongo + '. ' + err);
   } else {
-    console.log('Succeeded connected to: ' + uristring);
+    console.log('Succeeded connected to: ' + config.mongo);
   }
 });
 
-var connectionString = process.env.SEARCHBOX_URL;
-
-// Use local elastic search if connection string not found
-if (!connectionString) {
-  connectionString = 'localhost:9200';
-}
-
 var client = new elasticsearch.Client({
-  host: connectionString,
+  host: config.elasticsearch,
   log: 'trace'
 });
 
