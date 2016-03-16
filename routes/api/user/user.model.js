@@ -66,6 +66,7 @@ var schema = mongoose.Schema({
  */
 
 schema.pre('save', function (next) {
+  this.name = changeCase.titleCase(this.name);
   this.salt = this.makeSalt();
   this.access_token = this.encryptToken(this.number);
   next();
