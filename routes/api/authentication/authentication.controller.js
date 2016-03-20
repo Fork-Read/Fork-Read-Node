@@ -2,7 +2,6 @@ var
   User = require('./../user/user.model'),
   Otp = require('./otp.model'),
   request = require('request'),
-  config = require('./../../../config/environment'),
   helpers = require('../helpers');
 
 const OTP_TEXT = 'OTP for phone number verification on ForkRead is ';
@@ -32,13 +31,13 @@ var controller = {
           }
 
           request({
-            url: config.msg91.url, //URL to hit
+            url: process.env.MSG91_URL,
             qs: {
-              'authkey': config.msg91.auth_token,
+              'authkey': process.env.MSG91_TOKEN,
               'mobiles': '91' + number,
               'message': OTP_TEXT + otp,
-              'sender': config.msg91.sender,
-              'route': config.msg91.route,
+              'sender': process.env.MSG91_SENDER,
+              'route': process.env.MSG91_ROUTE,
               'country': 91
             }, //Query string data
             method: 'GET', //Specify the method
@@ -63,13 +62,13 @@ var controller = {
           }
 
           request({
-            url: config.msg91.url, //URL to hit
+            url: process.env.MSG91_URL,
             qs: {
-              'authkey': config.msg91.auth_token,
+              'authkey': process.env.MSG91_TOKEN,
               'mobiles': '91' + number,
               'message': OTP_TEXT + otp,
-              'sender': config.msg91.sender,
-              'route': config.msg91.route,
+              'sender': process.env.MSG91_SENDER,
+              'route': process.env.MSG91_ROUTE,
               'country': 91
             }, //Query string data
             method: 'GET', //Specify the method
@@ -94,13 +93,13 @@ var controller = {
       if(obj){
 
         request({
-          url: config.msg91.url,
+          url: process.env.MSG91_URL,
           qs: {
-            'authkey': config.msg91.auth_token,
+            'authkey': process.env.MSG91_TOKEN,
             'mobiles': '91' + req.body.number,
             'message': OTP_TEXT + obj.otp,
-            'sender': config.msg91.sender,
-            'route': config.msg91.route,
+            'sender': process.env.MSG91_SENDER,
+            'route': process.env.MSG91_ROUTE,
             'country': 91
           },
           method: 'GET',
@@ -125,13 +124,13 @@ var controller = {
           }
 
           request({
-            url: config.msg91.url,
+            url: process.env.MSG91_URL,
             qs: {
-              'authkey': config.msg91.auth_token,
+              'authkey': process.env.MSG91_TOKEN,
               'mobiles': '91' + req.body.number,
               'message': OTP_TEXT + otp,
-              'sender': config.msg91.sender,
-              'route': config.msg91.route,
+              'sender': process.env.MSG91_SENDER,
+              'route': process.env.MSG91_ROUTE,
               'country': 91
             },
             method: 'GET',

@@ -8,24 +8,25 @@ var
   elasticsearch = require('elasticsearch'),
   swagger = require('swagger-express'),
   cors = require('cors'),
-  morgan = require('morgan'),
-  config = require('./config/environment');
+  morgan = require('morgan');
 
-// The http server will listen to an appropriate port, or default to port 5000.
-var theport = process.env.PORT || 5000;
+// Load the environment variables
+require('dotenv').config({
+  path: './parameters.env'
+});
 
 // Makes connection asynchronously.  Mongoose will queue up database
 // operations and release them when the connection is complete.
-mongoose.connect(config.mongo, function (err, res) {
+mongoose.connect(process.env.MONGO_URL, function (err, res) {
   if (err) {
-    console.log('ERROR connecting to: ' + config.mongo + '. ' + err);
+    console.log('ERROR connecting to: ' + process.env.MONGO_URL + '. ' + err);
   } else {
-    console.log('Succeeded connected to: ' + config.mongo);
+    console.log('Succeeded connected to: ' + process.env.MONGO_URL);
   }
 });
 
 var client = new elasticsearch.Client({
-  host: config.elasticsearch,
+  host: process.env.ELASTICSEARCH,
   log: 'trace'
 });
 
