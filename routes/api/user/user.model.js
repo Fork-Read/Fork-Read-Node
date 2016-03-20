@@ -1,5 +1,6 @@
 var mongoose = require('mongoose'),
-    crypto = require('crypto');
+    crypto = require('crypto'),
+    changeCase = require('change-case');
 
 /*
  * User Schema - Describes the basic structure of the User Data
