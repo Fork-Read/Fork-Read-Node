@@ -2,7 +2,8 @@ var
   User = require('./../user/user.model'),
   Otp = require('./otp.model'),
   request = require('request'),
-  helpers = require('../helpers');
+  helpers = require('../helpers'),
+  Message = require('./../../../utility/message');
 
 const OTP_TEXT = 'OTP for phone number verification on ForkRead is ';
 
@@ -30,22 +31,15 @@ var controller = {
             return false;
           }
 
-          request({
-            url: process.env.MSG91_URL,
-            qs: {
-              'authkey': process.env.MSG91_TOKEN,
-              'mobiles': '91' + number,
-              'message': OTP_TEXT + otp,
-              'sender': process.env.MSG91_SENDER,
-              'route': process.env.MSG91_ROUTE,
-              'country': 91
-            }, //Query string data
-            method: 'GET', //Specify the method
+          Message.sendOTP({
+            'number' : number,
+            'country': '91',
+            'message': OTP_TEXT + otp
           }, function(error, response, body){
             if(error) {
                 console.log(error);
             }
-          });
+          })
 
         });
 
@@ -61,23 +55,15 @@ var controller = {
             return helpers.handleError(res, err);
           }
 
-          request({
-            url: process.env.MSG91_URL,
-            qs: {
-              'authkey': process.env.MSG91_TOKEN,
-              'mobiles': '91' + number,
-              'message': OTP_TEXT + otp,
-              'sender': process.env.MSG91_SENDER,
-              'route': process.env.MSG91_ROUTE,
-              'country': 91
-            }, //Query string data
-            method: 'GET', //Specify the method
+          Message.sendOTP({
+            'number': number,
+            'country': '91',
+            'message': OTP_TEXT + otp
           }, function(error, response, body){
             if(error) {
                 console.log(error);
             }
           });
-
         });
       }
     })
@@ -92,17 +78,10 @@ var controller = {
 
       if(obj){
 
-        request({
-          url: process.env.MSG91_URL,
-          qs: {
-            'authkey': process.env.MSG91_TOKEN,
-            'mobiles': '91' + req.body.number,
-            'message': OTP_TEXT + obj.otp,
-            'sender': process.env.MSG91_SENDER,
-            'route': process.env.MSG91_ROUTE,
-            'country': 91
-          },
-          method: 'GET',
+        Message.sendOTP({
+          'number': req.body.number,
+          'country': '91',
+          'message': OTP_TEXT + obj.otp
         }, function(error, response, body){
           if(error) {
               console.log(error);
@@ -123,17 +102,10 @@ var controller = {
             return helpers.handleError(res, err);
           }
 
-          request({
-            url: process.env.MSG91_URL,
-            qs: {
-              'authkey': process.env.MSG91_TOKEN,
-              'mobiles': '91' + req.body.number,
-              'message': OTP_TEXT + otp,
-              'sender': process.env.MSG91_SENDER,
-              'route': process.env.MSG91_ROUTE,
-              'country': 91
-            },
-            method: 'GET',
+          Message.sendOTP({
+            'number': req.body.number,
+            'country': '91',
+            'message': OTP_TEXT + otp
           }, function(error, response, body){
             if(error) {
                 console.log(error);
@@ -141,7 +113,6 @@ var controller = {
               res.status(200).json({});
             }
           });
-
         });
       }
     });
