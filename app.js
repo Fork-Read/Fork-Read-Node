@@ -33,10 +33,6 @@ var
   routes = require('./routes/index'),
   user = require('./routes/api/user/index'),
   books = require('./routes/api/books/index'),
-  book_own = require('./routes/api/book-own/index'),
-  book_like = require('./routes/api/book-like/index'),
-  book_wish = require('./routes/api/book-wishlist/index'),
-  book_read = require('./routes/api/book-read/index'),
   authenticate = require('./routes/api/authentication/index'),
   genre = require('./routes/api/genre/index');
 
@@ -49,10 +45,8 @@ var swaggerConfig = {
   basePath: 'http://localhost:3000',
   apis: [
     './routes/api/user/index.js',
+    './routes/api/genre/index.js',
     './routes/api/books/index.js',
-    './routes/api/book-own/index.js',
-    './routes/api/book-like/index.js',
-    './routes/api/book-wishlist/index.js',
     './routes/api/authentication/index.js'
   ],
   middleware: function (req, res) {}
@@ -86,10 +80,6 @@ app.use(swagger.init(app, swaggerConfig));
 // Routes Used
 app.use('/', routes);
 app.use('/api/user', user);
-app.use('/api/books/own', book_own);
-app.use('/api/books/like', book_like);
-app.use('/api/books/wishlist', book_wish);
-app.use('/api/books/read', book_read);
 app.use('/api/books', books);
 app.use('/api/authentication', authenticate);
 app.use('/api/genre', genre);
