@@ -134,6 +134,7 @@ var controller = {
           }
 
           if(user){
+            user.verified = true;
             user.save();
             delete user.salt;
             res.status(200).json(user);

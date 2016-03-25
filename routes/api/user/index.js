@@ -35,7 +35,7 @@ var
  *      responseClass: User
  */
 
-router.get('/', controller.get);
+router.get('/', helpers.authenticate, controller.get);
 
 /**
  * @swagger
@@ -47,7 +47,7 @@ router.get('/', controller.get);
  *      responseClass: User
  */
 
-router.get('/:id', controller.getById);
+router.get('/:id', helpers.authenticate, controller.getById);
 
 /**
  * @swagger
@@ -109,6 +109,6 @@ router.post('/', controller.create);
  *      nickname: update
  */
 
-router.put('/:id', controller.update);
+router.put('/:id', helpers.authenticate, controller.update);
 
 module.exports = router;

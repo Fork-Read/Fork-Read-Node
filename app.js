@@ -38,7 +38,8 @@ var
   book_like = require('./routes/api/book-like/index'),
   book_wish = require('./routes/api/book-wishlist/index'),
   book_read = require('./routes/api/book-read/index'),
-  authenticate = require('./routes/api/authentication/index');
+  authenticate = require('./routes/api/authentication/index'),
+  genre = require('./routes/api/genre/index');
 
 var swaggerConfig = {
   apiVersion: '0.0.1',
@@ -93,6 +94,7 @@ app.use('/api/books/wishlist', book_wish);
 app.use('/api/books/read', book_read);
 app.use('/api/books', books);
 app.use('/api/authentication', authenticate);
+app.use('/api/genre', genre);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
