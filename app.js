@@ -7,7 +7,6 @@ var
   mongoose = require("mongoose"),
   elasticsearch = require('elasticsearch'),
   swagger = require('swagger-express'),
-  cors = require('cors'),
   morgan = require('morgan');
 
 // Load the environment variables
@@ -82,7 +81,6 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(cors());
 app.use(swagger.init(app, swaggerConfig));
 
 // Routes Used
