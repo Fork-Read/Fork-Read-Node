@@ -37,3 +37,19 @@ Elasticsearch INFO: 2015-03-13T17:37:13Z
 
 Succeeded connected to: mongodb://localhost:27017/snickers
 ```
+
+#### Migrations
+Run `npm install -g db-migrate` to get db-migrate command
+
+##### Run Migrations
+`db-migrate up`
+
+##### Down Migrations
+`db-migrate down`
+* Downgrades one migration at a time
+
+##### Create Migration
+`db-migrate create <name>`
+
+##### Reset Migrations
+`db-migrate reset`
