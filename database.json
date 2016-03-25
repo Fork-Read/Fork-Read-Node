@@ -1,0 +1,4 @@
+{
+  "development": "mongodb://localhost:27017/snickers",
+  "production" :"mongodb://localhost:27017/snickers"
+}
