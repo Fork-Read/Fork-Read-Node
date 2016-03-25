@@ -1,5 +1,6 @@
 var
   async = require('async'),
+  _ = require('lodash'),
   User = require('./user.model'),
   helpers = require('../helpers'),
   authenticationController = require('../authentication/authentication.controller');
@@ -96,15 +97,17 @@ var controller = {
       // req.user is the present state of the user object
       req.body = _.merge(req.user, req.body);
 
-      User.update({
+      User.findOne({
         '_id': req.user.id
-      }, req.body, function (err, status) {
-        if(err) {
+      }, function(err, user){
+        if(err){
           return helpers.handleError(res, err);
         }
 
-        res.status(200).json({});
-      })
+        user = _.extend(user, req.body);
+        user.save();
+        res.status(200).json(user);
+      });
     } else {
       return helpers.permissionDenied(res);
     }
