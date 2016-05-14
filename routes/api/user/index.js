@@ -111,4 +111,18 @@ router.post('/', controller.create);
 
 router.put('/:id', helpers.authenticate, controller.update);
 
+
+/**
+ * @swagger
+ * path: /:id
+ * operations:
+ *   -  httpMethod: PUT
+ *      summary: Updates the user details with received user details if he's the logged in user
+ *      notes: User Data Updation
+ *      responseClass: User
+ *      nickname: update
+ */
+
+router.post('/:id/genre/map', helpers.authenticate, controller.mapGenres);
+
 module.exports = router;
