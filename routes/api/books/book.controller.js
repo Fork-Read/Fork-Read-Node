@@ -61,7 +61,9 @@ var controller = {
     method: 'GET', // Request Method
   }, function(err, response, body){
     var response = JSON.parse(body);
-    return res.status(201).json(response.items);
+    return res.status(201).json({
+      'suggestions': response.items
+    });
   });
   }
 }
