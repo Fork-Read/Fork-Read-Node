@@ -35,8 +35,7 @@ var
   user          = require('./routes/api/user/index'),
   books         = require('./routes/api/books/index'),
   authenticate  = require('./routes/api/authentication/index'),
-  genre         = require('./routes/api/genre/index'),
-  seaarch       = require('./routes/api/search/index');
+  genre         = require('./routes/api/genre/index');
 
 
 var swaggerConfig = {

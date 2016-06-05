@@ -90,4 +90,7 @@ var
 
 router.post('/', helpers.authenticate, controller.save);
 
+
+router.post('/search', helpers.authenticate, controller.search);
+
 module.exports = router;

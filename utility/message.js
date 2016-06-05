@@ -15,7 +15,7 @@ Message.prototype.sendOTP = function (data, callback) {
       'route': process.env.MSG91_ROUTE,
       'country': data.country
     }, //Query string data
-    method: 'GET', //Specify the method
+    method: 'GET',
   }, callback);
 }
 
