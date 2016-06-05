@@ -1,6 +1,6 @@
 var
-  User = require('./../user/user.model'),
-  Otp = require('./otp.model'),
+  User    = require('./../user/user.model'),
+  Otp     = require('./otp.model'),
   request = require('request'),
   helpers = require('../helpers'),
   Message = require('./../../../utility/message');

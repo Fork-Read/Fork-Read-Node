@@ -1,6 +1,6 @@
 var
-    async = require('async'),
-    Book = require('./book.model'),
+    async   = require('async'),
+    Book    = require('./book.model'),
     helpers = require('../helpers');
 
 var controller = {

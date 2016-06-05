@@ -1,8 +1,8 @@
 var
-    express = require('express'),
-    router = express.Router(),
-    controller = require('./book.controller'),
-    helpers = require('../helpers');
+    express 		= require('express'),
+    router 			= express.Router(),
+    controller 	= require('./book.controller'),
+    helpers 		= require('../helpers');
 
 /**
  * @swagger

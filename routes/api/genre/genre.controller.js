@@ -1,8 +1,8 @@
 var
-  Genre = require('./genre.model'),
-  changeCase = require('change-case'),
-  _ = require('lodash'),
-  helpers = require('../helpers');
+  Genre       = require('./genre.model'),
+  changeCase  = require('change-case'),
+  _           = require('lodash'),
+  helpers     = require('../helpers');
 
 var controller = {
 

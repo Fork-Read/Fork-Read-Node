@@ -1,8 +1,8 @@
 var
-  express = require('express'),
-  router = express.Router(),
-  controller = require('./genre.controller'),
-  helpers = require('../helpers');
+  express 		= require('express'),
+  router 			= express.Router(),
+  controller 	= require('./genre.controller'),
+  helpers 		= require('../helpers');
 
 /**
  * @swagger

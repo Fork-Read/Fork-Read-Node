@@ -1,13 +1,13 @@
 var
-  express = require('express'),
-  path = require('path'),
-  favicon = require('serve-favicon'),
-  bodyParser = require('body-parser'),
-  http = require('http'), // For serving a basic web page.
-  mongoose = require("mongoose"),
-  elasticsearch = require('elasticsearch'),
-  swagger = require('swagger-express'),
-  morgan = require('morgan');
+  express         = require('express'),
+  path            = require('path'),
+  favicon         = require('serve-favicon'),
+  bodyParser      = require('body-parser'),
+  http            = require('http'), // For serving a basic web page.
+  mongoose        = require("mongoose"),
+  elasticsearch   = require('elasticsearch'),
+  swagger         = require('swagger-express'),
+  morgan          = require('morgan');
 
 // Load the environment variables
 require('dotenv').config({
@@ -17,6 +17,7 @@ require('dotenv').config({
 // Makes connection asynchronously.  Mongoose will queue up database
 // operations and release them when the connection is complete.
 mongoose.connect(process.env.MONGO_URL, function (err, res) {
+
   if (err) {
     console.log('ERROR connecting to: ' + process.env.MONGO_URL + '. ' + err);
   } else {
@@ -30,11 +31,13 @@ var client = new elasticsearch.Client({
 });
 
 var
-  routes = require('./routes/index'),
-  user = require('./routes/api/user/index'),
-  books = require('./routes/api/books/index'),
-  authenticate = require('./routes/api/authentication/index'),
-  genre = require('./routes/api/genre/index');
+  routes        = require('./routes/index'),
+  user          = require('./routes/api/user/index'),
+  books         = require('./routes/api/books/index'),
+  authenticate  = require('./routes/api/authentication/index'),
+  genre         = require('./routes/api/genre/index'),
+  seaarch       = require('./routes/api/search/index');
+
 
 var swaggerConfig = {
   apiVersion: '0.0.1',
@@ -78,20 +81,22 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(swagger.init(app, swaggerConfig));
 
 // Routes Used
-app.use('/', routes);
-app.use('/api/user', user);
-app.use('/api/books', books);
-app.use('/api/authentication', authenticate);
-app.use('/api/genre', genre);
+app.use('/'                   , routes);
+app.use('/api/user'           , user);
+app.use('/api/books'          , books);
+app.use('/api/authentication' , authenticate);
+app.use('/api/genre'          , genre);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
+
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 app.use(function (err, req, res, next) {
+
   if (app.get('env') === 'development') {
     if (err) {
       throw err

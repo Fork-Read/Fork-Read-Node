@@ -1,5 +1,5 @@
-var mongoose = require('mongoose'),
-    changeCase = require('change-case');
+var mongoose    = require('mongoose'),
+    changeCase  = require('change-case');
 
 /*
  * Genre Schema - Describes the basic structure of the Genre Data
