@@ -17,14 +17,13 @@ var controller = {
         return false;
       }
 
+      var generated_otp = Math.floor(Math.random() * 90000) + 10000;
       if (!otpObj) {
-
-        var otp = Math.floor(Math.random() * 90000) + 10000;
 
         // Add OTP to server
         Otp.create({
           'number': number,
-          'otp': otp
+          'otp': generated_otp
         }, function (err, obj) {
           if (err) {
             return false;
@@ -33,7 +32,7 @@ var controller = {
           Message.sendOTP({
             'number' : number,
             'country': '91',
-            'message': OTP_TEXT + otp
+            'message': OTP_TEXT + generated_otp
           }, function(error, response, body){
             if(error) {
                 console.log(error);
@@ -43,12 +42,11 @@ var controller = {
         });
 
       } else {
-        var otp = Math.floor(Math.random() * 90000) + 10000;
 
         Otp.update({
           'number': number
         }, {
-          'otp': otp
+          'otp': generated_otp
         }, function (err, obj) {
           if(err) {
             return helpers.handleError(res, err);
@@ -57,7 +55,7 @@ var controller = {
           Message.sendOTP({
             'number': number,
             'country': '91',
-            'message': OTP_TEXT + otp
+            'message': OTP_TEXT + generated_otp
           }, function(error, response, body){
             if(error) {
                 console.log(error);
@@ -90,12 +88,12 @@ var controller = {
         });
 
       } else {
-        var otp = Math.floor(Math.random() * 90000) + 10000;
+        var generated_otp = Math.floor(Math.random() * 90000) + 10000;
 
         // Add OTP to server
         Otp.create({
           'number': req.body.number,
-          'otp': otp
+          'otp': generated_otp
         }, function (err, obj) {
           if (err) {
             return helpers.handleError(res, err);
@@ -104,7 +102,7 @@ var controller = {
           Message.sendOTP({
             'number': req.body.number,
             'country': '91',
-            'message': OTP_TEXT + otp
+            'message': OTP_TEXT + generated_otp
           }, function(error, response, body){
             if(error) {
                 console.log(error);
@@ -146,6 +144,6 @@ var controller = {
       }
     })
   }
-}
+};
 
 module.exports = controller;
