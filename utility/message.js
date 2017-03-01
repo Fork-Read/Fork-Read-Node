@@ -1,8 +1,8 @@
 "use strict"
 
-let request = require('request');
+var request = require('request');
 
-let Message = function () {};
+var Message = function () {};
 
 Message.prototype.sendOTP = function (data, callback) {
   request({
@@ -15,8 +15,8 @@ Message.prototype.sendOTP = function (data, callback) {
       'route': process.env.MSG91_ROUTE,
       'country': data.country
     }, //Query string data
-    method: 'GET',
+    method: 'GET'
   }, callback);
-}
+};
 
 module.exports = new Message();
