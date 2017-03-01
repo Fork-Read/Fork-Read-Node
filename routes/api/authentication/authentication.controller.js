@@ -8,7 +8,9 @@ const OTP_TEXT = 'OTP for phone number verification on ForkRead is ';
 
 var controller = {
 
-  otp: function (number) {
+  otp: function (req, res) {
+
+    let number = req.body.number;
 
     Otp.findOne({
       'number': number
@@ -38,6 +40,8 @@ var controller = {
             if(error) {
                 console.log(error);
             }
+
+            res.status(200).send({});
           })
 
         });
@@ -62,6 +66,7 @@ var controller = {
             if(error) {
                 console.log(error);
             }
+            res.status(200).send({});
           });
         });
       }

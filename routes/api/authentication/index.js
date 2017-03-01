@@ -28,6 +28,33 @@ var
  *          dataType: string
  */
 
+ router.post('/otp', controller.otp);
+
+
+ /**
+ * @swagger
+ * resourcePath: /authentication
+ * description: Authentication API
+ */
+
+/**
+ * @swagger
+ * path: /otp
+ * operations:
+ *   -  httpMethod: POST
+ *      summary: Send OTP for verfication
+ *      notes: Returns the sent OTP
+ *      nickname: otp
+ *      consumes:
+ *        - application/json
+ *      parameters:
+ *        - number: phone number
+ *          description: Number to verify
+ *          paramType: query
+ *          required: true
+ *          dataType: string
+ */
+
  router.post('/resend', controller.resend);
 
 /**

@@ -7,7 +7,8 @@ var
   mongoose        = require("mongoose"),
   elasticsearch   = require('elasticsearch'),
   swagger         = require('swagger-express'),
-  morgan          = require('morgan');
+  morgan          = require('morgan'),
+  cors            = require('cors');
 
 // Load the environment variables
 require('dotenv').config({
@@ -78,6 +79,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(swagger.init(app, swaggerConfig));
+app.use(cors());
 
 // Routes Used
 app.use('/'                   , routes);
