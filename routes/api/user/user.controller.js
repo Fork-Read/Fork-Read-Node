@@ -1,6 +1,8 @@
 var
   async                     = require('async'),
   _                         = require('lodash'),
+  validator                 = require('validator'),
+  md5                       = require('md5'),
   User                      = require('./user.model'),
   UserGenre                 = require('./user_genre.model'),
   helpers                   = require('../helpers'),
@@ -34,31 +36,28 @@ var controller = {
     })
   },
   login: function (req, res) {
-    User.findOne({
-      'number': req.body.number
-    }, function (err, user) {
-      if(err) {
+    let input = req.body.input;
+    let isEmail = validator.isEmail(input);
+    let isNumber = validator.isMobilePhone(input, 'en-IN');
+    let passwordHash = md5(req.body.password);
+
+    let __queryPayload = {
+      password: passwordHash
+    };
+
+    if(isEmail){
+      __queryPayload.email = input;
+    } else if(isNumber){
+      __queryPayload.number = input;
+    }
+
+    User.findOne(__queryPayload, function(err, user){
+      if(err){
         return helpers.handleError(res, err);
       }
 
-      if(user) {
-        user.is_registered = true;
-
-        authenticationController.otp(user.number);
-
-        delete user.salt;
-        delete user._id;
-        delete user.number;
-        delete user.email;
-        delete user.access_token;
-
-        res.status(200).json(user);
-      } else {
-        res.status(200).json({
-          'is_registered': false
-        });
-      }
-    })
+      res.status(200).send(_.omit(user, ['salt', 'password']))
+    });
   },
   create: function (req, res) {
 

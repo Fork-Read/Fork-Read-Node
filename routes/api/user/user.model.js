@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
     crypto = require('crypto'),
-    changeCase = require('change-case');
+    changeCase = require('change-case'),
+    md5 = require('md5');
 
 /*
  * User Schema - Describes the basic structure of the User Data
@@ -26,27 +27,36 @@ var schema = mongoose.Schema({
     'type': String,
     'trim': true
   },
+  'password': {
+    'type': String
+  },
   'location': {
     'position': {
       'latitude': String,
       'longitude': String
     },
     'address': {
-      'locality': String,
+      'country': String,
       'city': String,
       'state': String,
-      'country': String
+      'street': String,
+      'zipcode': String,
+      'landmark': String
     },
-  },
-  'active': {
-    'type': String,
-    'default': true
   },
   'role': {
     'type': String,
     'default': 'User'
   },
-  'access_token': String,
+  'isEmailVerified': {
+    'type': Boolean,
+    'default': false
+  },
+  'isNumberVerified': {
+    'type': Boolean,
+    'default': false
+  },
+  'uuid': String,
   'salt': String,
   'created_at': {
     'type': String,
@@ -56,10 +66,6 @@ var schema = mongoose.Schema({
     'type': String,
     'default': (Date.now()).toString()
   },
-  'verified': {
-    'type': Boolean,
-    'default': false
-  }
 });
 
 /**
@@ -69,7 +75,8 @@ var schema = mongoose.Schema({
 schema.pre('save', function (next) {
   this.name = changeCase.titleCase(this.name);
   this.salt = this.makeSalt();
-  this.access_token = this.encryptToken(this.number);
+  this.uuid = this.encryptToken(this.number);
+  this.password = md5(this.password);
   next();
 });
 
