@@ -22,19 +22,21 @@ var schema = mongoose.Schema({
   },
   'email': {
     'type': String,
-    'trim': true
+    'trim': true,
+    'index': true
   },
   'number': {
     'type': String,
-    'trim': true
+    'trim': true,
+    'index': true
   },
   'password': {
     'type': String
   },
   'location': {
-    'position': {
-      'latitude': String,
-      'longitude': String
+    'geo': {
+      type: [Number],
+      index: '2dsphere'
     },
     'address': {
       'country': String,
@@ -57,7 +59,10 @@ var schema = mongoose.Schema({
     'type': Boolean,
     'default': false
   },
-  'uuid': String,
+  'uuid': {
+    'type': String,
+    'index': true
+  },
   'created_at': {
     'type': Date,
     'default': Date.now()
