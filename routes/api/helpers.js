@@ -47,6 +47,13 @@ Helper.prototype.permissionDenied = function (res) {
   });
 };
 
+Helper.prototype.badRequest = function(res, msg) {
+  
+  return res.status(400).send({
+    'message': msg
+  });
+};
+
 function accessDenied(res) {
 
   return res.status(403).send({

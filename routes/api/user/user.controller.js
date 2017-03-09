@@ -62,31 +62,25 @@ var controller = {
   create: function (req, res) {
 
     // Delete isVerified and active key if present in request
-    delete req.body.verified;
-    delete req.body.active;
+    delete req.body.isNumberVerified;
+    delete req.body.isEmailVerified;
 
     User.findOne({
-      'number': req.body.number
+      'email': req.body.email
     }, function (err, usr) {
       if (err) {
         return helpers.handleError(res, err);
       }
 
       if (usr) {
-        return res.status(200).json({
-          'already_registered': true
-        });
+        return helpers.badRequest('User is already registered');
       } else {
         User.create(req.body, function (err, user) {
           if (err) {
             return helpers.handleError(res, err);
           }
-
-          authenticationController.otp(user.number);
           
-          return res.status(201).json({
-            'already_registered': false
-          });
+          return res.status(201).json(user);
         });
       }
     });
