@@ -73,7 +73,7 @@ var controller = {
       }
 
       if (usr) {
-        return helpers.badRequest('User is already registered');
+        return helpers.badRequest(res, 'User is already registered');
       } else {
         User.create(req.body, function (err, user) {
           if (err) {

@@ -2,9 +2,6 @@
 var debug = require('debug')('Fork-Read-Node');
 var app = require('../app');
 
-app.set('port', process.env.PORT);
-app.set('env', process.env.NODE_ENV);
-
-var server = app.listen(app.get('port'), function() {
-  debug('Express server listening on port ' + server.address().port);
+var server = app.listen(process.env.PORT, function() {
+  debug('Express server listening on port ' + process.env.PORT);
 });
