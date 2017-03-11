@@ -41,9 +41,7 @@ var controller = {
     let isNumber = validator.isMobilePhone(input, 'en-IN');
     let passwordHash = md5(req.body.password);
 
-    let __queryPayload = {
-      password: passwordHash
-    };
+    let __queryPayload = {};
 
     if(isEmail){
       __queryPayload.email = input;
@@ -51,12 +49,28 @@ var controller = {
       __queryPayload.number = input;
     }
 
+    if(!isEmail && !isNumber){
+      res.status(400).send({
+        msg: 'Please enter a valid email or number'
+      });
+    }
+
     User.findOne(__queryPayload, function(err, user){
       if(err){
         return helpers.handleError(res, err);
       }
 
-      res.status(200).send(_.omit(user, ['salt', 'password']))
+      if(user){
+        if(user.password === passwordHash){
+          res.status(200).send(_.omit(user, ['salt', 'password']));  
+        } else {
+          return helpers.badRequest(res, 'Password entered is incorrect');
+        }
+        
+      } else {
+        return helpers.badRequest(res, 'User is not registered');
+      }
+
     });
   },
   create: function (req, res) {
