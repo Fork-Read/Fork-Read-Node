@@ -28,7 +28,7 @@ var
  *          dataType: string
  */
 
- router.post('/otp', controller.otp);
+ router.post('/otp_send', controller.otp);
 
 
  /**
@@ -55,7 +55,7 @@ var
  *          dataType: string
  */
 
- router.post('/resend', controller.resend);
+ router.post('/otp_resend', controller.resend);
 
 /**
  * @swagger
@@ -80,6 +80,6 @@ var
  *          dataType: string
  */
 
-router.post('/verify', controller.verify);
+router.post('/otp_verify', controller.verify);
 
 module.exports = router;

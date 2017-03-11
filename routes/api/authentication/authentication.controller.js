@@ -1,8 +1,9 @@
 var
-  User    = require('./../user/user.model'),
-  Otp     = require('./otp.model'),
-  helpers = require('../helpers'),
-  Message = require('./../../../utility/message');
+  validator         = require('validator')
+  User              = require('./../user/user.model'),
+  Otp               = require('./otp.model'),
+  helpers           = require('../helpers'),
+  Message           = require('./../../../utility/message');
 
 const OTP_TEXT = 'OTP for phone number verification on ForkRead is ';
 
@@ -19,7 +20,7 @@ var controller = {
         return false;
       }
 
-      var generated_otp = Math.floor(Math.random() * 90000) + 10000;
+      var generated_otp = Math.floor(Math.random() * 900000) + 100000;
       if (!otpObj) {
 
         // Add OTP to server
@@ -120,34 +121,53 @@ var controller = {
     });
   },
   verify: function (req, res) {
-    Otp.findOne({
-      'number': req.body.number
-    }, function (err, obj) {
-      if (err) {
+    let __payload;
+
+    __payload = {
+      number: req.body.number
+    };
+
+    if(!__payload.number || !validator.isMobilePhone(__payload.number, 'en-IN')){
+      return helpers.badRequest(res, 'Please provide a valid number');
+    }
+
+    if(!req.body.otp){
+      return helpers.badRequest(res, 'Please provide a valid OTP');
+    }
+
+
+    Otp.findOne(__payload, function(err, obj){
+      if(err){
         return helpers.handleError(res, err);
       }
 
-      if(obj.otp == req.body.otp){
-        User.findOne({
-          'number': req.body.number
-        }, function(err, user){
-          if(err) {
-            return helpers.handleError(res, err);
-          }
+      if(obj){
 
-          if(user){
-            user.verified = true;
-            user.save();
-            delete user.salt;
-            res.status(200).json(user);
-          }
-        });
+        if(obj.otp === req.body.otp){
+          User.findOne({
+            'number': __payload.number
+          }, function(err, user){
+            if(err) {
+              return helpers.handleError(res, err);
+            }
+
+            if(user){
+              user.isNumberVerified = true;
+              user.save();
+              res.status(200).json({
+                message: 'OTP Verified'
+              });
+            } else {
+              return helpers.badRequest(res, 'Could not find user with this number');
+            }
+          });
+        } else {
+          return helpers.badRequest(res, 'Incorrect OTP entered');
+        }
       } else {
-        res.status(200).json({
-          'verified': false
-        });
+        return helpers.badRequest(res, 'OTP not sent for this input');
       }
-    })
+    });
   }
 };
 
