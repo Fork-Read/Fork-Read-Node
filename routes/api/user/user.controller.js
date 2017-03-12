@@ -50,9 +50,7 @@ var controller = {
     }
 
     if(!isEmail && !isNumber){
-      res.status(400).send({
-        msg: 'Please enter a valid email or number'
-      });
+      return helpers.badRequest(res, 'Please enter a valid email or number');
     }
 
     User.findOne(__queryPayload, function(err, user){

@@ -9,15 +9,19 @@ const OTP_TEXT = 'OTP for phone number verification on ForkRead is ';
 
 var controller = {
 
-  otp: function (req, res) {
+  otp_send: function (req, res) {
 
     let number = req.body.number;
+
+    if(!number || !validator.isMobilePhone(number, 'en-IN')){
+      return helpers.badRequest(res, 'Please provide a valid number');
+    }
 
     Otp.findOne({
       'number': number
     }, function (err, otpObj) {
       if (err) {
-        return false;
+        return helpers.handleError(res, err);
       }
 
       var generated_otp = Math.floor(Math.random() * 900000) + 100000;
@@ -29,7 +33,7 @@ var controller = {
           'otp': generated_otp
         }, function (err, obj) {
           if (err) {
-            return false;
+            return helpers.handleError(res, err);
           }
 
           Message.sendOTP({
@@ -38,7 +42,7 @@ var controller = {
             'message': OTP_TEXT + generated_otp
           }, function(error, response, body){
             if(error) {
-                console.log(error);
+              return helpers.handleError(res, error);
             }
 
             res.status(200).send({});
@@ -63,7 +67,7 @@ var controller = {
             'message': OTP_TEXT + generated_otp
           }, function(error, response, body){
             if(error) {
-                console.log(error);
+              return helpers.handleError(res, error);
             }
             res.status(200).send({});
           });
@@ -71,56 +75,42 @@ var controller = {
       }
     })
   },
-  resend: function (req, res) {
-    Otp.findOne({
-      'number': req.body.number
-    }, function(err, obj){
+  otp_resend: function (req, res) {
+    let __payload;
+
+    __payload = {
+      number: req.body.number
+    };
+
+    if(!__payload.number || !validator.isMobilePhone(__payload.number, 'en-IN')){
+      return helpers.badRequest(res, 'Please provide a valid number');
+    }
+
+    Otp.findOne(__payload, function(err, obj){
       if (err){
         return helpers.handleError(res, err);
       }
 
       if(obj){
-
         Message.sendOTP({
-          'number': req.body.number,
+          'number': __payload.number,
           'country': '91',
           'message': OTP_TEXT + obj.otp
         }, function(error, response, body){
           if(error) {
-              console.log(error);
+            return helpers.handleError(res, error);
           } else {
-            res.status(200).json({});
+            res.status(200).json({
+              otp_resend: true
+            });
           }
         });
-
       } else {
-        var generated_otp = Math.floor(Math.random() * 90000) + 10000;
-
-        // Add OTP to server
-        Otp.create({
-          'number': req.body.number,
-          'otp': generated_otp
-        }, function (err, obj) {
-          if (err) {
-            return helpers.handleError(res, err);
-          }
-
-          Message.sendOTP({
-            'number': req.body.number,
-            'country': '91',
-            'message': OTP_TEXT + generated_otp
-          }, function(error, response, body){
-            if(error) {
-                console.log(error);
-            } else {
-              res.status(200).json({});
-            }
-          });
-        });
+        return helpers.badRequest(res, 'OTP not present for this number');
       }
     });
   },
-  verify: function (req, res) {
+  otp_verify: function (req, res) {
     let __payload;
 
     __payload = {
