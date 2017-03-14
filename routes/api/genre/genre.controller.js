@@ -18,6 +18,12 @@ var controller = {
     });
   },
   getById: function (req, res) {
+    let genreId = req.params.id;
+
+    if(!genreId){
+      return helpers.badRequest(res, 'Invalid genre id provided');
+    }
+
     Genre.findOne({
       '_id': req.params.id
     }, function (err, genre) {
@@ -41,14 +47,14 @@ var controller = {
       }
 
       if (genre) {
-        return res.status(200).json(genre);
+        return helpers.badRequest(res, 'Duplicate Genre');
       } else {
         Genre.create(req.body, function (err, gen) {
           if (err) {
             return helpers.handleError(res, err);
           }
           
-          return res.status(201).json(gen);
+          return res.status(200).json(gen);
         });
       }
     });
@@ -63,10 +69,11 @@ var controller = {
         return helpers.handleError(res, err);
       }
 
-      genre = _.extend(genre, req.body);
+      genre = Object.assign({}, genre, req.body);
 
       genre.save();
-      return res.status(200).json(genre);
+
+      return res.status(201).json(genre);
 
     });
   }
