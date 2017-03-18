@@ -1,14 +1,17 @@
 {
-  "name": "Fork-Read-Node",
+  "name": "forkread-api",
+  "author": "Prateek Agarwal",
   "version": "0.0.1",
-  "main": "server/app.js",
+  "main": "app.js",
+  "description": "",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "migration": "./node_modules/.bin/db-migrate"
   },
   "engines": {
-    "node": "4.2.4",
-    "npm": "3.7.1"
+    "node": "6.7.0",
+    "npm": "3.10.3"
   },
   "dependencies": {
     "async": "0.9.0",
