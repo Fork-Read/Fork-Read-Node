@@ -6,7 +6,7 @@ var
 
 var controller = {
 
-  get: function (req, res) {
+  getAll: function (req, res) {
     Genre.find({}, function(err, genres) {
       if(err) {
         return helpers.handleError(res, err);
@@ -17,6 +17,7 @@ var controller = {
       });
     });
   },
+
   getById: function (req, res) {
     let genreId = req.params.id;
 
@@ -34,6 +35,7 @@ var controller = {
       res.status(200).json(genre);
     })
   },
+
   create: function (req, res) {
 
     // Change case for name matching
@@ -59,6 +61,7 @@ var controller = {
       }
     });
   },
+  
   update: function (req, res) {
 
     Genre.findOne({

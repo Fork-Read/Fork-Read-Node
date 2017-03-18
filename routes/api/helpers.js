@@ -4,13 +4,13 @@ var Helper = function () {};
 
 Helper.prototype.authenticate = function (req, res, next) {
 
-  var self = this;
+  let self = this;
+  let uuid = req.headers['uuid'];
 
-  if (req.headers['x-access-token']) {
-    
-    req.access_token = req.headers['x-access-token'];
+  if (uuid) {
+
     User.findOne({
-      'access_token': req.access_token
+      uuid
     }, function (err, user) {
       if (err) {
         self.handleError(res, err);
