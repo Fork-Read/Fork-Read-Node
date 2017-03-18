@@ -11,7 +11,9 @@ var
 var controller = {
 
   get: function (req, res) {
-    User.find({}, function(err, users) {
+
+    User.find().exec(function(err, users) {
+
       if(err) {
         return helpers.handleError(res, err);
       }
@@ -21,10 +23,13 @@ var controller = {
       });
     });
   },
+
   getById: function (req, res) {
+
     User.findOne({
       '_id': req.params.id
-    }, function (err, user) {
+    }).exec(function (err, user) {
+
       if(err) {
         return helpers.handleError(res, err);
       }
@@ -33,9 +38,11 @@ var controller = {
       delete user.number;
 
       res.status(200).json(user);
-    })
+    });
   },
+
   login: function (req, res) {
+
     let input = req.body.input;
     let isEmail = validator.isEmail(input);
     let isNumber = validator.isMobilePhone(input, 'en-IN');
@@ -53,7 +60,8 @@ var controller = {
       return helpers.badRequest(res, 'Please enter a valid email or number');
     }
 
-    User.findOne(__queryPayload, function(err, user){
+    User.findOne(__queryPayload).exec(function(err, user){
+
       if(err){
         return helpers.handleError(res, err);
       }
@@ -71,6 +79,7 @@ var controller = {
 
     });
   },
+
   create: function (req, res) {
 
     // Delete isVerified and active key if present in request
@@ -79,24 +88,30 @@ var controller = {
 
     User.findOne({
       'email': req.body.email
-    }, function (err, usr) {
+    }).exec(function (err, usr) {
+
       if (err) {
         return helpers.handleError(res, err);
       }
 
       if (usr) {
+
         return helpers.badRequest(res, 'User is already registered');
+
       } else {
-        User.create(req.body, function (err, user) {
+
+        User.create(req.body).exec(function (err, user) {
           if (err) {
             return helpers.handleError(res, err);
           }
           
           return res.status(201).json(user);
         });
+
       }
     });
   },
+
   update: function (req, res) {
     if (req.user.id == res.body.id) {
       
@@ -105,7 +120,8 @@ var controller = {
 
       User.findOne({
         '_id': req.user.id
-      }, function(err, user){
+      }).exec(function(err, user){
+
         if(err){
           return helpers.handleError(res, err);
         }
@@ -113,11 +129,13 @@ var controller = {
         user = _.extend(user, req.body);
         user.save();
         res.status(200).json(user);
+
       });
     } else {
       return helpers.permissionDenied(res);
     }
   },
+
   mapGenres: function (req, res) {
     console.log('sdjhsdbf');
     async.each(req.body.genres, function(genre, next){
@@ -125,7 +143,7 @@ var controller = {
       UserGenre.findOne({
         'user_id': req.user.id,
         'genre_id': genre
-      }, function(err, mapping){
+      }).exec(function(err, mapping){
         if(err){
           return helpers.handleError(res, err);
         }

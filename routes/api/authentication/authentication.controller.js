@@ -17,21 +17,18 @@ var controller = {
       return helpers.badRequest(res, 'Please provide a valid number');
     }
 
-    Otp.findOne({
-      'number': number
-    }, function (err, otpObj) {
+    Otp.findOne({number}).exec(function (err, otpObj) {
+
       if (err) {
         return helpers.handleError(res, err);
       }
 
-      var generated_otp = Math.floor(Math.random() * 900000) + 100000;
+      var otp = Math.floor(Math.random() * 900000) + 100000;
       if (!otpObj) {
 
         // Add OTP to server
-        Otp.create({
-          'number': number,
-          'otp': generated_otp
-        }, function (err, obj) {
+        Otp.create({number, otp}).exec(function (err, obj) {
+
           if (err) {
             return helpers.handleError(res, err);
           }
@@ -39,7 +36,7 @@ var controller = {
           Message.sendOTP({
             'number' : number,
             'country': '91',
-            'message': OTP_TEXT + generated_otp
+            'message': OTP_TEXT + otp
           }, function(error, response, body){
             if(error) {
               return helpers.handleError(res, error);
@@ -52,11 +49,7 @@ var controller = {
 
       } else {
 
-        Otp.update({
-          'number': number
-        }, {
-          'otp': generated_otp
-        }, function (err, obj) {
+        Otp.update({number}, {otp}).exec(function (err, obj) {
           if(err) {
             return helpers.handleError(res, err);
           }
@@ -64,7 +57,7 @@ var controller = {
           Message.sendOTP({
             'number': number,
             'country': '91',
-            'message': OTP_TEXT + generated_otp
+            'message': OTP_TEXT + otp
           }, function(error, response, body){
             if(error) {
               return helpers.handleError(res, error);
@@ -75,6 +68,7 @@ var controller = {
       }
     })
   },
+
   otp_resend: function (req, res) {
     let __payload;
 
@@ -86,7 +80,7 @@ var controller = {
       return helpers.badRequest(res, 'Please provide a valid number');
     }
 
-    Otp.findOne(__payload, function(err, obj){
+    Otp.findOne(__payload).exec(function(err, obj){
       if (err){
         return helpers.handleError(res, err);
       }
@@ -110,6 +104,7 @@ var controller = {
       }
     });
   },
+
   otp_verify: function (req, res) {
     let __payload;
 
@@ -126,7 +121,7 @@ var controller = {
     }
 
 
-    Otp.findOne(__payload, function(err, obj){
+    Otp.findOne(__payload).exec(function(err, obj){
       if(err){
         return helpers.handleError(res, err);
       }

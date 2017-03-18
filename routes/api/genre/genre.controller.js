@@ -7,13 +7,20 @@ var
 var controller = {
 
   getAll: function (req, res) {
-    Genre.find({}, function(err, genres) {
+    let limit = 10;
+    if(req.query.limit){
+      limit = parseInt(req.query.limit, 10);
+    }
+
+    Genre.find().limit(limit).exec(function(err, genres) {
+
       if(err) {
         return helpers.handleError(res, err);
       }
 
       res.status(200).json({
-        'genres': genres
+        'genres': genres,
+        'total': genres.length
       });
     });
   },
@@ -27,13 +34,14 @@ var controller = {
 
     Genre.findOne({
       '_id': req.params.id
-    }, function (err, genre) {
+    }).exec(function (err, genre) {
+
       if(err) {
         return helpers.handleError(res, err);
       }
 
       res.status(200).json(genre);
-    })
+    });
   },
 
   create: function (req, res) {
@@ -43,21 +51,26 @@ var controller = {
 
     Genre.findOne({
       'name': req.body.name
-    }, function (err, genre) {
+    }).exec(function (err, genre) {
+
       if (err) {
         return helpers.handleError(res, err);
       }
 
       if (genre) {
+
         return helpers.badRequest(res, 'Duplicate Genre');
+
       } else {
-        Genre.create(req.body, function (err, gen) {
+        
+        Genre.create(req.body).exec(function (err, gen) {
           if (err) {
             return helpers.handleError(res, err);
           }
           
           return res.status(200).json(gen);
         });
+        
       }
     });
   },
@@ -66,7 +79,7 @@ var controller = {
 
     Genre.findOne({
       '_id': req.params.id
-    }, function(err, genre){
+    }).exec(function(err, genre){
 
       if(err){
         return helpers.handleError(res, err);

@@ -9,9 +9,7 @@ Helper.prototype.authenticate = function (req, res, next) {
 
   if (uuid) {
 
-    User.findOne({
-      uuid
-    }, function (err, user) {
+    User.findOne({uuid}).exec(function (err, user) {
       if (err) {
         self.handleError(res, err);
       }
@@ -21,7 +19,7 @@ Helper.prototype.authenticate = function (req, res, next) {
       } else {
         accessDenied(res);
       }
-    })
+    });
   } else {
 
     accessDenied(res);
