@@ -7,21 +7,32 @@ var
 var controller = {
 
   getAll: function (req, res) {
-    let limit = 10;
+    let __paginatePayload;
+
+    __paginatePayload = {
+      limit: 10
+    };
+
     if(req.query.limit){
-      limit = parseInt(req.query.limit, 10);
+      __paginatePayload.limit = parseInt(req.query.limit, 10);
     }
 
-    Genre.find().limit(limit).exec(function(err, genres) {
+    if(req.query.page){
+      __paginatePayload.page = parseInt(req.query.page, 10);
+    } else if(req.query.offset){
+      __paginatePayload.offset = parseInt(req.query.offset, 10);
+    }
 
-      if(err) {
-        return helpers.handleError(res, err);
-      }
-
-      res.status(200).json({
-        'genres': genres,
-        'total': genres.length
+    Genre.paginate({}, __paginatePayload).then(function(results){
+      let __results = Object.assign({}, results , {
+        genres: results.docs
       });
+
+      delete __results.docs;
+
+      res.status(200).send(__results);
+    }, function(err){
+
     });
   },
 
@@ -70,7 +81,7 @@ var controller = {
           
           return res.status(200).json(gen);
         });
-        
+
       }
     });
   },

@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+let mongoose = require('mongoose');
 
 /*
  * Book Wishlist Schema - Describes the basic structure of the Wishlist Books Table
@@ -9,7 +9,7 @@ var mongoose = require('mongoose');
  *
  */
 
-var schema = mongoose.Schema({
+let schema = mongoose.Schema({
   'number': {
     'type': String,
     'trim': true

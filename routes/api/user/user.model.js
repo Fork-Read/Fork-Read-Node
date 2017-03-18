@@ -1,8 +1,9 @@
-var mongoose = require('mongoose'),
-    crypto = require('crypto'),
-    changeCase = require('change-case'),
-    md5 = require('md5'),
-    uuidV4 = require('uuid/v4');
+let
+  mongoose    = require('mongoose'),
+  crypto      = require('crypto'),
+  changeCase  = require('change-case'),
+  md5         = require('md5'),
+  uuidV4      = require('uuid/v4');
 
 /*
  * User Schema - Describes the basic structure of the User Data
@@ -15,7 +16,7 @@ var mongoose = require('mongoose'),
  *
  */
 
-var schema = mongoose.Schema({
+let schema = mongoose.Schema({
   'name': {
     'type': String,
     'trim': true

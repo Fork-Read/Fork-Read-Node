@@ -1,5 +1,7 @@
-var mongoose    = require('mongoose'),
-    changeCase  = require('change-case');
+let
+  mongoose          = require('mongoose'),
+  mongoosePaginate  = require('mongoose-paginate'),
+  changeCase        = require('change-case');
 
 /*
  * Genre Schema - Describes the basic structure of the Genre Data
@@ -9,7 +11,7 @@ var mongoose    = require('mongoose'),
  *
  */
 
-var schema = mongoose.Schema({
+let schema = mongoose.Schema({
   'name': {
     'type': String,
     'trim': true
@@ -48,5 +50,10 @@ schema
     return name.length;
   }, 'Name cannot be blank');
 
+
+  /*
+    Plugins
+  */
+schema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('genre', schema);
