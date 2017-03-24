@@ -17,22 +17,13 @@ var controller = {
       return helpers.badRequest(res, 'Please provide a valid number');
     }
 
-    Otp.findOne({number}).exec(function (err, otpObj) {
+    Otp.findOne({number}).then(function (otpObj) {
+      let otp = Math.floor(Math.random() * 900000) + 100000;
 
-      if (err) {
-        return helpers.handleError(res, err);
-      }
-
-      var otp = Math.floor(Math.random() * 900000) + 100000;
       if (!otpObj) {
 
         // Add OTP to server
-        Otp.create({number, otp}).exec(function (err, obj) {
-
-          if (err) {
-            return helpers.handleError(res, err);
-          }
-
+        Otp.create({number, otp}).then(function (obj) {
           Message.sendOTP({
             'number' : number,
             'country': '91',
@@ -49,11 +40,7 @@ var controller = {
 
       } else {
 
-        Otp.update({number}, {otp}).exec(function (err, obj) {
-          if(err) {
-            return helpers.handleError(res, err);
-          }
-
+        Otp.update({number}, {otp}).then(function (obj) {
           Message.sendOTP({
             'number': number,
             'country': '91',
@@ -80,11 +67,7 @@ var controller = {
       return helpers.badRequest(res, 'Please provide a valid number');
     }
 
-    Otp.findOne(__payload).exec(function(err, obj){
-      if (err){
-        return helpers.handleError(res, err);
-      }
-
+    Otp.findOne(__payload).then(function(obj){
       if(obj){
         Message.sendOTP({
           'number': __payload.number,
@@ -121,21 +104,13 @@ var controller = {
     }
 
 
-    Otp.findOne(__payload).exec(function(err, obj){
-      if(err){
-        return helpers.handleError(res, err);
-      }
-
+    Otp.findOne(__payload).then(function(obj){
       if(obj){
 
         if(obj.otp === req.body.otp){
           User.findOne({
             'number': __payload.number
-          }, function(err, user){
-            if(err) {
-              return helpers.handleError(res, err);
-            }
-
+          }).then(function(user){
             if(user){
               user.isNumberVerified = true;
               user.save();

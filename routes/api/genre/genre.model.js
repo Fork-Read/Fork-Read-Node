@@ -21,7 +21,7 @@ let schema = mongoose.Schema({
     'trim': true,
     'default': ''
   }
-});
+}, {id: true});
 
 /**
  * Pre hooks
@@ -51,9 +51,9 @@ schema
   }, 'Name cannot be blank');
 
 
-  /*
-    Plugins
-  */
+/*
+  Plugins
+*/
 schema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('genre', schema);

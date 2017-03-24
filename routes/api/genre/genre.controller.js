@@ -45,12 +45,7 @@ var controller = {
 
     Genre.findOne({
       '_id': req.params.id
-    }).exec(function (err, genre) {
-
-      if(err) {
-        return helpers.handleError(res, err);
-      }
-
+    }).then(function (genre) {
       res.status(200).json(genre);
     });
   },
@@ -62,23 +57,14 @@ var controller = {
 
     Genre.findOne({
       'name': req.body.name
-    }).exec(function (err, genre) {
-
-      if (err) {
-        return helpers.handleError(res, err);
-      }
-
+    }).then(function (genre) {
       if (genre) {
 
         return helpers.badRequest(res, 'Duplicate Genre');
 
       } else {
         
-        Genre.create(req.body).exec(function (err, gen) {
-          if (err) {
-            return helpers.handleError(res, err);
-          }
-          
+        Genre.create(req.body).then(function (gen) {  
           return res.status(200).json(gen);
         });
 
@@ -90,12 +76,7 @@ var controller = {
 
     Genre.findOne({
       '_id': req.params.id
-    }).exec(function(err, genre){
-
-      if(err){
-        return helpers.handleError(res, err);
-      }
-
+    }).then(function(genre){
       genre = Object.assign({}, genre, req.body);
 
       genre.save();

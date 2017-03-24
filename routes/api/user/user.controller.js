@@ -12,12 +12,7 @@ var controller = {
 
   get: function (req, res) {
 
-    User.find().exec(function(err, users) {
-
-      if(err) {
-        return helpers.handleError(res, err);
-      }
-
+    User.find().then(function(users) {
       res.status(200).json({
         'users': users
       });
@@ -28,12 +23,8 @@ var controller = {
 
     User.findOne({
       '_id': req.params.id
-    }).exec(function (err, user) {
-
-      if(err) {
-        return helpers.handleError(res, err);
-      }
-      
+    }).then(function (user) {
+    
       delete user.email;
       delete user.number;
 
@@ -42,7 +33,6 @@ var controller = {
   },
 
   login: function (req, res) {
-
     let input = req.body.input;
     let isEmail = validator.isEmail(input);
     let isNumber = validator.isMobilePhone(input, 'en-IN');
@@ -60,12 +50,7 @@ var controller = {
       return helpers.badRequest(res, 'Please enter a valid email or number');
     }
 
-    User.findOne(__queryPayload).exec(function(err, user){
-
-      if(err){
-        return helpers.handleError(res, err);
-      }
-
+    User.findOne(__queryPayload).then(function(user){
       if(user){
         if(user.password === passwordHash){
           res.status(200).send(_.omit(user, ['salt', 'password']));  
@@ -88,19 +73,13 @@ var controller = {
 
     User.findOne({
       'email': req.body.email
-    }).exec(function (err, usr) {
-
-      if (err) {
-        return helpers.handleError(res, err);
-      }
-
+    }).then(function (usr) {
+      
       if (usr) {
-
         return helpers.badRequest(res, 'User is already registered');
-
       } else {
 
-        User.create(req.body).exec(function (err, user) {
+        User.create(req.body).then(function (err, user) {
           if (err) {
             return helpers.handleError(res, err);
           }
@@ -120,12 +99,7 @@ var controller = {
 
       User.findOne({
         '_id': req.user.id
-      }).exec(function(err, user){
-
-        if(err){
-          return helpers.handleError(res, err);
-        }
-
+      }).then(function(user){
         user = _.extend(user, req.body);
         user.save();
         res.status(200).json(user);
@@ -137,16 +111,12 @@ var controller = {
   },
 
   mapGenres: function (req, res) {
-    console.log('sdjhsdbf');
     async.each(req.body.genres, function(genre, next){
 
       UserGenre.findOne({
         'user_id': req.user.id,
         'genre_id': genre
-      }).exec(function(err, mapping){
-        if(err){
-          return helpers.handleError(res, err);
-        }
+      }).then(function(mapping){
 
         // If the mapping already exists then ignore
         if(mapping) {
