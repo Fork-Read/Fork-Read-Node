@@ -108,12 +108,17 @@ var controller = {
       if(obj){
 
         if(obj.otp === req.body.otp){
-          User.findOne({
+
+          User.update({
             'number': __payload.number
-          }).then(function(user){
-            if(user){
-              user.isNumberVerified = true;
-              user.save();
+          }, {
+            isNumberVerified: true
+          }, {}, function(err, numAffected){
+            if(err){
+              helpers.handleError(res, err);
+            }
+
+            if(numAffected){
               res.status(200).json({
                 message: 'OTP Verified'
               });

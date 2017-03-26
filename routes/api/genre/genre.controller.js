@@ -63,7 +63,6 @@ var controller = {
         return helpers.badRequest(res, 'Duplicate Genre');
 
       } else {
-        
         Genre.create(req.body).then(function (gen) {  
           return res.status(200).json(gen);
         });

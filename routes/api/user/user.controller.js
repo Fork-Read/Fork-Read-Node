@@ -36,7 +36,7 @@ var controller = {
     let input = req.body.input;
     let isEmail = validator.isEmail(input);
     let isNumber = validator.isMobilePhone(input, 'en-IN');
-    let passwordHash = md5(req.body.password);
+    let passwordHash = md5(req.body.password.toString());
 
     let __queryPayload = {};
 
@@ -52,7 +52,7 @@ var controller = {
 
     User.findOne(__queryPayload).then(function(user){
       if(user){
-        if(user.password === passwordHash){
+        if(user.password.toString() === passwordHash.toString()){
           res.status(200).send(_.omit(user, ['salt', 'password']));  
         } else {
           return helpers.badRequest(res, 'Password entered is incorrect');
@@ -79,11 +79,7 @@ var controller = {
         return helpers.badRequest(res, 'User is already registered');
       } else {
 
-        User.create(req.body).then(function (err, user) {
-          if (err) {
-            return helpers.handleError(res, err);
-          }
-          
+        User.create(req.body).then(function (user) {
           return res.status(201).json(user);
         });
 
