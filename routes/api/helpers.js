@@ -6,7 +6,7 @@ Helper.prototype.authenticate = function (req, res, next) {
 
   let self = this;
   let uuid = req.headers['uuid'];
-
+  uuid = '84f23d51-29df-414e-b569-8b6157058ca2';
   if (uuid) {
 
     User.findOne({uuid}).exec(function (err, user) {
@@ -26,7 +26,7 @@ Helper.prototype.authenticate = function (req, res, next) {
   }
 };
 
-Helper.prototype.handleError = function (res, err) {
+Helper.prototype.handleError = function (err, res) {
 
   return res.status(500).send(err);
 };

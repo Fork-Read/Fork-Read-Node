@@ -30,7 +30,7 @@ var controller = {
             'message': OTP_TEXT + otp
           }, function(error, response, body){
             if(error) {
-              return helpers.handleError(res, error);
+              return helpers.handleError(error, res);
             }
 
             res.status(200).send({});
@@ -47,7 +47,7 @@ var controller = {
             'message': OTP_TEXT + otp
           }, function(error, response, body){
             if(error) {
-              return helpers.handleError(res, error);
+              return helpers.handleError(error, res);
             }
             res.status(200).send({});
           });
@@ -75,7 +75,7 @@ var controller = {
           'message': OTP_TEXT + obj.otp
         }, function(error, response, body){
           if(error) {
-            return helpers.handleError(res, error);
+            return helpers.handleError(error, res);
           } else {
             res.status(200).json({
               otp_resend: true

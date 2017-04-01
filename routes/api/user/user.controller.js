@@ -4,7 +4,6 @@ var
   validator                 = require('validator'),
   md5                       = require('md5'),
   User                      = require('./user.model'),
-  UserGenre                 = require('./user_genre.model'),
   helpers                   = require('../helpers'),
   authenticationController  = require('../authentication/authentication.controller');
 
@@ -104,37 +103,6 @@ var controller = {
     } else {
       return helpers.permissionDenied(res);
     }
-  },
-
-  mapGenres: function (req, res) {
-    async.each(req.body.genres, function(genre, next){
-
-      UserGenre.findOne({
-        'user_id': req.user.id,
-        'genre_id': genre
-      }).then(function(mapping){
-
-        // If the mapping already exists then ignore
-        if(mapping) {
-          next();
-        } else {
-
-          UserGenre.create({
-            'user_id': req.user.id,
-            'genre_id': genre
-          }, function(err, result){
-            if(err){
-              return helpers.handleError(res, err);
-            }
-
-            next();
-          });
-        }
-      });
-
-    }, function(err, result){
-      res.status(200).json({});
-    })
   }
 }
 

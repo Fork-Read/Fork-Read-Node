@@ -20,7 +20,4 @@ router.post('/', controller.create);
 router.put('/:id', helpers.authenticate, controller.update);
 
 
-router.post('/:id/genre/map', helpers.authenticate, controller.mapGenres);
-
-
 module.exports = router;

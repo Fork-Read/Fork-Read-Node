@@ -3,7 +3,7 @@
 let express, path, favicon, bodyParser, http, mongoose, elasticsearch, morgan, cors;
 let client, app;
 
-let routes, user, authenticate, genre;
+let routes, user, authenticate, genre, user_genre;
 
 
 express           = require('express');
@@ -41,9 +41,10 @@ client = new elasticsearch.Client({
 
 
 routes          = require('./routes/index'),
-user            = require('./routes/api/user/index'),
-authenticate    = require('./routes/api/authentication/index'),
-genre           = require('./routes/api/genre/index');
+user            = require('./routes/api/user'),
+authenticate    = require('./routes/api/authentication'),
+genre           = require('./routes/api/genre'),
+user_genre      = require('./routes/api/user_genre');
 
 
 app = express();
@@ -73,6 +74,7 @@ app.use('/'                     , routes);
 app.use('/api/user'             , user);
 app.use('/api/authentication'   , authenticate);
 app.use('/api/genre'            , genre);
+app.use('/api/user_genre'       , user_genre);
 
 
 // catch 404 and forward to error handler
