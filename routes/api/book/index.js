@@ -1,7 +1,7 @@
 let
   express 		= require('express'),
   router 			= express.Router(),
-  controller 	= require('./user.controller'),
+  controller 	= require('./book.controller'),
   helpers 		= require('../helpers');
 
 

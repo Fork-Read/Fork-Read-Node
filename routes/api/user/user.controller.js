@@ -13,7 +13,7 @@ var controller = {
     let userID = req.params.id;
 
     if(!userID){
-      helpers.badRequest('Missing user id param');
+      helpers.badRequest(res, 'Missing user id param');
     }
 
     User.findOne({
@@ -79,6 +79,8 @@ var controller = {
         });
 
       }
+    }, function(err){
+      helpers.badRequest(res, err.message);
     });
   },
 

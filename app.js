@@ -3,7 +3,7 @@
 let express, path, favicon, bodyParser, http, mongoose, elasticsearch, morgan, cors;
 let client, app;
 
-let routes, user, authenticate, genre, user_genre;
+let routes, user, authenticate, genre, user_genre, book;
 
 
 express           = require('express');
@@ -45,6 +45,7 @@ user            = require('./routes/api/user'),
 authenticate    = require('./routes/api/authentication'),
 genre           = require('./routes/api/genre'),
 user_genre      = require('./routes/api/user_genre');
+book            = require('./routes/api/book');
 
 
 app = express();
@@ -75,6 +76,7 @@ app.use('/api/user'             , user);
 app.use('/api/authentication'   , authenticate);
 app.use('/api/genre'            , genre);
 app.use('/api/user_genre'       , user_genre);
+app.use('/api/book'             , book);
 
 
 // catch 404 and forward to error handler

@@ -1,6 +1,7 @@
 let
-  mongoose    = require('mongoose'),
-  changeCase  = require('change-case');
+  mongoose          = require('mongoose'),
+  mongoosePaginate  = require('mongoose-paginate'),
+  changeCase        = require('change-case');
 
 /*
  * Book Schema - Describes the basic structure of the Book Data
@@ -22,6 +23,10 @@ let schema = mongoose.Schema({
     'trim': true
   },
   'image': {
+    'type': String,
+    'trim': true
+  },
+  'isbn': {
     'type': String,
     'trim': true
   },
@@ -51,6 +56,13 @@ schema.pre('save', function (next) {
 schema.virtual('id').get(function(){
     return this._id.toHexString();
 });
+
+
+/*
+  Plugins
+*/
+schema.plugin(mongoosePaginate);
+
 
 
 module.exports = mongoose.model('book', schema);

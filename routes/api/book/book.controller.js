@@ -35,28 +35,44 @@ let controller = {
 	},
 	
 	getById: function(req, res) {
+		let isISBN = req.query.is_isbn === 'true';
 		let bookID = req.params.id;
+		let __payload = {};
 
 		if(!bookID){
-			helpers.badRequest('Missing parameters');
+			helpers.badRequest(res, 'Missing parameters');
 		}
 
-		Book.findOne({
-			'_id': bookID
-		}).then(function(book){
+		if(isISBN){
+
+			__payload['isbn'] = req.params.id;
+		} else {
+			
+			__payload['_id'] = req.params.id;
+		}
+
+		console.log(__payload);
+
+		Book.findOne(__payload).then(function(book){
 			res.status(200).json(book)
+		}, function(err){
+			helpers.badRequest(res, err.message);
 		});
 
 	},
 
 	create: function(req, res) {
 
+		if(!req.body.isbn || !req.body.title){
+			helpers.badRequest(res, 'Parameters Missing');
+		}
+
 		Book.findOne({
 			'isbn': req.body.isbn
 		}).then(function(book){
 			
 			if(book){
-				helpers.badRequest('Book already exists in the system');
+				helpers.badRequest(res, 'Book already exists in the system');
 			} else {
 
 				Book.create(req.body).then(function(book){
