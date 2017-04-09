@@ -46,10 +46,25 @@ let controller = {
 		}).then(function(book){
 			res.status(200).json(book)
 		});
-		
+
 	},
 
 	create: function(req, res) {
+
+		Book.findOne({
+			'isbn': req.body.isbn
+		}).then(function(book){
+			
+			if(book){
+				helpers.badRequest('Book already exists in the system');
+			} else {
+
+				Book.create(req.body).then(function(book){
+					res.status(201).json(book);
+				});
+
+			}
+		});
 
 	}
 };

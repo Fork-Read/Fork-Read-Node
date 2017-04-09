@@ -8,6 +8,7 @@ let
  * title          - Book title
  * description    - Book description
  * image          - Book Image
+ * isbn           - Book ISBN
  *
  */
 
