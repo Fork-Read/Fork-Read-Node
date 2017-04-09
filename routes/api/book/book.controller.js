@@ -1,5 +1,6 @@
 let
-	Book = require('./book.model');
+	Book 			= require('./book.model'),
+	helpers 	= require('../helpers');
 
 let controller = {
 	get: function(req, res) {
@@ -30,11 +31,22 @@ let controller = {
     }, function(err){
 
     });
-    
+
 	},
 	
 	getById: function(req, res) {
+		let bookID = req.params.id;
 
+		if(!bookID){
+			helpers.badRequest('Missing parameters');
+		}
+
+		Book.findOne({
+			'_id': bookID
+		}).then(function(book){
+			res.status(200).json(book)
+		});
+		
 	},
 
 	create: function(req, res) {
