@@ -24,6 +24,8 @@ var controller = {
       delete user.number;
 
       res.status(200).json(user);
+    }, function(err){
+      helpers.badRequest(res, err.message);
     });
   },
 
@@ -57,6 +59,8 @@ var controller = {
         return helpers.badRequest(res, 'User is not registered');
       }
 
+    }, function(err){
+      helpers.badRequest(res, err.message);
     });
   },
 
@@ -76,6 +80,8 @@ var controller = {
 
         User.create(req.body).then(function (user) {
           return res.status(201).json(user);
+        }, function(err){
+          helpers.badRequest(res, err.message);
         });
 
       }
@@ -97,6 +103,8 @@ var controller = {
         user.save();
         res.status(200).json(user);
 
+      }, function(err){
+        helpers.badRequest(res, err.message);
       });
     } else {
       return helpers.permissionDenied(res);

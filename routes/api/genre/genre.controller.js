@@ -32,7 +32,7 @@ var controller = {
 
       res.status(200).send(__results);
     }, function(err){
-
+      helpers.badRequest(res, err.message);
     });
   },
 
@@ -47,6 +47,8 @@ var controller = {
       '_id': req.params.id
     }).then(function (genre) {
       res.status(200).json(genre);
+    }, function(err){
+      helpers.badRequest(res, err.message);
     });
   },
 
@@ -68,6 +70,8 @@ var controller = {
         });
 
       }
+    }, function(err){
+      helpers.badRequest(res, err.message);
     });
   },
   
@@ -82,6 +86,8 @@ var controller = {
 
       return res.status(201).json(genre);
 
+    }, function(err){
+      helpers.badRequest(res, err.message);
     });
   }
 }

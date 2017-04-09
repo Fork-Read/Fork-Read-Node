@@ -18,7 +18,9 @@ let controller = {
 			UserGenre.create(__data).then(function(mapping){
 				genre_mappping.push(mapping);
 				done();
-			});
+			}, function(err){
+      	done();
+    	});
 
 		}, function(err){
 			if(err){

@@ -29,7 +29,7 @@ let controller = {
 
       res.status(200).send(__results);
     }, function(err){
-
+      helpers.badRequest(res, err.message);
     });
 
 	},
@@ -50,8 +50,6 @@ let controller = {
 			
 			__payload['_id'] = req.params.id;
 		}
-
-		console.log(__payload);
 
 		Book.findOne(__payload).then(function(book){
 			res.status(200).json(book)
@@ -80,7 +78,9 @@ let controller = {
 				});
 
 			}
-		});
+		}, function(err){
+      helpers.badRequest(res, err.message);
+    });
 
 	}
 };

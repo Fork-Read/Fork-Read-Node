@@ -36,6 +36,8 @@ var controller = {
             res.status(200).send({});
           })
 
+        }, function(err){
+          helpers.badRequest(res, err.message);
         });
 
       } else {
@@ -51,9 +53,13 @@ var controller = {
             }
             res.status(200).send({});
           });
+        }, function(err){
+          helpers.badRequest(res, err.message);
         });
       }
-    })
+    }, function(err){
+      helpers.badRequest(res, err.message);
+    });
   },
 
   otp_resend: function (req, res) {
@@ -85,6 +91,8 @@ var controller = {
       } else {
         return helpers.badRequest(res, 'OTP not present for this number');
       }
+    }, function(err){
+      helpers.badRequest(res, err.message);
     });
   },
 
@@ -132,6 +140,8 @@ var controller = {
       } else {
         return helpers.badRequest(res, 'OTP not sent for this input');
       }
+    }, function(err){
+      helpers.badRequest(res, err.message);
     });
   }
 };
