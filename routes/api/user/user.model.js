@@ -81,7 +81,6 @@ let schema = mongoose.Schema({
 schema.pre('save', function (next) {
   this.name = changeCase.titleCase(this.name);
   this.uuid = uuidV4();
-  console.log(this.password);
   this.password = md5(this.password);
   next();
 });
