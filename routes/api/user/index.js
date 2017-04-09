@@ -5,9 +5,6 @@ let
   helpers 		= require('../helpers');
 
 
-router.get('/', helpers.authenticate, controller.get);
-
-
 router.get('/:id', helpers.authenticate, controller.getById);
 
 

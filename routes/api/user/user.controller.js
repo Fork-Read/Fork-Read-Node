@@ -9,39 +9,12 @@ var
 
 var controller = {
 
-  get: function (req, res) {
-
-    let __paginatePayload;
-
-    __paginatePayload = {
-      limit: 10
-    };
-
-    if(req.query.limit){
-      __paginatePayload.limit = parseInt(req.query.limit, 10);
-    }
-
-    if(req.query.page){
-      __paginatePayload.page = parseInt(req.query.page, 10);
-    } else if(req.query.offset){
-      __paginatePayload.offset = parseInt(req.query.offset, 10);
-    }
-
-    User.paginate({}, __paginatePayload).then(function(results){
-      let __results = Object.assign({}, results , {
-        users: results.docs
-      });
-
-      delete __results.docs;
-
-      res.status(200).send(__results);
-    }, function(err){
-
-    });
-    
-  },
-
   getById: function (req, res) {
+    let userID = req.params.id;
+
+    if(!userID){
+      helpers.badRequest('Missing user id param');
+    }
 
     User.findOne({
       '_id': req.params.id
